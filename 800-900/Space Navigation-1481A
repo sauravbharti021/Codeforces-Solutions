@@ -51,35 +51,21 @@ while(t--){
     int l=0,u=0,r=0,d=0;
     rep(i,n){
         if(s[i]=='L')
-        l++;
+        l--;
         else if(s[i]=='R')
         r++;
         else if(s[i]=='U')
         u++;
         else
-       d++;
+       d--;
     }
-    if(px<0 && py<0){
-        if(l>=abs(px) && d>=abs(py))
-        cout<<"YES"<<endl;
-        else
-        cout<<"NO"<<endl;
-    }else if(px>=0 && py>=0){
-         if(r>=px && u>=py)
-        cout<<"YES"<<endl;
-         else
-        cout<<"NO"<<endl;
-    }else if(px<0 && py>=0){
-        if(l>=abs(px) && u>=py)
-     cout<<"YES"<<endl;
-         else
-        cout<<"NO"<<endl;
-    } else if(px>=0 && py<0){
-        if(r>=px && d>=abs(py))
-         cout<<"YES"<<endl;
-         else
-        cout<<"NO"<<endl;
-    }
+    bool flag;
+    flag= (l<=px && r>=px && d<=py && u>=py);
+    if(flag)
+cout<<"YES"<<endl;
+else 
+cout<<"NO"<<endl;
+
 }
 return 0;
 }

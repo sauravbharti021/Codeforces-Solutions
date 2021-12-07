@@ -1,0 +1,13 @@
+int32_t main(){
+fast
+int don, dtw,dth;
+cin>>don>>dtw>>dth;
+int total= (don+dtw+dth)-(max(don,(max(dtw,dth))));
+int str=don+dtw+dth;
+if(str<=(total*2))
+cout<<str;
+else
+cout<< total*2;
+ 
+return 0;
+}

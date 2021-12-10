@@ -1,0 +1,75 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define int long long
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define fast ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+
+int32_t main(){
+fast
+
+int n, c;
+cin>>n>>c;
+int p[n+1];
+int t[n+1];
+
+for(int i=1;i<=n;i++)
+cin>>p[i];
+
+for(int i=1;i<=n;i++)
+cin>>t[i];
+
+int lp=0, rp=0; 
+int time=0;
+for(int i=1;i<=n ;i++){
+    
+    time+=t[i];
+    int x=0;
+     lp+= max(x,(p[i]-(c*time)));
+}
+ time=0;
+
+for(int i=n;i>=1 ;i--){
+    
+    time+=t[i];
+    int x=0;
+    rp+= (max(x,(p[i]-(c*time))));
+}
+if(rp> lp)
+cout<<"Radewoosh";
+else if(rp==lp)
+cout<<"Tie";
+else
+cout<<"Limak";
+
+return 0;
+}

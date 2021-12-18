@@ -1,0 +1,76 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define int long long
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define fast ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+
+int32_t main(){
+fast
+
+int dp[4][4];
+int bp[4][4];
+for(int i=1;i<=3;i++){
+    for(int j=1;j<=3;j++){
+    cin>>dp[i][j];
+    if(dp[i][j]%2==0)
+    dp[i][j]=0;
+    else
+    dp[i][j]=1;
+    bp[i][j]=1;
+    }
+}
+
+for(int i=1;i<=3;i++){
+    for(int j=1;j<=3;j++){
+    if(dp[i][j]==1){
+        bp[i][j]=(bp[i][j]==0) ? 1 :0;;
+        if(i!=1)
+        bp[i-1][j]= (bp[i-1][j]==0) ? 1 :0;
+         if(i!=3)
+        bp[i+1][j]= (bp[i+1][j]==0) ? 1 :0;
+         if(j!=1)
+        bp[i][j-1]= (bp[i][j-1]==0) ? 1 :0;
+         if(j!=3)
+        bp[i][j+1]= (bp[i][j+1]==0) ? 1 :0;
+
+    }
+    }
+}   
+        for(int i=1;i<=3;i++){
+    for(int j=1;j<=3;j++){
+        cout<<bp[i][j];
+    } cout<<endl;
+        }
+
+return 0;
+}

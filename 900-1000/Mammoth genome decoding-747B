@@ -1,0 +1,76 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define int long long
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define fast ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+
+int32_t main(){
+fast
+
+int m;
+cin>>m;
+int a=0,g=0,c=0,t=0, q=0;
+string s;
+cin>>s;
+int n=s.size();
+rep(i,m){
+    char x=s[i];
+    if(x=='A') a++;
+    else if(x=='G') g++;
+    else if(x=='C') c++;
+    else if(x=='T') t++;
+    else if(x=='?') q++;
+}
+if(n%4!=0) cout<<"===";
+else if( a>n/4 || g>n/4 || c>n/4 || t>n/4 ) cout<<"===";
+else {
+    rep(i,n){
+        if(s[i]=='?'){
+            if(a<n/4) {
+                s[i]='A'; a++;
+            }
+            else if(g<n/4) {
+                s[i]='G';g++;
+            }
+            else if(c<n/4) {
+                s[i]='C'; c++;
+            }
+            else if(t<n/4) {
+                s[i]='T';  t++;
+            }
+        }
+    }
+    cout<<s;
+}
+return 0;
+}

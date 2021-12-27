@@ -115,6 +115,9 @@ void solve(){
   
     for(int i=1;i*i*i<=n;i++){
        double b= cbrt( n- pow(i, 3)); 
+       
+       ///if not exact cube root. Double will give decimal value, else double & int both will be same.
+       
        int B=b;
        if(b==B && b>0){
            cout<<"YES"<<endl;

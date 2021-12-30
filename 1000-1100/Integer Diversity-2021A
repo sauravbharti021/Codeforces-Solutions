@@ -1,0 +1,73 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define int long long
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define fast ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+ 
+ 
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+ 
+ 
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+ 
+int32_t main(){
+fast
+ 
+ 
+int t=1;
+cin>>t;
+while(t--){
+    int n;
+    cin>>n;
+    map<int,int> m;
+    int a[n];
+   // bool b[n];
+    set<int> s;
+    rep(i,n){
+        cin>>a[i];
+        m[a[i]]++;
+    //    b[a[i]]=true;
+    }
+    int count=0;
+    rep(i,n){
+        if(m[a[i]]==1 ){
+           s.insert(a[i]);
+        }
+            else{
+                if(a[i]==0 && m[a[i]]>=2){
+                s.insert(a[i]);
+            } else{
+                s.insert(-a[i]);
+                s.insert(a[i]);
+            }
+           
+    }
+    }
+    cout<<s.size()<<endl;
+}
+return 0;
+}

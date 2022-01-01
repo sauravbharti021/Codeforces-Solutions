@@ -1,0 +1,90 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define int long long
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define fast ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+
+
+int n;
+int parent[10000006];
+int siz[10000006];
+void makeset(int x){
+    for(int i=1;i<=x;i++){
+        parent[i]=i;
+        siz[i]=1;
+    }
+}
+
+int find(int x) {
+    while (parent[x] != x) {
+        x = parent[x];
+    }
+    return x;
+}
+void unite(int a, int b) {
+    a = find(a);
+    b = find(b);
+    if (a != b) {
+        if (siz[a] < siz[b]) {
+            swap(a, b);
+        }
+        parent[b] = a;
+        siz[a] += siz[b];
+    }
+}
+
+
+int32_t main(){
+fast
+
+
+int t=1;
+cin>>t;
+while(t--){
+    cin>>n;
+  
+    int a[n+1];
+    for(int i=1;i<=n;i++) {
+        cin>>a[i];
+          }
+          makeset(n);
+    for(int i=1;i<=n;i++)
+     unite(i,a[i]);
+
+    for(int j=1;j<=n;j++){
+    cout<< siz[find(j)]<<" ";
+    }
+    cout<<endl;
+}
+return 0;
+}

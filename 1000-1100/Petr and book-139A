@@ -1,0 +1,72 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define int long long
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define fast ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+
+int32_t main(){
+fast //HOVI BABY
+int p, d1,d2,d3,d4,d5,d6,d7;
+cin>>p>>d1>>d2>>d3>>d4>>d5>>d6>>d7;
+while(true){
+    if(p-d1<=0){
+        cout<<1; break;
+    }
+    p-=d1;
+     if(p-d2<=0){
+        cout<<2; break;
+    }
+    p-=d2;
+     if(p-d3<=0){
+        cout<<3; break;
+    }
+    p-=d3;
+     if(p-d4<=0){
+        cout<<4; break;
+    }
+    p-=d4;
+     if(p-d5<=0){
+        cout<<5; break;
+    }
+    p-=d5;
+     if(p-d6<=0){
+        cout<<6; break;
+    }
+    p-=d6;
+     if(p-d7<=0){
+        cout<<7; break;
+    }
+    p-=d7;
+} 
+return 0;
+}

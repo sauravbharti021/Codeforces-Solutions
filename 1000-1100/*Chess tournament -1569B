@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define int long long
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define FastHoviBaby ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+
+int32_t main(){
+FastHoviBaby
+
+
+int t=1;
+cin>>t;
+while(t--){
+    int n;
+    cin>>n;
+    string s;
+    cin>>s;
+    vector<string> v(n, string(n, '='));
+    vector<int> ans;
+    int c2=0;
+    rep(i,n){
+        if(s[i]=='2') {
+            c2++;
+            ans.pb(i);
+        }
+    }
+    if(c2==1 || c2==2) cout<<"NO"<<endl;
+    else{
+        cout<<"YES"<<endl;
+        rep(i,n) v[i][i]='X';
+        rep(i,c2){
+            int x=ans[i], y=ans[(i+1)%c2];
+            v[x][y]='+';
+            v[y][x]='-';
+        }
+        for(auto i: v) cout<<i<<endl;
+    }
+
+}
+return 0;
+}

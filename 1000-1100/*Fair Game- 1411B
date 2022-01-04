@@ -1,0 +1,68 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define int long long
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define FastHoviBaby ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+
+int32_t main(){
+FastHoviBaby
+
+
+int t=1;
+cin>>t;
+while(t--){
+    int n;
+    cin>>n;
+    
+    // lcm of (1,2...9) =2520. so, max it can go upto n+2520.
+    
+    for(int i=n; i<=(n+2520);i++){
+        string b= to_string(i);
+        int flag=0;
+        rep(j,b.size()){
+            if(b[j]=='0') continue;
+            if(i%(b[j]-'0')==0)
+            continue;
+            else {
+                flag=1;
+            break;
+            }
+    }
+    if(!flag){
+        cout<<i<<endl;
+        break;
+    }
+    }
+}
+return 0;
+}

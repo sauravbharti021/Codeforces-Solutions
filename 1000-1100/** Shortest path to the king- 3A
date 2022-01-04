@@ -1,0 +1,82 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define int long long
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define FastHoviBaby ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+
+int32_t main(){
+FastHoviBaby
+string s,t;
+cin>>s>>t;
+
+int p1=s[1];
+int r1= t[1];
+int p2=(s[0]-'a')+1;
+int r2=(t[0]-'a')+1;
+
+cout<< max(abs(p1-r1), abs(p2-r2))<<endl;
+while(true ){
+    if(p1<r1){
+      
+        if(p2>r2){
+             cout<<"L"; p2--;
+        }
+        else if(p2<r2) {cout<<"R"; p2++;
+        }
+          p1++; cout<<"U";
+        cout<<endl;
+    }
+   else  if(p1>r1){
+       
+        if(p2>r2){
+             cout<<"L"; p2--;
+        }
+        else if(p2<r2) {cout<<"R"; p2++;
+        }
+         p1--; cout<<"D";
+         cout<<endl;
+    
+}
+if(p1==r1 && p2!=r2) {
+    if(p2>r2) {
+        p2--; cout<<"L"<<endl;
+    }else{
+        p2++; cout<<"R"<<endl;
+    }
+}
+
+    if(p1==r1 && p2==r2) break;
+}
+
+return 0;
+}

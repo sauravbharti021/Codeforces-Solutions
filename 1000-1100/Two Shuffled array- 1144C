@@ -1,0 +1,85 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define int long long
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define FastHoviBaby ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+
+int32_t main(){
+FastHoviBaby
+
+int n;
+cin>>n;
+map<int,int>m ;
+set<int> s;
+vector<int> r;
+vector<int> v(n);
+rep(i, n){
+    cin>>v[i];
+    m[v[i]]++;
+} 
+sort(all(v));
+rep(i,n){
+    s.insert(v[i]);
+}
+
+int flag=0, c=0;
+    rep(i,n){
+         if(m[v[i]]==2){
+            r.pb(v[i]);
+            m[v[i]]-=2;
+            c=1;
+        }else if(m[v[i]]>2){
+            flag=1;
+            cout<<"NO";
+            break;
+        }
+    }
+    if(!flag){
+        cout<<"YES"<<endl;
+        cout<<s.size()<<endl;
+        for(auto it=s.begin();it!=s.end();it++)
+        cout<<*it<<" ";
+        cout<<endl;
+        if(c==0) cout<<0<<endl;
+        else{
+        cout<<r.size()<<endl;
+       sort(all(r),greater<int>());
+       rep(i,r.size())
+       cout<<r[i]<<" ";
+    }
+        }
+
+  
+
+return 0;
+}

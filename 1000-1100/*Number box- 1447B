@@ -15,16 +15,16 @@ using namespace std;
 #define rrep(i, n) for(int i=n-1;i>=0;i--)
 #define rep(i,n) for(int i=0;i<n;i++)
 #define FastHoviBaby ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
- 
- 
+
+
 int gcd(int a , int b)
 {
 if(b==0) return a;
 a%=b;
 return gcd(b,a);
 }
- 
- 
+
+
 bool isPrime(int n){
     if(n==1) return false;
     if(n==2) return true;
@@ -33,11 +33,11 @@ bool isPrime(int n){
     }
     return true;
 }
- 
+
 int32_t main(){
 FastHoviBaby
- 
- 
+
+
 int t=1;
 cin>>t;
 while(t--){
@@ -50,33 +50,25 @@ while(t--){
         rep(j,m){
             int a;
             cin>>a;
-           pl.pb(a);
+           pl.pb(abs(a));
            if(a<0) nc++;
         }
     }
- 
+
     sort(all(pl));
-    
+
     int sum=0;
-    int sub=0,flag=0;
+    int sub=0;
     if(nc%2!=0){
-        if((abs(pl[nc-1])>= pl[nc])){
-            pl[nc]=abs(pl[nc-1])-pl[nc];
-            pl[nc-1]=0;
- 
-        }else{
-            flag=1;
-            sub=2*abs(pl[nc-1]);
-        }
+           sub=2*(pl[0]);
+        
     }
     rep(i,pl.size())
-    sum+=abs(pl[i]);
- 
-    if(flag)
+    sum+=(pl[i]);
+
     cout<<sum-sub<<endl;
-    else
-    cout<<sum<<endl;
    
 }
 return 0;
 }
+

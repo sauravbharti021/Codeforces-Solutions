@@ -1,0 +1,89 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define int long long
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define FastHoviBaby ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+void solve(){
+      int k,n,m;
+    cin>>k>>n>>m;
+    int o=0;
+    int a[n];
+    int b[m];
+    rep(i,n) cin>>a[i];
+    rep(i,m) cin>>b[i];
+    vector<int> ans;
+    int i=0,j=0;
+    while(i<n ||j<m){
+        if(i<n && j<m){
+            if(a[i]==0) ans.pb(0), k++,i++;
+            else if(b[j]==0) ans.pb(0), k++,j++;
+            else{
+                if(a[i]<=b[j] && a[i]<=k) ans.pb(a[i]), i++;
+                else if(b[j]<a[i] && b[j]<=k) ans.pb(b[j]), j++;
+                else{
+                    cout<<-1<<endl;
+                    return;
+                } 
+            }
+        }else if(i<n){
+            if(a[i]==0) ans.pb(0), i++, k++;
+            else if(a[i]<=k) ans.pb(a[i]),i++;
+            else {
+                cout<<-1<<endl;
+                return;
+            }
+        }else if(j<m){
+            if(b[j]==0) ans.pb(0), j++, k++;
+            else if(b[j]<=k) ans.pb(b[j]),j++;
+            else {
+                cout<<-1<<endl;
+                return;
+            }
+    }
+}
+    for(int l: ans) cout<<l<<" ";
+    cout<<endl;
+}
+
+int32_t main(){
+FastHoviBaby
+
+
+int t=1;
+cin>>t;
+while(t--){
+  solve();
+   
+}
+return 0;
+}

@@ -62,19 +62,12 @@ while(t--){
     int l=1,r = (n/k)+1;
     while(r-l>1){
         int mid=(l+r)/2;
-        if(mid%2==0){
-        if(pair>=(k*mid)/2 )
+        if(pair>= k*(mid/2) )
         l=mid;
         else
         r=mid;
         }
-        else{
-            if(pair>=(mid/2)*k )
-        l=mid;
-        else
-        r=mid;
-        }
-    }
+    
     cout<<l<<endl;
 }
 return 0;

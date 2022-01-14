@@ -1,0 +1,78 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define int long long
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define FastHoviBaby ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+
+int32_t main(){
+FastHoviBaby
+
+int n,m,s1,s2;
+cin>>n>>m>>s1>>s2;
+
+ cout<<s1<<" "<<s2<<endl;
+
+ int flag=0;
+ for(int i=s1;i>=1;i--){
+     if(!flag){
+     for(int j=1;j<=m;j++){
+         if(i==s1 && j==s2) continue;
+         cout<<i<<" "<<j<<endl;
+     }
+     flag=1;
+     }else{
+             for(int j=m;j>=1;j--){
+            cout<<i<<" "<<j<<endl;
+        } 
+     flag=0;
+     }
+ }
+
+ int f1=0;
+ if((s1)%2!=0){
+     f1=1;
+ }
+ for(int i=s1+1;i<=n;i++){
+     if(!f1){
+     for(int j=1;j<=m;j++){
+         cout<<i<<" "<<j<<endl;
+     } f1=1;
+     }else{
+             for(int j=m;j>=1;j--){
+            cout<<i<<" "<<j<<endl;
+        } 
+        f1=0;
+     }
+ }
+return 0;
+}

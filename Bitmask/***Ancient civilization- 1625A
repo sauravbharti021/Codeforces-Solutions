@@ -1,0 +1,95 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define int long long
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define FastHoviBaby ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+
+int32_t main(){
+FastHoviBaby
+
+
+int t=1;
+cin>>t;
+while(t--){
+    int n,l;
+    cin>>n>>l;
+    bitset<32> a[n+1];
+    rep(i,n){
+        int x;
+        cin>>x;
+        a[i]=x;
+    } 
+
+
+    int ans=0;
+    rep(i,l){
+        int c=0;
+        rep(j,n){
+            if(a[j][i]!=0) c++;
+        }
+        if(c>n-c) ans+=(1<<i);
+    }
+        cout<<ans<<endl;
+}
+return 0;
+}
+
+
+// Every binary representation can be represented as a decimal by: 
+ 1  1  0 0 0 0 1
+ 64 32 16 8 4 2 1  
+ -------------------
+ 64+32+1=97
+ 
+ 1  0 0 0 1
+ 16 8 4 2 1
+ -----------
+ 16+1=17
+ 
+ So, we check every bit of all int in array. If 1's count is more we add that 'i' to the power of 2. This corresponds as  (1<<i)   {left shift}->      1*(2^i).
+ So, in Ans we include that bit and proceed.
+ This way we get our answer.
+
+We can convert any  decimal to binary by using bitset<32>:
+int n=13;
+bitset<32> a[1];
+a[0]=n;
+int ans=0;
+
+  rep(i,whatever length we want to manipulate){
+  if(a[i]==1)
+  ans+=(1<<i);
+  }
+  
+  Our no is ready.
+

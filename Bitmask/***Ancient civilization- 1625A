@@ -87,7 +87,7 @@ a[0]=n;
 int ans=0;
 
   rep(i,whatever length we want to manipulate){
-  if(a[i]==1)
+  if(a[0][i]==1)
   ans+=(1<<i);
   }
   

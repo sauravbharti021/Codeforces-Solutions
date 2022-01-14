@@ -1,0 +1,80 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define int long long
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define FastHoviBaby ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+
+int32_t main(){
+FastHoviBaby
+
+
+int t=1;
+cin>>t;
+while(t--){
+    int n;
+    cin>>n;
+    vector<pair<int,int>> v(n);
+    vector<int> ans;
+
+    for(int i=0;i<n;i++){
+        cin>>v[i].ff;
+        v[i].ss=i;
+    }
+
+   sort(all(v));
+
+    for(int i=0;i<n;i++){
+        if(v[i].ss==i ) continue;
+         else{
+ //           cout<<i<<" "<<v[i].ss<<" "<<v[i].ss-i <<endl;
+            ans.pb(i+1);
+            ans.pb(v[i].ss+1);
+            ans.pb(v[i].ss-i);
+            
+            for(int j=i;j<n;j++){
+                if(v[j].ss<v[i].ss)
+                v[j].ss++;
+            }
+            v[i].ss=i;
+        }
+    }
+        cout<<ans.size()/3<<endl;
+        int c=0;
+        rep(i,ans.size()){
+            cout<<ans[i]<<" ";
+            c++;
+            if(c%3==0) cout<<endl; 
+        }
+}
+return 0;
+}

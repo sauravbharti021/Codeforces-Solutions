@@ -1,0 +1,81 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define int long long
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define FastHoviBaby ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+
+int32_t main(){
+FastHoviBaby
+
+
+int t=1;
+cin>>t;
+while(t--){
+    int n,m;
+    cin>>n>>m;
+    vector<int> v;
+    int nd=n/2;
+    int md=m/2;
+    for(int i=1;i<=nd;i++){
+        for(int j=1;j<=md;j++){
+            rep(k,4){
+            v.pb( abs(i-n)+abs(j-m) );
+            }
+        }
+    }
+
+    if(n%2!=0){
+        for(int i=1;i<=md;i++){
+            v.pb(abs((nd+1)-n)+ abs(i-m));
+            v.pb(abs((nd+1)-n)+ abs(i-m));
+        }
+    }
+     if(m%2!=0){
+        for(int i=1;i<=nd;i++){
+            v.pb(abs((md+1)-m)+ abs(i-n));
+             v.pb(abs((md+1)-m)+ abs(i-n));
+        }
+    }
+    if(m%2!=0 && n%2!=0){
+        v.pb(abs(nd+1-n)+abs(md+1-m));
+    }
+
+    sort(all(v));
+    for(int h:v) cout<<h<<" ";
+    cout<<endl;
+}
+return 0;
+}
+////////////////////////////////////////////////////////
+Better approaach would have been to check every corner for every element and then add their max to vector.
+Easy and efficient

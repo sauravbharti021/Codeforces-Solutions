@@ -51,10 +51,14 @@ bool isPrime(int n){
     return true;
 }
 
+
+
 int32_t main(){
 FastHoviBaby
 
-
+// freopen("input.txt","r",stdin);
+// freopen("output.txt","w",stdout);
+ 
 int t=1;
 cin>>t;
 while(t--){

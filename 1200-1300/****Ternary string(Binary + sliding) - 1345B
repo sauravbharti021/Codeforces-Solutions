@@ -51,6 +51,7 @@ int n;
 bool check(int m){
     
       vector<int> v(4,0);
+      /////Sliding window
       rep(i,m-1){
           v[s[i]-'0']++;
       }

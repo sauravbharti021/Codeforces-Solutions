@@ -66,29 +66,28 @@ bool check(int m){
 }
 
 
+ 
 int32_t main(){
 FastHoviBaby
-
-
+ 
+ 
 int t=1;
 cin>>t;
 while(t--){
     cin>>s;
      n=s.size();
-    int l=3, r=n, mi=INT_MAX;
-    while(r>=l){
+    int l=0, r=n;
+    while(r-l>1){
         int m=(l+r)/2;
-        if(check(m)){
-            mi=min(m,mi);
-            r=m-1;
-        }
+        if(check(m))
+        r=m;
         else 
-        l=m+1;
+        l=m;
     }
-
-    if(mi!=INT_MAX)
-   cout<<mi<<endl;
- else cout<<0<<endl;
+ 
+    if(check(l)) cout<<l<<endl;
+    else if(check(r)) cout<<r<<endl;
+    else cout<<0<<endl;
 }
 return 0;
 }

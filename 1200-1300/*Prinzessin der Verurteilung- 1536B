@@ -91,9 +91,9 @@ while(t--){
             char c='a'+i;
             string f=a;
             f.pb(c);
-            rep(i,26){
+            rep(j,26){
                 string u=f;
-                char d='a'+i;
+                char d='a'+j;
                 u.pb(d);
                  if(s.find(u)==-1) {
                 cout<<u<<endl;

@@ -1,0 +1,52 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+ 
+#define rep(i,n) for(int i=0;i<n;i++)
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+int32_t main(){
+	
+	 int t=1;
+	cin>>t;
+	 while(t--){ 
+	
+	int k,n;
+	cin>>n>>k;
+	
+	int a[n];
+	rep(i,n){
+		cin>>a[i];
+		}
+		int j=0;
+		while(j<n-1){
+			if(k-a[j]>=0){
+				k-=a[j];
+                 a[n-1]+=a[j];
+				a[j]=0;
+              
+				j++;
+				}
+				if(a[j]>k){
+					a[j]-=k;
+                     a[n-1]+=k;
+					break;
+					}
+				
+				if(k<=0) break;
+	}
+	rep(i,n) cout<<a[i]<<" ";
+	cout<<endl;
+	
+	
+	}
+	return 0;
+	}

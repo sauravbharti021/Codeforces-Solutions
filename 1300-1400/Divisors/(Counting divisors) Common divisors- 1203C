@@ -72,3 +72,11 @@ cin>>n;
       
 return 0;
 }
+
+////////////////////////////////////////////////////
+The technique that we are using here to calculate divisors is :-
+We iterating through 1 to sqrt(x), now for every diviors like- x=6, i=1, 1 is complemented by a no. outside sqrt(6)~2 i.e 6, for 2 -> 4. 
+One case we have to be careful about
+is if 'x' is perfect square, then their will be a no, that will not have any pair, Ex- x=16, now sqrt(16)=4, 1->16,2->8, 4->4(this is wrong, so in this case only 4 
+is single divisor without any pairs.)  
+ 

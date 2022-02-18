@@ -82,7 +82,7 @@ Bipartite coloring is way of coloring it such that no 2 adjacent edges has same 
   
 A graph with odd cycle cannot be a bipartite, because R->B->R->B->R, we here we get this Red repeated.
   
-  ///////Tree is acyclic directed graph(So, it is always bipartite.)
+  ///////Tree is acyclic connected graph(So, it is always bipartite.)
   
   Now, we run a dfs so that we can color that tree such that no 2 adjacent edges are colored with same color. (0^1)=1, (1^1)=0. 1-R, 0-B
   

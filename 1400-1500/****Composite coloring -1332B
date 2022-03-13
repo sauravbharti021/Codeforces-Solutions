@@ -95,3 +95,9 @@ while(t--){
 }
 return 0;
 }
+/////////////////////////////////////////////////////////////////
+Every composite no. must have a divisor prime less than sqrt(n). So, max a[i] is 1000. And sqrt(1000) ~~ 32. So, int total we can have 11 primes--- 2,3,5,7,11,13,17,19,23,29,31.
+
+Every given composite no. must be divisible by any one of them atleast. After this observation we implement it. Presence of all color should be there upto m.
+
+So, to deal with it we run a loop for every value of check. So, that our order is ascending and contigous.

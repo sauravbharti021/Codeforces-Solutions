@@ -75,3 +75,12 @@ while(t--){
 }
 return 0;
 }
+
+//////////////////////////////////////////////////////////////////////////////////
+In this problem, answer can only be "NO", if diff b/w 2 towers is greater than x. 
+Since we hi at max can be x. And when we take min element it is guranteed that next is greater than it.
+
+Ex= h1=5, h2=6 & x=7
+ now, when we'll add 5+y, y at max can be x. So, 5+7=12 but still 12-6<=7.
+ 
+ So, that diff of x that is required to give "NO", will never arise if we keep on adding new no to the smallest.  

@@ -90,3 +90,43 @@ while(t--){
 }
 return 0;
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+Now, this problem was very tricky. First our approach was to store indices of odd one .
+
+Then run a loop for all even default values. And take the min value we can get, but definitely it was O(n2) and we got tle. 
+Then 
+rep(i,n){
+        int flag=0;
+        for(int j=e[i].ff-1; j>=1;j-=2){
+            m1= min( m1, m[j]+i-1);
+ 
+            if(i>m1){ flag=1; break;}
+        }
+        if(flag) break;
+    }
+    
+    So, the efficient approach was to use a min array (new/same) for even so, that those greater indexes which appear before desired smaller one can save us 
+    from running another loop.
+    
+    Ex- 5
+        7 5 9 1  3
+        2 4 6 10 8
+      ---------------
+      even array after doing operation + sorting will look like this.
+        2-0   4-1   6-2  8-3   10-3
+        
+        So, the benifit it gives us is that we can now compare all odd index to their corresponding modifed even index. 
+        
+        like for i=1, j=0.
+        So, mi =   m[i]; ~~ 3
+           pos of 2= 0.
+           so, dist= 3+0=3.
+           
+           for, i=5, j=2.
+           mi= m[5] ~~ 1
+           pos of 6= 2
+           So, dist= 2+1= 3
+         
+       In this way we can cal. it in O(n)  

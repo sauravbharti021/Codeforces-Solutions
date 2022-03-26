@@ -136,3 +136,7 @@ cin>>n>>m;
 
 return 0;
 }
+
+/////////////////////////////////////////////////////
+
+The most important thing of cyclic component is that every vertex must be connected to only two other vertices.

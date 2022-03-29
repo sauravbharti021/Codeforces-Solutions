@@ -1,0 +1,133 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define FastHoviBaby ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int npow(int a, int b) { 
+if(b==0) return 1;   int res= npow(a, b/2);
+if(b%2!=0) return res*res*a;       else return res*res; }
+
+
+int modp(int a,int b,int m){ 
+ a %= m;     int res = 1;  while (b > 0) { if (b & 1)    res = res * a % m;      a = a * a % m;  b >>= 1; }
+return res;}
+
+
+bool myComp(const pair<int, int>& a, const pair<int, int>& b){ if (a.first != b.first)  return a.first > b.first;  return a.second < b.second;}
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+
+  const int N= 1e5+5;
+ vector<int> adj[N];
+ int col[N];
+ vector<bool> vis(N, false);
+  
+int ans=0;
+ vector<int> par(N);
+ void dfs(int n,int now){
+     vis[n]=true;
+    par[n]=now;
+
+     for(auto i: adj[n]){
+         if(!vis[i]){
+             dfs(i,now);
+         }
+     }
+ }   
+
+int32_t main(){
+FastHoviBaby
+
+
+int n;
+cin>>n;
+      
+   vector<pair<int,int>> a(n);
+   rep(i,n-1){
+       cin>>a[i].ff>>a[i].ss;
+   
+   }  
+    
+   
+   rep(i,n){
+       cin>>col[i+1];
+   }
+    
+    rep(i, n-1){
+        if(col[a[i].ff]==col[a[i].ss]){
+                adj[a[i].ff].pb(a[i].ss);
+                adj[a[i].ss].pb(a[i].ff);
+        }
+    }
+
+   int count=0, f=0,ele=0,size=0 ;
+   set<int> s;
+  
+
+    for(int i=1;i<=n;i++){
+       if(!vis[i]){
+           dfs(i,i);
+           size++;
+       }
+    }
+
+    int ans=0,flag=0; 
+    if(size==1){
+        cout<<"YES"<<endl;
+        cout<<1<<endl;
+        return 0;
+    }
+    
+    map<int,int> m2;
+    
+
+    rep(i,n){
+        if( par[a[i].ff] != par[a[i].ss] ){
+            m2[a[i].ff]++; m2[a[i].ss]++;
+            flag=1;
+        }
+    }
+    int mx=INT_MIN;
+    
+
+    for(auto i: m2){ 
+        if(mx<i.ss){
+            mx=i.ss; ans= i.ff;
+        }
+    } 
+
+    if( !flag || mx==INT_MIN || mx!=size-1) cout<<"NO";
+    else
+    cout<<"YES"<<"\n"<<ans;
+
+return 0;
+}

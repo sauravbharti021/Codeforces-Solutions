@@ -1,0 +1,3 @@
+If we have to calculate shortest path( b/w layers. Ex- 2 buttons ques), then we have to use BFS.
+For bipartite, we can also get away with dfs but not vs shortest dist.
+

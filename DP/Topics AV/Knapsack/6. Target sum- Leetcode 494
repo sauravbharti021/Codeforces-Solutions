@@ -1,0 +1,78 @@
+This problem is similar to finding count of subset having min. differnce of k.
+
+ s1-s2= k
+ s1+s2= sum
+ --------------
+ s1= (target+sum)/2
+ 
+ Once we reshifted our target, we were good to go to apply count of subsets with a given sum.
+ 
+ 
+ 
+ 
+ 
+ #define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define ll long long
+
+class Solution {
+public:
+    vector<vector<ll>> dp; 
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int mi=INT_MAX;
+        
+       
+           if(nums.size()==1 ){
+               if (abs(nums[0])!=abs(target)) return 0;
+               else return 1;
+           } 
+           
+       //   rep(i,nums.size()) mi=min(mi, nums[i] );
+       //   if(target<0){
+        //      rep(i,nums.size()) nums[i]+=abs(target);
+       //   } 
+            
+       // target=abs(target);
+          ll s=0;
+        
+        rep(i,nums.size()) s+=nums[i];
+            ll x=0;
+        if((s+target)%2!=0) return 0;
+        target= (s+target)/2;
+        
+        x= count(nums.size(), nums, target);
+        return x;
+        
+    }
+    
+    int count(int n, vector<int> &a, ll tar){
+          dp.assign(n+1, vector<ll>(tar+1, 0) );
+           
+        
+        for(int i=0;i<=n;i++){
+            for(int j=0;j<=tar;j++){
+                if(i==0 ) { dp[i][j]=0;continue; }
+                if(j==0) {dp[i][j]=1; } 
+                 dp[0][0]=1;
+                 
+                if(a[i-1]<=j)
+                    dp[i][j]= dp[i-1][j-a[i-1]] + dp[i-1][j];
+                else 
+                    dp[i][j]=dp[i-1][j];
+                
+              //  cout<<dp[i][j]<<endl;
+            }
+        }
+        return dp[n][tar];
+    }
+};

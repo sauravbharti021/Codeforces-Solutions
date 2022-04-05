@@ -1,0 +1,65 @@
+
+1 5 11 5
+
+S= 22. So, we need 1 pair of subset having sum= 11 each. Here it is quite possible.
+
+It is same as subset sum. And we don't really need to blur s/2 if present.
+
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+
+
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+       
+       ll s=0;
+        map<int,int> m;
+        rep(i,nums.size()){
+            s+=nums[i];
+            m[nums[i]]++;
+        }
+        if(s%2!=0) return false;
+       
+       //* doesn't really need to do this.
+       if(m[s/2]>0){
+           rep(i,nums.size())
+               if(nums[i]==s/2){
+                   nums[i]=0;
+                   break;
+               }
+       }
+       
+            
+        bool dp[205][s];
+        memset(dp, false, sizeof dp);
+        
+        ll n=nums.size();
+        rep(i,n+1){
+            rep(j, s/2 +1){
+                if(j==0) {dp[i][j]=true; continue;}
+                if(i==0) {dp[i][j]= false; continue;}
+                
+                if(nums[i-1]<=j)
+                    dp[i][j]= (dp[i-1][j-nums[i-1]] || dp[i-1][j]);
+                else 
+                    dp[i][j]= dp[i-1][j];
+            }
+        }
+        
+        return dp[n][s/2];
+        
+    }
+};
+
+

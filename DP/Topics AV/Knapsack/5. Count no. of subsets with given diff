@@ -1,0 +1,10 @@
+In this we are given a difference-k and a array.
+
+  We have to div. array in such 2 subsets that has a difference of k;
+  
+  S1- s2= k
+  s1+ s2= sum
+  ----------
+  s1= (k+sum)/2.
+  
+  So, basically this question turns into count of subsets with given sum. 

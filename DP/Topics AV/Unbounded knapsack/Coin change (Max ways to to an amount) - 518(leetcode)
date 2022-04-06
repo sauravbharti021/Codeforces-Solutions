@@ -1,0 +1,33 @@
+Here, an amount and sum denominations of coins are given, we have to tell that in how many ways using these coins we can achieve this amount.
+
+5
+[1,2,5]
+1+1+1+1+1
+1+2+2
+2+3
+1+1+1+2
+
+ 4 ways.
+ 
+ It is an example of subset sum, but we have here unlimited supply so, it becomes a question of unbounded knapsack. just 1 short diff.
+ 
+ 
+   int change(int amount, vector<int>& coins) {
+        
+        ll n=coins.size();
+       vector<vector<ll>> dp(n+1, vector<ll>(amount+1, 0) );
+        
+        for(int i=1;i<=n;i++){
+            for(int j=0;j<=amount;j++){
+                if(j==0) { dp[i][j]=1; continue;}
+                
+                if(coins[i-1]<=j)
+                    dp[i][j]= dp[i][j-coins[i-1]]+ dp[i-1][j];
+                else
+                    dp[i][j]=dp[i-1][j];
+            }
+        }
+        
+        return dp[n][amount];
+        
+    }

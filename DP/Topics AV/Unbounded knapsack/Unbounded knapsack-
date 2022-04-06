@@ -1,0 +1,33 @@
+4 8
+val- 1 4 5 7
+wei- 1 3 4 5
+----------
+max is 11.
+
+Here, we can take multiple occurences of a weight, so those who we have selected can be selected again. So, we don't do i-1 for them.
+
+class Solution{
+public:
+    int knapSack(int N, int W, int val[], int wt[])
+    {
+        vector<vector<int>> dp(1005, vector<int> (1005, 0));
+        
+        
+        for(int i=0;i<=N;i++){
+            for(int j=0;j<=W;j++){
+                if(i==0 || j==0) {
+                    dp[i][j]=0;
+                    continue;
+                }
+                
+                if(wt[i-1]<=j)
+                dp[i][j]= max( (val[i-1]+ dp[i][j-wt[i-1]]), dp[i-1][j]);
+                
+                else
+                dp[i][j]= dp[i-1][j];
+            }
+        }
+        
+        return dp[N][W];
+    }
+};

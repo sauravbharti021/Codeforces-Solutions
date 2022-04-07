@@ -1,0 +1,47 @@
+
+So, in this we are given two strings and we have to give length of such string that has both string as its subsequence.
+
+              abcab
+              cab
+           LCS- cab 
+           5+3-3=5
+           
+           
+ int shortestCommonSupersequence(string X, string Y, int m, int n)
+    {
+          
+        vector<vector<int>> dp(m+1, vector<int>(n+1, 0));
+        
+      
+        
+        for(int i=1;i<=m;i++){
+            for(int j=1;j<=n;j++){
+                if(X[i-1]==Y[j-1])
+                      dp[i][j]= 1+ dp[i-1][j-1];
+                
+                else
+                    dp[i][j]=max(dp[i][j-1], dp[i-1][j]);
+            }
+        }
+        
+        int x=m,y=n;
+        
+        string ans="";
+        while(x>0 && y>0){
+            if(X[x-1]==Y[y-1]){
+                ans+=X[x-1];
+                x--,y--;
+            } else{
+                if(dp[x-1][y]>=dp[x][y-1])
+                    x--;
+                else
+                    y--;
+            }
+        }
+        
+        reverse(ans.begin(), ans.end());
+        string now=ans;
+        ans= X+Y;
+        return n+m- dp[m][n];
+        
+    }

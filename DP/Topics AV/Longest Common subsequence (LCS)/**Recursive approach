@@ -1,0 +1,24 @@
+
+If any strings length is 0. It cannot produce anymore subsequnce
+So, our base case 
+                  :- if(n==0 || m==0) return 0;
+                  
+         Choices- If both matches n-1==m-1, then +=1 
+         
+                  If not then either we take 1st string or 2nd. So, their max
+                  
+                  
+          
+  int recur(int n, int m, string t1, string t2){
+        
+          if(n==0 || m==0)
+            return 0;
+        
+     if(t1[n-1] == t2[m-1])
+         return 1+ recur(n-1, m-1, t1, t2);
+      
+     else
+         return max( recur(n-1, m, t1,t2), recur(n,m-1, t1,t2));
+    }
+};
+                  

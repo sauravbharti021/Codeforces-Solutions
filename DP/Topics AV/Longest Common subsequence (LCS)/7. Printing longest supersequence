@@ -1,0 +1,93 @@
+Same as earlier, here we have to print actual sequence instead of their length.
+
+"abac"
+"cab"
+
+  cabac
+  
+  Same thing but little implementation.
+  
+  class Solution {
+public:
+    string shortestCommonSupersequence(string str1, string str2) {
+        
+        int n=str1.size(), m=str2.size();
+        vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
+        
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=m;j++){
+                if(str1[i-1]==str2[j-1])
+                      dp[i][j]= 1+dp[i-1][j-1];
+                
+                else
+                    dp[i][j]=max(dp[i][j-1], dp[i-1][j]);
+            }
+        }
+        
+        int x=n,y=m;
+        
+        string ans="";
+        while(x>0 && y>0){
+            if(str1[x-1]==str2[y-1]){
+                ans+=str1[x-1];
+                x--,y--;
+            } else{
+                if(dp[x-1][y]>=dp[x][y-1])
+                    x--;
+                else
+                    y--;
+            }
+        }
+        
+        reverse(all(ans));
+        map<char,int> mpp;
+        
+    
+        
+        string res="";
+        int j=ans.size();
+        j-=1;
+        while(n>0 || m>0){
+            
+            if( n>0 && m>0){
+            if(str1[n-1]==str2[m-1] && j>=0 && str1[n-1]==ans[j]){
+                res+=ans[j];
+                j--;
+                n--; m--;
+            }
+            
+            else if(j>=0 &&str1[n-1]==ans[j] ){
+                res+=str2[m-1];
+                m--;
+            }
+            else if( j>=0 && str2[m-1]==ans[j]){
+                res+=str1[n-1];
+                n--;
+            }
+            else {
+               res+= str1[n-1];
+                res+=str2[m-1];
+               
+                
+                m--,n--;
+            }
+        }else{
+                if(n>0){   
+                    string ff= str1.substr(0,n);
+                        reverse(all(ff));
+                        res+= ff;
+                    }
+                else if(m>0){
+                    string gg= str2.substr(0,m);
+                    reverse(all(gg));
+                    res+=gg;
+                }
+                break; 
+            }     
+        } 
+        
+   
+        reverse(all(res));
+        return res;
+    }
+};

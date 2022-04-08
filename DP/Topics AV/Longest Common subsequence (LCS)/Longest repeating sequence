@@ -1,0 +1,32 @@
+
+axxxy
+
+here xx,xx
+Abcadbc
+
+here abc
+
+So, we take lcs of the same string but we don't take same characters on same index.
+
+	int LongestRepeatingSubsequence(string str){
+		    string s="", now=str;
+		    
+		    int n=str.size(), k=now.size();
+		    vector<vector<int>> dp(n+1, vector<int>(k+1,0) );
+		        
+		    for(int i=1;i<=n;i++){
+		        for(int j=1;j<=k;j++){
+		            
+		            
+		            if(i!=j && str[i-1]== now[j-1]){
+		                dp[i][j]=1+dp[i-1][j-1];
+		                //s+=str[i-1];
+		            }
+		            else
+		            dp[i][j]=max(dp[i-1][j], dp[i][j-1]);
+		        }
+		    }
+		    
+		    
+		    return dp[n][k];
+		}

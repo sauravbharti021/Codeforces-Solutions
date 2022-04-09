@@ -1,0 +1,59 @@
+
+In this we are given a string and a pattern, and we have to tell that can we extract the exact string S from pattern P by using '?' and '*' that might be
+
+given in Pattern P string.
+
+'?' - can be converted into any char
+'*' - can be converted into into sequence, even empty.
+
+abc
+ab*c
+YES
+
+abxc
+a?*c
+YES
+
+By recursion :-
+
+   vector<vector<bool>> dp;
+
+
+    int wildCard(string pattern,string str)
+    {
+        int m=pattern.size(), n=str.size();
+        dp.assign(n+1, vector<bool>(m+1, false));
+        
+        if(m>n && count(pattern.begin(), pattern.end(), '*')==0) return false;
+         if(n>m && count(pattern.begin(), pattern.end(), '*' )==0) return false;
+        
+        bool f= check(str, pattern, n, m);
+        
+        if(f) return 1;
+        return 0;
+    }
+    
+    bool check(string s, string t, int n, int m){
+        if(n<=0 && m<=0) return true;
+        if(n>0 && m<=0) return false;
+        
+        if(n<=0 && m>0){ 
+           for(int i=0;i<m;i++)
+                if(t[i]!='*')
+                    return false;
+            
+            return true;
+        }
+        if(m==0 || n==0) return false;
+        if(dp[n][m])
+            return dp[n][m];    
+        
+        if(s[n-1]==t[m-1] || t[m-1]=='?'){
+            return dp[n][m]=check(s,t, n-1, m-1);
+            
+            }
+        else if(t[m-1]=='*'){
+           return  dp[n][m]= check(s,t,n-1,m) || check(s,t, n, m-1);
+        }
+       return dp[n][m]=false;
+    }

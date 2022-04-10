@@ -1,0 +1,83 @@
+Although it will not pass constraints >500. But
+
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<int>> dp;
+    int minCut(string s) {
+        
+        dp.assign(s.size()+1, vector<int>(s.size()+1, -1));
+        ll mi= 1e10+10;
+        
+
+       return check(s, 0, s.size()-1, mi);
+      
+    
+        
+    }
+    ll check(string& ss, int i, int j, ll mi ){
+       
+        if(dp[i][j]!=-1) return dp[i][j];
+        
+        if(i>=j)
+            return dp[i][j]=0;
+        
+          
+          
+       
+        
+        if(pal(ss,i,j))
+            return dp[i][j]=0;
+        
+        
+        for(int k=i;k<=j-1; k++){
+            ll left=0;
+            if(dp[i][k]!=-1)
+                left= dp[i][k];
+            else
+                left=check(ss, i,k ,mi);
+            
+            ll right=0;
+            if(dp[k+1][j]!=-1)
+                right=dp[k+1][j];
+            else
+                right= check(ss, k+1,j, mi); 
+            
+            ll t= (1 + left+ right);
+           
+            if(t<mi){ 
+                mi=t;
+            }
+        }
+    
+        return dp[i][j]=mi;
+        
+    }
+    
+    
+    bool pal(string& p, int i, int j){
+     
+       
+        string  t="", k="";
+        for(int h=i;h<=j;h++){
+             t+=p[h];   
+        }
+        k=t;
+        reverse(all(k));
+        
+        return k==t;
+    }
+    
+};

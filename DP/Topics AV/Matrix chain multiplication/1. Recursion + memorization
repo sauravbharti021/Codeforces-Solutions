@@ -1,0 +1,40 @@
+  
+  In this we are given a matrix and we have to first pair them efficiently and then multiply so that we get their min. pro , 
+  40, 20, 30, 10, 30-  (40*20) *( 20*30)  equilvalent to -> 40*20*30 
+  
+  There can be so many ways b/w 1 and n-1,
+  (A*(B*C))*D and many more, we choose their minimum.
+
+  We have taken min inside b/c globally it was giving us trouble.
+
+  vector<vector<int>> dp;
+    int matrixMultiplication(int N, int arr[])
+    {
+        
+        long long y=1e15;
+       
+       dp.assign(505, vector<int>(505, -1));
+        int x= check(arr, 1, N-1,y  );
+        
+        return x;
+    }
+    int check(int a[], int i,int j, long long mi){
+        
+        if(i>=j) 
+         return 0;
+         
+         if(dp[i][j]!= -1)
+            return dp[i][j];
+            
+            
+         for(int k=i; k<=j-1;k++){
+            long long t = (check(a, i,k, mi )+ check(a, k+1, j, mi)+ (a[i-1]*a[k]*a[j]) ) ;
+            mi=min(mi, t);
+            dp[i][j]=mi;
+   
+         }
+         
+         
+         return dp[i][j];
+         
+    }

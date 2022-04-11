@@ -1,0 +1,53 @@
+Given 2 string and we have to divide one string into a tree. And we can swap non leaves nodes, check if a is scrambled version of b. 
+
+
+class Solution {
+public:
+    map<string,int>  m;
+    bool isScramble(string s1, string s2) {
+        
+        if(s1.size()!=s2.size()) return false;
+         int flag=0;
+   
+      return check(s1,s2);
+       
+    }
+    
+    bool check(string a, string b){
+          string k=a+b;
+        if(a==b) { m[k]=1; return true;}
+        if(m[k]!=0){
+            if(m[k]==1)
+            return true;
+            return false;
+        }
+    
+        int n=a.size();
+       
+        int g=0;
+      
+        
+        for(int i=1;i<n;i++){
+            if (check(a.substr(0,i) ,b.substr(n-i, i)) && check(a.substr(i, n-i) ,b.substr(0, n-i)))  
+             {
+          
+                m[k]=1;
+                g=1;
+                return true;
+              
+            }
+            if (check(a.substr(0,i) ,b.substr(0,i)) && check(a.substr(i, n-i) ,b.substr( i, n-i))){
+             
+                m[k]=1;
+                g=1;
+                return true;
+                
+            }    
+        }
+        if(g) return true;
+        
+    
+        m[k]=2;
+        return false;
+    }
+};

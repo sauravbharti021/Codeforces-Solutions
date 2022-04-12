@@ -1,0 +1,36 @@
+Here we are given floor and no of eggs, We have to answer min. no of moves to say answer exists with gurantee.
+
+If egg got broken on kth floor, then we check only lower floors.
+                    If unbroken we check floors above k and no egg is wasted.
+                    
+                    
+                    
+
+ vector<vector<int>> dp;
+    int eggDrop(int n, int k) 
+    {
+        dp.assign(n+1, vector<int>(k+1,-1));
+        
+        return check(n, k);
+    }
+    int check(int egg, int fl){
+        if(fl<=1) return dp[egg][fl]=fl;
+        if(egg==1) return dp[egg][fl]= fl;
+        
+        if(dp[egg][fl]!=-1)
+            return dp[egg][fl];
+        
+        int mi=INT_MAX;
+        for(int i=1;i<=fl;i++){
+            int s= 1+ max(check(egg-1, i-1), check(egg, fl-i) );
+            
+            if(s<mi){
+                mi=s;
+                
+            }
+            dp[egg][fl]=mi;
+        }
+        
+        
+        return dp[egg][fl];
+    }

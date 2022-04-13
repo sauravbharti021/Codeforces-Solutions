@@ -1,4 +1,5 @@
 
+** Comment from codeforces
 
 I've gotten two more questions about TLE in Coin Combinations II, so I guess it deserves a comment. Since we are doing 108 operations in one second, we need those operations to be efficient. This means we can't have many cache misses.
 

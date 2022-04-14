@@ -14,6 +14,9 @@ If we loop through i, j-x[i-1] varies a lot, this means cache misses. Therefore 
 If you define your array as dp[j][i] instead of dp[i][j], then dp[j-x[i-1]][i] goes far from dp[j][i], compared to dp[i][j] and dp[i][j-x[i-1]]. This is because the outer dimension gives smaller distance in memory than the inner dimension (you can think of dp[i][j] as accessing index 106i+j in a linear array, if the second dimension has size 106).
 
 
+/////////////////////////////////////////////////////////
+
+
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
@@ -91,5 +94,6 @@ cin>>a[i];
 }
 
 ////////////////////////////////////////////
+Here they asked for all permutation- 1+2, 2+1 are different permutation. So, they add up to answer 
 
 If we call for dp[i]= (dp[i]%mod+ dp[i-a[j]]%mod)%mod; it will give TLE b/c of huge cache misses. So, stop that if you can

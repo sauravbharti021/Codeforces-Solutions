@@ -1,0 +1,79 @@
+
+Simple approach- O(n2)
+  
+  Keep a dp for memorization.
+  
+  for every i iterate from i-1 to 0. if(num[j]<nums[i]) take the max of dp[i] and dp[j]+1.
+  
+
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        
+        ll n=nums.size();
+        vector<int> dp(n+1, 1);
+        
+        rep(i,n){
+            for(int j=i-1; j>=0; j--){
+                if(nums[j]<nums[i]){
+                    dp[i]= max(dp[i], dp[j]+1);
+                }
+            }
+        }
+        
+        int mx=0;
+        rep(i,n){
+            mx=max(mx, dp[i]);
+        }
+        
+        return mx;
+        
+    }
+};
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+More modified O(n2).
+
+Might feel weird but it works well.
+
+int n;
+cin>>n;
+ 
+int a[n];
+rep(i,n) cin>>a[i];
+ 
+   set<int> s;
+ 
+    s.insert(a[0]);
+ 
+    for(int i=1;i<n;i++){
+        if(a[i]>*(--s.end())){
+            s.insert(a[i]);
+        }else{
+ 
+            auto it= s.lower_bound(a[i]);
+            s.erase(*it);
+            s.insert(a[i]);
+        }
+    }
+ 
+    cout<<s.size()<<endl;
+    
+    
+    
+    //////////////////////////////////////////////
+    
+    We use a set and ever since a small value appears than end of set, we replace the >= element of num[i] in set.
+    
+    2 5 7 11 10 6
+    
+    i==4                i==5                i==6
+    set - 2 5 7 11      set= 2 5 7 10        2 5 6 10
+    
+    
+    Looks incorrect if we have to print it. But later if better seqquence comes in it can accomodate that. 

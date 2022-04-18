@@ -1,0 +1,48 @@
+For reference, can watch https://www.youtube.com/watch?v=VoVDkdkCxoM&t=2960s from 1:00:00.
+
+So, basically we make a recurence
+
+    i, j
+
+(i+1, j)    (i,j-1)  <- A chooses
+                 \ 
+     \             \ 
+(i+2,j), (i+1,j-1)   \
+                      (i+1,j-1), (i, j-2) <- B chooses
+                      
+ 
+ So, we take min of B + max of A
+ 
+ We check for every length starting from size 2.
+ 
+ //////////////////////////////////////////////////////////////////
+
+
+int n;
+cin>>n;
+
+vector<int> a(n);
+ 
+rep(i,n) cin>>a[i];
+
+vector<vector<int>> dp(n+1, vector<int>(n+1, 0));;
+
+    for(int len=1;len<=n;len++){
+        for(int i=0; i+len<=n;i++){
+            int j= (i+len-1);
+
+            int x=0,y=0,z=0;
+            if(i+2 <= j) {x =dp[i+2][j];}
+            if(i+1<=j-1) y= dp[i+1][j-1];
+            if(i<=j-2) z= dp[i][j-2];
+
+            dp[i][j]= max( a[i] + min(x,y), a[j] + min(y,z));
+        }
+    }
+
+    cout<<dp[0][n-1]<<endl;
+
+
+
+                      
+                        

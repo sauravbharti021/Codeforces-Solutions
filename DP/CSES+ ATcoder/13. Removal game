@@ -11,7 +11,9 @@ So, basically we make a recurence
                       (i+1,j-1), (i, j-2) <- B chooses
                       
  
- So, we take min of B + max of A
+ (i+1, j-1) is common in both.
+ 
+ So, we take (min of B + max of A) for both choices of A  
  
  We check for every length starting from size 2.
  

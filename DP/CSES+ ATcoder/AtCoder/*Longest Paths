@@ -1,0 +1,91 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define FastHoviBaby ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int npow(int a, int b) { 
+if(b==0) return 1;   int res= npow(a, b/2);
+if(b%2!=0) return res*res*a;       else return res*res; }
+
+
+int modp(int a,int b,int m){ 
+ a %= m;     int res = 1;  while (b > 0) { if (b & 1)    res = res * a % m;      a = a * a % m;  b >>= 1; }
+return res;}
+
+
+bool myComp(const pair<int, int>& a, const pair<int, int>& b){ if (a.first != b.first)  return a.first > b.first;  return a.second < b.second;}
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+vector<vector<int>> adj;
+vector<int> dp;
+
+int check(int n){
+
+    int start=0;
+    if(dp[n]!=-1)
+        return dp[n];
+
+    for(auto i: adj[n]){
+
+        start= max(start, check(i)+1 );
+    }
+
+    return dp[n]= start;
+}
+
+int32_t main(){
+FastHoviBaby
+
+int n,m;
+cin>>n>>m;
+
+    adj.assign(n+1, vector<int>());
+    dp.assign(n+1, -1);
+
+    rep(i,m){
+        int x, y;
+        cin>>x>>y;
+
+        adj[x].pb(y);
+    }
+
+
+    int mx=0;
+    for(int i=1;i<=n;i++){
+        mx=max(mx, check(i));
+    }
+
+    cout<<mx<<endl;
+
+return 0;
+}

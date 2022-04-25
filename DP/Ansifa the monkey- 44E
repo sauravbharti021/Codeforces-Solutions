@@ -1,0 +1,122 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define FastHoviBaby ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int npow(int a, int b) { 
+if(b==0) return 1;   int res= npow(a, b/2);
+if(b%2!=0) return res*res*a;       else return res*res; }
+
+
+int modp(int a,int b,int m){ 
+ a %= m;     int res = 1;  while (b > 0) { if (b & 1)    res = res * a % m;      a = a * a % m;  b >>= 1; }
+return res;}
+
+
+bool myComp(const pair<int, int>& a, const pair<int, int>& b){ if (a.first != b.first)  return a.first > b.first;  return a.second < b.second;}
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+int k,a,b;
+vector<int> ans;
+vector<vector<int>> dp;
+
+bool check(int p,int count ){
+
+    if(count>k){
+        dp[count][p]=0;
+        return false;
+    }
+    if(p==0 && count==k){
+        dp[count][p]= 1;
+        return true;
+    }
+	
+	if(count==k && p>0){
+		dp[count][p]=0;
+		return false;
+	}
+
+    if(p<0){
+        return false;
+    }
+
+    if(dp[count][p]!=-1) return dp[count][p];
+
+    for(int  i=a; i<=b;i++){
+        if(check(p-i, count+1)){
+       ans.pb(i);
+        dp[count][p-i]= 1;
+        return true;
+        }
+    }
+	if(p>=0)
+    dp[count][p]=0;
+    return false;
+}
+
+int32_t main(){
+FastHoviBaby
+
+
+    
+    cin>>k>>a>>b;
+
+    string s;
+    cin>>s;
+
+    int n=s.size();
+    dp.assign(250, vector<int>(250, -1));
+
+    if( n <(k*a) || n>(b*k)){
+        cout<<"No solution";
+        return 0;
+    }
+
+   
+    bool c= check(n, 0);
+    if(!c){
+        cout<<"No solution";
+        return 0;
+    }
+
+
+    cout<<s.substr(0,ans[0])<<endl;
+
+    int j=ans[0];
+    for(int i=1;i<ans.size(); i++){
+        cout<<s.substr(j, ans[i])<<endl;
+        j+=ans[i];
+    }
+
+return 0;
+}

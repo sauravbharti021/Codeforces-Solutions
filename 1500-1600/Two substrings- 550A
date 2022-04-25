@@ -1,0 +1,35 @@
+string p=s;
+
+int f1=0,f2=0;
+
+if(s.find("AB")==-1){
+    f1=1;
+}
+else{
+    int x=s.find("AB");
+    s[x]='*';
+    s[x+1]='*';
+}
+
+if(s.find("BA")==-1){
+    f1=1;
+}
+
+
+
+
+if(p.find("BA")==-1){
+    f2=1;
+}
+else{
+    int x=p.find("BA");
+    p[x]='*';
+    p[x+1]='*';
+}
+
+if(p.find("AB")==-1){
+    f2=1;
+}
+
+if(f2 && f1){cout<<"NO";}
+else cout<<"YES";

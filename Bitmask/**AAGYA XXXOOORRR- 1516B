@@ -1,0 +1,143 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define FastHoviBaby ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int npow(int a, int b) { 
+if(b==0) return 1;   int res= npow(a, b/2);
+if(b%2!=0) return res*res*a;       else return res*res; }
+
+
+int modp(int a,int b,int m){ 
+ a %= m;     int res = 1;  while (b > 0) { if (b & 1)    res = res * a % m;      a = a * a % m;  b >>= 1; }
+return res;}
+
+
+bool myComp(const pair<int, int>& a, const pair<int, int>& b){ if (a.first != b.first)  return a.first > b.first;  return a.second < b.second;}
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+
+int32_t main(){
+FastHoviBaby
+
+
+int t=1;
+cin>>t;
+while(t--){
+    int n;
+    cin>>n;
+
+    int a[n];
+
+    map<int,int> m;
+    int dup=-1;
+    set<int> d;
+    rep(i,n) {
+        cin>>a[i];
+
+       
+    }
+
+    int x=0;
+    for(int i=0;i<n;i++){
+        x^= a[i];
+    }
+    if(x==0){
+        cout<<"YES"<<endl;
+        continue;
+    }
+
+    int xp[n];
+    int xs[n];
+
+    xp[0]=a[0];
+
+     for(int i=1;i<n;i++){
+        xp[i]= (a[i] ^ xp[i-1]);
+    }
+
+    xs[n-1]= a[n-1];
+
+    for(int i=n-2; i>=0; i--){
+        xs[i]= (a[i] ^ xs[i+1]);
+    }
+
+    int flag=0;
+
+
+   for(int i=0; i<n-1; i++){
+       for(int j=i; j<n-1; j++){
+
+           if(xp[i]==  xs[j+1]){
+               if((xp[i]^ xp[j])== xp[i] ){ 
+                   flag=1;
+                   break;
+               }
+           }
+
+       }
+   }
+
+    if(!flag){
+        cout<<"NO"<<endl;
+    }
+    else
+    cout<<"YES"<<endl;
+    
+}
+return 0;
+}
+
+////////////////////////////////////////////////////////////
+
+We were given an array, they said we can xor two adjacent element of array, And delete both and replace with their xor. And in last minimum 2 elements should be present in
+array.
+
+Goal is to make all elements equal.
+
+Ex- 0 2 2
+xor (2^2)==0
+
+0 0.
+
+Here we also observe that size of array in last can be size 2 or 3. Not more than that 
+
+Ex- a,a,a,a
+- (a^a)=0 and (a^a)=0. -> 0, 0
+
+Ex- a,a,a,a,a
+(a^a)^a, a, a -> a,a,a
+
+So, if every element is already equal we return yes.
+
+ELse we check for left, right and mid partition using prefix and suffix array. 

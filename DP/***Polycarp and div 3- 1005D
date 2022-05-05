@@ -69,7 +69,7 @@ int check(int n, int rem){
         if( ((s[n]- '0')+ rem)%3 == 0) {
             best= max(best, 1+ check(n+1, 0));
         }else
-            best= max(check(n+1, ((s[n]- '0')+rem)%3 ) , check(n+1, rem));
+            best= max(check(n+1, ((s[n]- '0')+rem)%3 ) , check(n+1, 0));
 
        
         

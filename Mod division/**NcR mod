@@ -1,0 +1,15 @@
+ vector<int> invf(1e6+2, 1);
+    for (int i = 2; i <= 1e6+1; ++i)
+    invf[i] = invf[mod%i] * (mod- mod/i)%mod;
+
+ vector<int> rinv(1e6+2, 1);
+    for(int i=2; i<=1e6+1; i++)
+        rinv[i]= (invf[i]* rinv[i-1])%mod ;  
+
+  vector<int> fac(1e6+2, 1);  
+   for(int i=2; i<=1e6+1; i++)
+    fac[i]=(i*fac[i-1])%mod; 
+    
+    
+    
+      ans= ((fac[n]* rinv[r])%mod * rinv[n-r])%mod;

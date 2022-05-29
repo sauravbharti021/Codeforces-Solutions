@@ -8,3 +8,7 @@ long double round(long double var)
     return (long double)value / 100;
 }
  
+ 
+ 
+ 
+ Or divide krte time, just use .00 in divisor. Ex- 50/ 100.00

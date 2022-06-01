@@ -1,0 +1,87 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int minimumObstacles(vector<vector<int>>& grid) {
+        
+        ll n=grid.size();
+        ll m=grid[0].size();
+        
+        vector<vector<pair<ll,ll>>> adj(n*m);
+        
+        vector<vector<ll>> nei= {{0,1}, {0,-1}, {1, 0}, {-1, 0}};
+        
+        rep(i,n){
+            rep(j, m){
+                
+                int cell= (i)*m+ j;
+                
+                for(auto k: nei){
+                    ll new_n= i- k[0];
+                    ll new_m= j- k[1];
+                    
+                    if(new_n>=0 && new_n<n && new_m>=0 && new_m<m){
+                    
+                    ll new_cell= (new_n*m)+ new_m;
+                        
+                        adj[cell].pb( mp ( new_cell, grid[new_n][new_m]));
+                        
+                        }
+                }
+            }
+        }
+        
+        set<pair<ll, ll>> s;
+        
+        vector<ll> d(n*m, 1e9 );
+        
+        d[0]=0;
+        
+        vector<bool> vis(n*m  , false);
+        
+        s.insert(mp(0, 0));
+        
+        while(!s.empty()){
+            
+            pair<ll,ll> p=*s.begin();
+            s.erase(p);
+            
+            int dis= p.ff;
+            int prev=p.ss;
+            
+             if(p.ss== n*m -1) return p.ff;
+            
+            
+            for(auto &pr : adj[prev]){
+                
+               
+                ll node=pr.ff;
+                ll weight= pr.ss;
+                    
+                if(dis + weight < d[node]){
+                    
+                    d[node] = dis + weight;
+                    
+                    pair<ll, ll> now;
+                    now.ff= d[node]; now.ss=node;
+                    s.insert( now );
+                }
+            }
+        }
+        
+        return d[n*m -1];
+        
+        
+    }
+};

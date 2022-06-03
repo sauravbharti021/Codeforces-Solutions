@@ -5,6 +5,8 @@ CORNER (X2,Y2) forming a rectangle. FOR this we drew a matrix dp, which actually
 which would be outside of given dimensions of rectangle.
   
   And we count seperately for all brightness.
+  
+  Also asked in leetcode- 304 ( Range queries of sum on 2D).
 
 --------------------------------------------------------------------------------------------------------------------
 #include <bits/stdc++.h>

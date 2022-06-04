@@ -1,0 +1,72 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<string>> ans;
+    int s;
+    
+    vector<vector<string>> solveNQueens(int n) {
+            s=n;
+        vector<int> arr;
+        check(0, arr );
+        
+        return ans;
+    }
+    
+    int check( int b, vector<int> &arr ){
+        
+        if(b== s){
+            
+            string ini="";
+            rep(i, s) ini+='.';
+             vector<string> f(s, ini );
+            
+            rep(i, s){
+                f[i][arr[i]]='Q';
+            }
+            
+            ans.pb(f);
+            return 1;
+            
+        }
+        
+        rep(i, s){
+            if(isAight(i, b, arr)){
+                arr.pb(i);
+                check(b+1, arr);
+                arr.pop_back();
+            }
+        }
+        
+        return 0;
+        
+    }
+    
+    bool isAight(int a, int b, vector<int> &arr){
+        
+  
+        
+        rep(i, arr.size()){
+            if(arr[i]==a)
+                return false;
+        }
+        
+        rep(i, arr.size()){
+            if( abs(b- i) == abs(a-arr[i])) return false;
+        }
+        
+        return true;
+    }
+    
+};

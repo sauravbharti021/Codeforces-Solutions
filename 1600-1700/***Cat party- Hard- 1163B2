@@ -1,0 +1,126 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define Jhunjhar_Hova ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int npow(int a, int b) { 
+if(b==0) return 1;   int res= npow(a, b/2);
+if(b%2!=0) return res*res*a;       else return res*res; }
+
+
+int modp(int a,int b,int m){ 
+ a %= m;     int res = 1;  while (b > 0) { if (b & 1)    res = res * a % m;      a = a * a % m;  b >>= 1; }
+return res;}
+
+
+bool myComp(const pair<int, int>& a, const pair<int, int>& b){ if (a.first != b.first)  return a.first > b.first;  return a.second < b.second;}
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+
+int32_t main(){
+Jhunjhar_Hova
+
+
+
+     int n;
+     cin>>n;
+
+     vector<int> a(n);
+     rep(i,n) cin>>a[i];
+
+     map<int,int> m;
+
+     vector<int> ind(n+1, 0);
+
+     
+
+    int mi=0, ans=-1;
+     map<int,int> m2;
+
+     set<pair<int,int>> s;
+
+    rep(i,n){
+       
+        if(m.find(a[i])== m.end()){
+            m[a[i]]=1   ;
+            s.insert(mp(m[a[i]], a[i]));
+        }
+        else{
+             s.erase(mp(m[a[i]], a[i]));
+             m[a[i]]++;
+             s.insert(mp(m[a[i]], a[i]));   
+        }
+
+        if(s.size()==1){
+            mi=i+1;
+        }
+         if( (*s.begin()).ff ==1){
+
+                auto it= (s.begin());
+                it++;
+                
+            /////for case 1 3 3 3
+            
+                if( it==s.end() || (*--s.end()).ff == (*it).ff){
+                    mi= i+1;
+                }
+
+        }
+
+
+      
+        int num= (*s.begin()).ff;
+        int end= (*--s.end()).ff;
+
+        auto it= s.end();
+        it--;
+        it--;
+       
+       /// for case 2 2 2 2 3 
+
+        if( num==end-1 && (int)(*it).ff==end-1 ){
+            mi=i+1;
+        }
+
+
+        
+
+
+    }
+
+    cout<<mi<<endl;
+
+
+
+return 0;
+}

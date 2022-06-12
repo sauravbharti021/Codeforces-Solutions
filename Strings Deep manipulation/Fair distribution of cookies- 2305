@@ -1,0 +1,83 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int distributeCookies(vector<int>& cookies, int k) {
+        
+        
+       ll sum=0;
+        sort(all(cookies));
+        
+        vector<ll> ss ;
+        
+       rep(i, (1<<cookies.size())){
+           int s=0;
+           rep(j, cookies.size()){
+              if( (i &(1<<j)) ) s+=cookies[j];
+           }
+           if(count(all(ss),s )==0 && s!=0)
+           ss.pb(s);
+       }
+       
+        
+        sort(all(ss));
+        
+        
+        
+        int l=-1, h= ss.size()-1;
+        
+        while(h-l>1){
+            int m=(l+h)/2;
+            
+              int now=0, flag=0;
+            
+            vector<int> cooky= cookies; 
+            
+        
+             
+             int f1=0;
+            
+           while(next_permutation(all(cooky) ) || f1==0){     
+            int s=0, count=0;
+                f1=1;
+            rep(j, cookies.size()){ 
+                s+=cooky[j];
+                if(s>ss[m] ){
+                    count++;
+                    s=cooky[j];
+                    
+                }
+                if(cooky[j]> ss[m]){
+                    count=1e5;
+                    break;
+                }                   
+            }
+               
+                if(count<k) { flag=1; break;}
+                
+           }
+            
+            
+            if(flag)
+                h=m;
+            else
+                l=m;
+            
+            
+        }
+        
+        return ss[h];
+        
+    }
+};

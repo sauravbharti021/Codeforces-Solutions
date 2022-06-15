@@ -1,0 +1,80 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+
+bool myComp(const string& a, const string& b){  return a.size() < b.size();}
+
+class Solution {
+    
+    
+public:
+    int longestStrChain(vector<string>& words) {
+        
+        sort(all(words), myComp);
+        ll n=words.size();
+        
+        int mx=0;
+        vector<int> dp(n+1, 1);
+        
+       
+        
+    
+        
+        rep(i,n){
+            for(int j=i+1; j<n; j++ ){
+                if(words[i].size()==words[j].size()) continue;
+                if(words[j].size()> 1+words[i].size()) break;
+                    
+                  
+                    string now=words[j];
+                    char hell=' ';
+                
+                int flag=0, count=0;
+                
+               
+                
+                
+                 int l=0;
+                string a="";
+                 rep(k, words[j].size()){
+                     if(words[j][k]==words[i][l]){
+                         a+=words[j][k];
+                         l++;
+                     }else{
+                         count++;
+                     }
+                 }
+                
+                if(count>1) continue;
+                
+                if(a== words[i]){
+                     dp[j]= max(dp[j], 1+dp[i]);
+                }
+                
+                
+                }
+               
+            
+        }
+    
+        
+        rep(i,n){
+            mx=max(mx, dp[i]);
+        }
+        
+        return mx;
+        
+        
+    }
+  
+};

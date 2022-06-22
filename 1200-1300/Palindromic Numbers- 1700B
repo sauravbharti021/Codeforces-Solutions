@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+ 
+using namespace std;
+
+const int MOD=1e9+7;
+
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    int t;
+	cin>>t;
+	while(t--){
+		int n;
+		cin>>n;
+		string s;
+		cin>>s;
+		if(s[0]!='9'){
+			vector<int> ans(n);
+			for(int i=0; i<n; i++) ans[i]=('9'-s[i]);
+			for(int i:ans) cout<<i;
+			cout<<'\n';
+		}
+		else{
+			vector<int> ans(n+1,8);
+			ans[0]=1;
+			ans[n]=1;
+			for(int i=n; i>=1; i--){
+				int u=s[i-1]-'0';
+				if(ans[i]<u){
+					ans[i-1]--;
+					ans[i]=10+ans[i]-u;
+				}
+				else{
+					ans[i]-=u;
+				}
+			}
+			for(int i=1; i<=n; i++){
+				cout<<ans[i];
+			}
+			cout<<'\n'; 
+		}
+		
+	}
+	
+	
+    return 0;
+}

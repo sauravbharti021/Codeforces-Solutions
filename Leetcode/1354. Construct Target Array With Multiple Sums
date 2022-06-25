@@ -1,0 +1,53 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    bool isPossible(vector<int>& target) {
+        
+        ll n=target.size();
+        
+        priority_queue<ll> p;
+        
+       ll sum=0;
+        int count=0;
+        sort(all(target));
+        
+        rep(i,n){
+            p.push(target[i]);
+            sum+=target[i];
+        }
+      
+     
+        while(!p.empty()){
+            ll x=p.top();
+            p.pop();
+            if(x==1) break;
+            sum-=x;
+            
+            if(sum>=x || sum==0) return false;
+            
+            int old= x%sum;
+            
+            if(old==0 && sum!=1) return false;
+            
+            p.push(old);
+            sum+=old;
+           
+            count++;
+        }
+        
+        return true;
+        
+    }
+};

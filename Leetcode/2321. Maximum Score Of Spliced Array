@@ -1,0 +1,84 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second 
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+
+class Solution {
+    
+    
+public:
+   
+    vector<ll> pre1, pre2;
+    ll mx= -1e17;
+    int n;
+    
+    int maximumsSplicedArray(vector<int>& nums1, vector<int>& nums2) {
+       
+        n=nums1.size();
+        pre1.assign(n, 0);
+        pre2.assign(n, 0);
+        
+        pre1[0]=nums1[0];
+        pre2[0]= nums2[0];
+        
+        for(int i=1;i<n; i++){
+            pre1[i]= pre1[i-1]+nums1[i];
+            pre2[i]=pre2[i-1]+nums2[i];
+        }
+        
+        mx=max(mx, pre1[n-1]);
+        mx=max(mx, pre2[n-1]); 
+        
+        
+        vector<ll> s(n);
+        rep(i,n){
+            s[i]= nums2[i]-nums1[i];
+        }
+        
+        
+        ll mx1=-1;
+        
+        ll sum=0, start=0;
+        rep(i,n){
+           sum+= s[i];
+            if(sum<0){
+                sum=0;
+                start= i+1;
+            }
+            mx= max(mx,  (pre2[i]- (start==0? 0: pre2[start-1]))  + (start==0 ? 0 : pre1[start-1]) + (i==n-1 ? 0 : pre1[n-1]- pre1[i]) );
+        }
+        
+          vector<ll> s2(n);
+        rep(i,n){
+            s2[i]= nums1[i]-nums2[i];
+        }
+        
+        sum=0, start=0;
+        
+         rep(i,n){
+           sum+= s2[i];
+            if(sum<0){
+                sum= 0;
+                start= i+1;
+            }
+            mx= max(mx,  (pre1[i]- (start==0? 0: pre1[start-1])) + (start==0 ? 0 : pre2[start-1]) + (i==n-1 ? 0 : pre2[n-1]- pre2[i]) );
+        }
+            
+        
+        
+        return mx;
+        
+        
+    }
+    
+   
+};

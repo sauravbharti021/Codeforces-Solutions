@@ -1,0 +1,48 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    bool mycomp(const vector<int> &a, const vector<int> &b ){
+        if(a[0]!=b[0]) return a[0]<b[0];
+         return a[1]<b[1];
+    }
+    
+    vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
+        
+         vector<vector<int>> ans;
+        ll n=people.size();
+        sort(all(people));
+        
+        ans.assign(n, vector<int>(2, -1) );
+        
+        rep(i,n){
+            
+                int count=0;
+                rep(j, n){
+                    if(ans[j][0]==-1 && count==people[i][1]){
+                        ans[j][0]=people[i][0];
+                        ans[j][1]=people[i][1];
+                        break;
+                    }else if(ans[j][0]==-1 || ans[j][0]== people[i][0]){
+                        count++;
+                    }
+                    
+                }
+            
+        }
+        
+        
+            return ans;
+    }
+};

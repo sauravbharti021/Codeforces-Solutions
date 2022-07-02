@@ -1,0 +1,49 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int maxArea(int h, int w, vector<int>& horizontalCuts, vector<int>& verticalCuts) {
+        sort(all(horizontalCuts));
+        sort(all(verticalCuts));
+        
+        verticalCuts.pb(w);
+        verticalCuts.insert(verticalCuts.begin(), 0);
+        
+        horizontalCuts.pb(h);
+        horizontalCuts.insert(horizontalCuts.begin(), 0);
+        
+        ll mx1=INT_MIN;
+        ll mx2=INT_MIN;
+        
+        rep(i, horizontalCuts.size()-1){
+            int x= horizontalCuts[i+1]-horizontalCuts[i];  
+            if(x>mx1){
+                mx1=x;
+            }
+        }
+        
+        rep(i, verticalCuts.size()-1){
+            int x=verticalCuts[i+1]- verticalCuts[i];
+            if(x>mx2){
+                mx2=x;
+            }
+        }
+        
+        
+        ll ans= (mx1*mx2)%mod;
+        
+        return ans;
+        
+    }
+};

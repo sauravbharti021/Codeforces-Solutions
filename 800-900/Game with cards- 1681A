@@ -1,0 +1,46 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#pragma GCC optimize ("-O3")
+#define watch(x) cout << (#x) << " = " << (x) << endl
+#define PI double(2 * acos(0.0))
+#define LL long long
+#define MOD 1000000007
+#define all(x) (x).begin(), (x).end()
+#define INF 1e15
+
+int main()  {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);cout.tie(0);
+    int t;
+    cin >> t;
+    while(t--)  {
+        int n;
+        cin >> n;
+        int array[n];
+        for(int i = 0; i < n; i++)  {
+            cin >> array[i];
+        }
+        sort(array, array+n);
+        
+        int a, b;
+        a = array[n-1];
+        cin >> n;
+        int array2[n];
+        for(int i = 0; i  < n; i++) {
+            cin >> array2[i];
+        }
+        sort(array2, array2 + n);
+        
+        b = array2[n-1];
+        if(a < b)   {
+            cout << "Bob\nBob\n";
+        } else if(a == b)   {
+            cout << "Alice\nBob\n";
+        } else {
+            cout << "Alice\nAlice\n";
+        
+        //
+    }
+    return 0;
+}

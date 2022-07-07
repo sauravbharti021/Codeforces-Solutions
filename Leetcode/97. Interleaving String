@@ -1,0 +1,48 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+
+class Solution {
+public:
+    string s,t,v;
+    int dp[102][102];
+    
+    bool isInterleave(string s1, string s2, string s3) {
+        
+        s=s1,t=s2,v=s3;
+        memset(dp, -1, sizeof dp);
+        
+        int k=s3.size(), n=s1.size(), m=s2.size();
+        if(k!= n+m) return false;
+        
+        return hell(0, 0, 0);
+        
+        
+    }
+    bool hell(int i, int j, int l){
+        if(l==v.size() && j==t.size() && i==s.size() ) return true;
+        
+        if(dp[i][j]!=-1) return dp[i][j];
+        
+        if(s[i]==v[l] && t[j]==v[l]){
+            return dp[i][j]= hell(i+1,j, l+1) || hell(i,j+1, l+1);
+            
+        }
+        
+        if(s[i]==v[l]) return dp[i][j]= hell(i+1,j, l+1);
+        if(t[j]==v[l]) return dp[i][j]= hell(i, j+1, l+1);
+        
+        return false;
+        
+    }
+};

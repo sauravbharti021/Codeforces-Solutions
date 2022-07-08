@@ -1,0 +1,75 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+
+class Solution {
+    
+    int dp[111][25][111];
+public:
+    int minCost(vector<int>& houses, vector<vector<int>>& cost, int m, int n, int target) {
+        
+         memset(dp, -1, sizeof(dp));
+        
+        int x= ans(0, m, n, cost, houses, target, -1);
+        
+        return x==INT_MAX? -1: x;
+    }
+    
+    int ans(int i, int n, int m, vector<vector<int>>& cost, vector<int>& houses, int target, int prev_col ){
+        
+        if(i==n && target==0)
+            return 0;
+        
+        if(i==n || target<0) return INT_MAX;
+        
+        if(prev_col!=-1 && target!=-1 && dp[i][prev_col][target]!=-1)
+                return dp[i][prev_col][target];
+        
+        int costy=INT_MAX;
+        
+        if(houses[i]!=0){
+            int n_cost=0;
+            
+            if(prev_col == houses[i]) n_cost= ans(i+1, n , m, cost, houses, target, houses[i]);
+            else
+                n_cost= ans(i+1, n , m, cost, houses, target-1, houses[i]);
+            
+            costy= min(costy, n_cost);
+        }
+        
+        else{
+            
+            rep(j, m){
+                int n_cost=0;
+                
+                if(prev_col == j+1)
+                    n_cost= ans(i+1, n, m , cost, houses, target, j+1);
+                else
+                    n_cost= ans(i+1, n, m , cost, houses, target-1, j+1); 
+                
+                if(n_cost != INT_MAX){
+                    costy= min( costy, cost[i][j]+ n_cost );
+                }
+            }
+            
+            
+        }
+        
+        if(prev_col!=-1 && target!=-1) 
+                return dp[i][prev_col][target]= costy;
+        
+        return costy;
+        
+        
+    }
+};

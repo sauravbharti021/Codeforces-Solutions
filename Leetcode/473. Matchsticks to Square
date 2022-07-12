@@ -1,0 +1,43 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int n,  flag=0, now;
+    bool makesquare(vector<int>& matchsticks) {
+        
+         n=matchsticks.size();
+        int sum=0;
+        rep(i,n){
+            sum+=matchsticks[i];
+        }
+        sort(all(matchsticks), greater<int>());
+        if(sum%4!=0) return false;
+        now=sum/4;
+        
+            return recur(0, 0, 0, 0,0, matchsticks);
+    }
+    
+    bool recur(int i, int s1, int s2, int s3, int s4, vector<int> &nums){
+        if(i==n){
+            if(s1==s2 && s1==s3 && s3==s4) {
+                flag=1;
+                return true;
+            }
+            return false;
+        }
+        if(flag) return true;
+        
+        return (s1+nums[i] > now ?false :recur(i+1, s1+nums[i], s2,s3,s4, nums)) | (s2+nums[i]>now ? false: recur(i+1, s1, s2+nums[i], s3,s4,nums)) |  (s3+nums[i] >now ? false : recur(i+1, s1, s2, s3+nums[i], s4, nums)) | ( s4+nums[i] >now ? false : recur(i+1, s1, s2, s3, s4+ nums[i], nums));
+    }
+};

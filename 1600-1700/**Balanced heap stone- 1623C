@@ -49,30 +49,28 @@ bool isPrime(int n){
 
 bool check(vector<int> &a, int limit){
 
-    int n=a.size();
-    vector<int> b(n);
-    
+    vector<int> b(a.size(), 0);
 
-    for(int i=n-1;i>=2;i--){
-        int x= min(a[i], b[i]+a[i]-limit);
+    for(int i=a.size()-1; i>=0; i--){
+        if(a[i]+b[i] < limit) return false;
 
-       
-        if(a[i]+b[i]- limit <0) {
-            return false;
-        }
+        int x=0;
+        if(b[i]>=limit)
+         x=a[i];
+         else{
+            x= a[i]- (limit-b[i]);
+         } 
 
-      b[i-1]+= x/3;
-      b[i-2]+=  (x/3)*2;
+         if(i>=2)   
+         b[i-1]+= x/3;
+         if(i>=2)
+         b[i-2]+= (x/3)*2;
+    } 
 
- 
-
-    }
-    
-    if(a[0]+b[0]>=limit && a[1]+b[1]>=limit) 
+   
     return true;
-
-    return false;
 }
+
 
 int32_t main(){
 Jhunjhar_Hova
@@ -93,24 +91,21 @@ while(t--){
         mx=max(mx, a[i]);
     }
 
-    
-    int l=mi, r= mx;
+    int l=mi, r=mx;
 
     while(r-l>1){
         int m=(l+r)/2;
 
         if(check(a, m)){
             l=m;
-
-        }else{
-            r=m;
-        }
+        }else
+        r=m;
     }
 
-    if(check( a,l))
-    cout<<l<<endl;
+    if(check(a,l)) cout<<l<<endl;
     else
     cout<<r<<endl;
+    
 }
 return 0;
 }

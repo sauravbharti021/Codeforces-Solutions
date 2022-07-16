@@ -1,0 +1,47 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<vector<ll>>> dp;
+    int nn,mm;
+    int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
+                
+        nn=n; mm=m;
+            dp.assign(55, vector<vector<ll>>(55, vector<ll>(55,-1)));
+        
+           return move(startRow, startColumn, maxMove);
+    }
+    
+    int move(int i, int j, int moves){
+        
+        if(moves<0)
+            return 0;
+        
+        if(i<0 || j>=nn || i>=mm ||j<0)
+            return 1;
+        
+        
+        if(dp[i][j][moves]!=-1)
+                return dp[i][j][moves]%mod;
+        
+        ll top= move(i-1, j,moves-1 );
+        ll down= move(i+1, j, moves-1);
+        ll left= move(i,j-1, moves-1);
+        ll right= move(i, j+1, moves-1);
+        
+        return (dp[i][j][moves]= (top%mod + down%mod+ left%mod + right%mod)%mod)%mod;
+        
+    }
+    
+};

@@ -7,6 +7,8 @@ which would be outside of given dimensions of rectangle.
   And we count seperately for all brightness.
   
   Also asked in leetcode- 304 ( Range queries of sum on 2D).
+  
+  Also asked in leetcode - 1074. Number of Submatrices That Sum to Target
 
 --------------------------------------------------------------------------------------------------------------------
 #include <bits/stdc++.h>

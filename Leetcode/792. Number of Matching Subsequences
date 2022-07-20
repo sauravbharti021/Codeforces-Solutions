@@ -1,0 +1,43 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int numMatchingSubseq(string s, vector<string>& words) {
+        
+        int ans=0;
+        map<char, vector<int>> m;
+        rep(i,s.size()){
+            m[s[i]].pb(i);
+        }
+        
+        rep(i, words.size()){
+            int start=-1, flag=0;
+           rep(j, words[i].size()){
+               
+               auto it= upper_bound( all(m[words[i][j]]), start);
+               if(it==m[words[i][j]].end()){
+                   flag=1;
+                   break;
+               }
+                   
+               
+               else start=*it;
+           }
+            if(!flag) ans++;
+        }
+        
+        return ans;
+    }
+  
+};

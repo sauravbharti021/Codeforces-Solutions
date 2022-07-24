@@ -1,0 +1,1 @@
+set<pair<int,int>, comparator>> s;  using comparator function can sort both sides.

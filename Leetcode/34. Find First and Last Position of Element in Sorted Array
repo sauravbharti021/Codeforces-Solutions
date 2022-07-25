@@ -1,0 +1,38 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        
+        vector<int> ans;
+        auto it= lower_bound(all(nums), target);
+        if(it==nums.end() || *it!=target){
+            ans.pb(-1);
+            ans.pb(-1); 
+                return ans;
+        }
+            
+        int left=it-nums.begin();
+        ans.pb(left);
+        auto it2=lower_bound(all(nums), target+1);
+        if(it2==nums.end()){
+            ans.pb(nums.size()-1);
+            return ans;
+        }else{
+            int right= it2-nums.begin();
+            ans.pb(right-1);
+            return ans;
+        }
+    }
+};

@@ -1,0 +1,9 @@
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+       
+        sort(all(s)); sort(all(t));
+        if(s!=t) return false;
+        return true;
+    }
+};

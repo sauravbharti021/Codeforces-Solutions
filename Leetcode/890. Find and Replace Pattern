@@ -1,0 +1,55 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<string> findAndReplacePattern(vector<string>& words, string pattern) {
+        
+        vector<string> ans;
+        
+        vector<int> a(26,-1);
+        vector<bool> vis(26, false);
+        
+        rep(i, words.size()){
+            
+            a.assign(26, -1);
+            vis.assign(26, false);
+            int flag=0;
+            string s=words[i];
+            
+            rep(j, pattern.size()){
+                if(words[i][j]!= pattern[j] && !vis[pattern[j]-'a']){
+                    if(a[words[i][j]- 'a']==-1){
+                        a[words[i][j]-'a']= pattern[j]-'a'; 
+                        vis[pattern[j]-'a']=true;
+                    }
+                }else{
+                    vis[pattern[j]-'a']=true;
+                }
+            }
+            
+            rep(j, pattern.size()){
+                if( a[words[i][j]-'a']!=-1 ){
+                    words[i][j]= 'a'+ a[words[i][j]-'a'];
+                }
+            }
+            
+            if(words[i]==pattern){
+                ans.pb(s);
+            }
+            
+        }
+        
+        return ans;
+    }
+};

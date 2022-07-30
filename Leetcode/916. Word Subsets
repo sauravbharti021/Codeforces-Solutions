@@ -1,0 +1,76 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<string> wordSubsets(vector<string>& words1, vector<string>& words2) {
+        
+        map<char,int> m;
+        vector<int> fre(26,0);
+        
+        rep(i,26){
+            char a='a'+i;
+            m[a]=0;
+        }
+        
+        int count=0;
+        rep(i, words2.size()){
+            fre.assign(26,0);
+            rep(j,words2[i].size()){
+                fre[words2[i][j]- 'a']++;
+                
+            }
+            rep(k,26){
+                char a='a'+k;
+                
+                if(m[a]< fre[k]){
+                    m[a]=fre[k];
+                }
+            }
+            
+        }
+        
+        for(auto i: m){
+            count+=i.ss;
+        }
+        
+       
+        
+        vector<string> v;
+        
+         if(count>10){
+            return v;
+        }
+        
+       
+        
+        rep(i, words1.size()){
+            map<char,int> m2=m;
+            int flag=0;
+            rep(j, words1[i].size()){
+                m2[ words1[i][j] ]--;
+            }
+            
+            for(auto f: m2){ 
+                if(f.ss>0){
+                    flag=1;
+                    break;
+                }
+            }
+            if(!flag) v.pb(words1[i]);
+        }
+        
+        return v;
+        
+    }
+};

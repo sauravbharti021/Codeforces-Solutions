@@ -1,0 +1,135 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    
+    vector<vector<int>> adj;
+    vector<int> d1,d2;  
+    
+    vector<bool> vis1, vis2;
+    
+    int closestMeetingNode(vector<int>& edges, int node1, int node2) {
+        
+        int n=edges.size();
+        
+        d1.assign(n+1, INT_MAX);
+        d2.assign(n+1, INT_MAX);
+        
+        vis1.assign(n+1, false);
+        vis2.assign(n+1, false);
+        
+        adj.assign(n+1, vector<int>());
+        
+        rep(i, n){
+            if(edges[i]!=-1)
+            adj[i].pb(edges[i]);
+            
+            else{
+                adj[i].pb(i);
+            }
+        }
+        // rep(i,n){
+        //     cout<<i<<" : ";
+        //     rep(j, adj[i].size()) cout<<adj[i][j]<<" ";
+        //     cout<<endl;
+        // }
+        
+        dfs1(node1);
+        dfs2(node2);
+        
+        int flag=0;
+        
+        rep(i, n){
+            if(vis1[i] && vis2[i]) flag=1;
+        }
+        
+        
+        if(!flag) return -1;
+        
+        bfs1(node1); bfs2(node2);
+        
+        int mi=INT_MAX;
+        int ans=0;
+        rep(i,n){
+            
+            if(mi> max(d1[i], d2[i] )){
+                mi=max(d1[i], d2[i]);
+                ans=i;
+            }
+        }
+        
+        
+        return ans;
+        
+        
+    }
+    
+    void dfs1(int n){
+        vis1[n]=true;
+        
+        for(auto i: adj[n]){
+            if(!vis1[i]) dfs1(i);
+        }
+    }
+    
+    void dfs2(int n){
+          vis2[n]=true;
+        
+        for(auto i: adj[n]){
+            if(!vis2[i]) dfs2(i);
+        }
+    }
+    
+    void bfs1(int n){
+           queue<int> q;
+           q.push(n);
+        
+            d1[n]=0;
+          
+        while(!q.empty()){
+            int x=q.front(); q.pop();
+            
+            for(auto i: adj[x]){
+                if(d1[x]+1 < d1[i]){
+                    d1[i]=d1[x]+1;
+                    
+                    q.push(i);
+                }
+            }
+        }
+        
+    }
+    
+     void bfs2(int n){
+           queue<int> q;
+           q.push(n);
+        
+            d2[n]=0;
+          
+        while(!q.empty()){
+            int x=q.front(); q.pop();
+            
+            for(auto i: adj[x]){
+                if(d2[x]+1 < d2[i]){
+                    d2[i]=d2[x]+1;
+                    
+                    q.push(i);
+                }
+            }
+        }
+        
+    }
+    
+    
+};

@@ -1,0 +1,95 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    
+    vector<vector<int>> adj;
+    vector<bool> vis;
+    int flag, count; 
+    map<int, set<int>> receive;
+    
+    int dist;
+    
+    int longestCycle(vector<int>& edges) {
+        
+        ll n=edges.size();
+        adj.assign(n+1, vector<int>());
+        vis.assign(n+1, false);
+        
+        
+        rep(i, n){
+            
+            if(edges[i]!=-1) {
+                adj[i].pb(edges[i]);
+                receive[edges[i]].insert(i);
+            }else{
+               continue;
+            }
+        }
+        
+        
+            int cycle=0, mx=INT_MIN;
+        rep(i, n){
+            if(!vis[i] && adj[i].size()==1 && !receive[i].empty()){
+                flag=0;
+                count=0;
+                
+                dfs(i, -1, i);
+                if(flag) {
+                    cycle++;
+                    mx=max(mx, count);
+                }
+            }
+        }
+        
+        
+        if(cycle==0 || mx<=1) return -1;
+        
+        return mx;
+    }
+    
+    void dfs(int n, int par, int start){
+        vis[n]=true;
+        
+      
+        count++;
+        
+        for(auto i: adj[n]){
+           if(vis[i]  ){
+               flag=1;
+               if(i!= start){
+                dist=0;
+                  dfs2( start, i);
+                  count-=dist; 
+                   break;
+               }
+               break;
+           } 
+            else if(!vis[i] && (receive[i].lower_bound(n))!=receive[i].end() &&  *(receive[i].lower_bound(n))== n ) dfs(i, n, start);
+        }
+    }
+    
+    void dfs2(int i, int& end){
+      
+        
+        if(i==end) return;
+        dist++;
+        
+        for(auto j: adj[i]){
+            dfs2(j, end);
+        }
+    }
+    
+    
+};

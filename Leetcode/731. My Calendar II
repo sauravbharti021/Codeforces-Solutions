@@ -1,0 +1,46 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class MyCalendarTwo {
+public:
+    
+     vector<pair<ll, ll>> a; 
+    map<int,int> m;
+    int count=0;
+    MyCalendarTwo() {
+        
+    }
+    
+    bool book(int start, int end) {
+        m[start]++;
+        m[end]--;
+        
+        int book=0;
+        for(auto it=m.begin(); it!=m.end();it++){
+            
+            book+=it->ss;
+            if(book>=3){
+                m[start]--;
+                m[end]++;
+                
+                 return false;
+            }
+            
+           
+        }
+        
+        return true;
+        
+        
+    }
+};

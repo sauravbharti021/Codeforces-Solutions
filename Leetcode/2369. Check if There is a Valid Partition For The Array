@@ -1,0 +1,58 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int flag=0,n;
+    
+    vector<int> dp;
+    
+    bool validPartition(vector<int>& nums) {
+       
+      
+         n=nums.size();
+         dp.assign(n+1, -1);   
+        
+          recur(nums,0);
+            
+        if(dp[n]==1) return true;
+        return false;
+        
+    }
+    bool recur(vector<int>& a, int i  ){
+        if(i>=n){
+            flag=1;
+            return dp[i]=true;
+        }
+        
+        if(dp[i]!=-1)
+            return dp[i];
+        
+        if(i+1<n && a[i]!=a[i+1]){
+            if(a[i+1]-a[i]!=1 ) return false ;
+            else if(n-i<= 2) return false;
+            else if(a[i+1]-a[i]==1 && a[i+2]-a[i+1]==1)  dp[i] =recur(a, i+3 );
+            else 
+                return false;
+        }
+        if(i+2<n && a[i]==a[i+1] && a[i+1]==a[i+2]){
+            dp[i]= (recur(a, i+2) |  recur(a, i+3));
+            
+        }
+        if(i+1<n  && a[i]==a[i+1] )
+            dp[i]=recur(a, i+2) ;
+        
+        return dp[i];
+        
+    }
+};

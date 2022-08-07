@@ -1,0 +1,41 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int countVowelPermutation(int n) {
+        
+        ll a=1,e=1,i=1,o=1,u=1;
+        
+        ll na=0,ne=0,ni=0,no=0,nu=0;
+        
+        for(int f=2;f <=n ;f++){
+            na=0,ne=0,ni=0,no=0,nu=0;
+            { na= (na+ e)%mod; na= (na+i)%mod; na= (na+ u)%mod;}
+             
+            { ne= (ne+a)%mod; ne= (ne+i)%mod; }
+             
+            { ni= (ni+e)%mod; ni= (ni+o)%mod; } 
+            
+            { no= (no+i)%mod; } 
+             
+            {nu= (nu+i)%mod; nu=(nu+o)%mod; }
+             
+             a=na; e=ne; i=ni; o=no; u=nu;
+        }
+             
+         ll x= (a+e+i+o+u )%mod;
+             
+             return x;
+    }
+};

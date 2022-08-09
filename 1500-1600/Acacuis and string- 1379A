@@ -1,0 +1,148 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define Jhunjhar_Hova ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int npow(int a, int b) { 
+if(b==0) return 1;   int res= npow(a, b/2);
+if(b%2!=0) return res*res*a;       else return res*res; }
+
+
+int modp(int a,int b,int m){ 
+ a %= m;     int res = 1;  while (b > 0) { if (b & 1)    res = res * a % m;      a = a * a % m;  b >>= 1; }
+return res;}
+
+
+bool myComp(const pair<int, int>& a, const pair<int, int>& b){ if (a.first != b.first)  return a.first > b.first;  return a.second < b.second;}
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+
+int32_t main(){
+Jhunjhar_Hova
+
+
+int t=1;
+cin>>t;
+while(t--){
+    
+    int n;
+    cin>>n;
+
+    string s;
+    cin>>s;
+
+    string p="abacaba";
+
+    int count=0;
+
+     rep(i,n-6){
+        
+        string now= s.substr(i, 7); 
+        if(p==now) count++;
+    }
+
+    if(count>1){
+        cout<<"No"<<endl;
+        continue;
+    }
+    if(count==1){
+        
+    rep(i,n){
+        if(s[i]=='?') s[i]='f';
+    }
+
+    cout<<"Yes"<<endl;
+    cout<<s<<endl;
+    continue;
+    }
+
+
+
+
+
+    string ans="";
+
+    int flag=0,start=-1;
+    rep(i,n-6){
+        
+        string now= s.substr(i, 7); 
+        int f2=0;
+
+        rep(j,7){
+            if(now[j]!= p[j]){
+                if(now[j]=='?') continue;
+                else f2=1;
+            }
+        }
+        if(!f2){
+            string l=s;
+             int k=0, count=0;
+            for(int d=0; d<n; d++){
+                if(d>=i && d<i+7){
+                 l[d]=p[k];
+                     k++;
+                }
+                else{
+                    if(l[d]=='?') l[d]='f';
+                }
+
+            }
+
+
+             rep(d,n-6){
+        
+             string now= l.substr(d, 7); 
+                if(p==now) count++;
+                }
+
+            if(count==1){
+                flag=1;
+                ans=l;
+                break;
+            }
+
+
+        }
+    }
+
+    if(!flag){
+        cout<<"No"<<endl;
+        continue;
+    }
+   
+
+    cout<<"Yes"<<endl;
+    cout<<ans<<endl;
+}
+return 0;
+}

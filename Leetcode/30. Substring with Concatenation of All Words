@@ -1,0 +1,65 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+        
+        ll n=words[0].size();
+        
+        vector<int> ans;
+        
+        map<string,int> m;
+        rep(i, words.size())
+                m[words[i]]++;
+            
+        ll t= words.size()*n; 
+        rep(i,s.size()- t + 1){
+            
+            string now=s.substr(i, t);
+            
+            int count=0,c=0;
+            string check="";
+            int flag=0;
+            map<string,int> m1=m;
+            
+            
+            rep(j, now.size()){
+                
+                count++; check+=now[j];
+                
+                if(count==n){
+                    
+                    if(m1.find(check)==m1.end()){
+                        flag=1;
+                        break;
+                    }else{  
+                       
+                        if(m1[check]>1) m1[check]--;
+                        else
+                        m1.erase(check);
+                        check="";
+                        count=0;
+                        c++;
+                    }
+                }
+            }
+            m1.clear();
+            if(c==words.size()) ans.pb(i);
+            
+            
+        }
+        
+        return ans;
+    }
+};

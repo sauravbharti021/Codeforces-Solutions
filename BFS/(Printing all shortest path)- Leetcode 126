@@ -1,0 +1,118 @@
+#define ll long long
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<bool> vis1,vis2;
+    
+    vector<vector<string>> ans;
+    vector<vector<ll>> paths;
+    vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList) {
+        
+        
+        
+         map<string, int> m;
+        wordList.pb(beginWord);
+        ll n=wordList.size();   
+        vector<vector<ll>> adj(n+3, vector<ll>());
+            rep(i,n){
+            m[wordList[i]]=i;
+        }
+        
+       
+        
+        
+        rep(i,n){
+            rep(k, wordList[i].size()){
+            string p=wordList[i];
+            for(int j=0; j<26;j++){
+                char c='a'+j;
+                p[k]=c;
+                if(p!= wordList[i] && m.find(p)!=m.end()){
+                    adj[i].pb(m[p]);
+                }
+            }
+         }     
+        }
+        
+       
+        
+       
+        
+    
+        if(m.find(endWord)==m.end()) return ans;
+        
+         vector<vector<ll>> par(n+3, vector<ll>());
+        par[n-1].pb(-1);
+        
+        vector<ll> dis(n+1, INT_MAX);
+        
+        dis[m[beginWord]]=1;
+        
+        queue<int> q;
+        q.push(m[beginWord]);
+        
+        while(!q.empty()){
+            ll x=q.front();
+            q.pop();
+            
+            for(auto i: adj[x]){
+                if(dis[x]+1 < dis[i]){
+                    dis[i]=dis[x]+1;
+                    par[i].clear();
+                    par[i].pb(x);
+                    q.push(i);
+                }
+                else if(dis[x]+1== dis[i]){
+                    par[i].pb(x);
+                }
+            }
+
+        }
+
+        if(dis[m[endWord]]==INT_MAX) return ans;
+        
+        
+        vector<ll> now;
+      
+        findpath(par, m[endWord], now );
+        
+        
+        rep(i,paths.size()){
+            reverse(all(paths[i]));
+            vector<string> hehe;
+            rep(j,paths[i].size()) {
+                hehe.pb(wordList[paths[i][j]]);
+            }
+            ans.pb(hehe);
+            
+        }
+        return ans;
+    }
+    
+        void findpath(vector<vector<ll>> &par,int n, vector<ll> &now){
+            
+            if(n==-1){
+                paths.pb(now);
+                return;
+            }
+            
+            for(auto i: par[n]){
+                now.pb(n);
+                
+                findpath(par, i, now);
+                
+                now.pop_back();
+            }
+        }
+    
+    
+};

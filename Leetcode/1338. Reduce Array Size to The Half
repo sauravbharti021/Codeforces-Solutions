@@ -1,0 +1,40 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int minSetSize(vector<int>& arr) {
+        
+        ll half= arr.size()/2;
+        
+        map<int,int> m;
+        rep(i,arr.size()) m[arr[i]]++;
+        
+        priority_queue<ll> p;
+        
+        for(auto i: m) p.push(i.ss);
+        
+        ll sum=0,op=0;
+        
+        while(sum<half && !p.empty()){
+            ll x=p.top();
+            p.pop();
+            
+             op++; sum+=x;
+        }
+        
+        
+        return op;
+        
+    }
+};

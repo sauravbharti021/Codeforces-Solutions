@@ -1,0 +1,49 @@
+#define pi (3.141592653589)
+#define mod 1000000007
+#define ll long long
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+
+class Solution {
+public:
+    bool isPossible(vector<int>& nums) {
+     
+     
+       
+      map<int,multiset<int>>m;
+        
+        rep(i,nums.size()){
+            if(m.find(nums[i]-1)== m.end() || m[nums[i]-1].size()==0){
+               m[nums[i]].insert(1);
+            }else{
+               
+                
+               auto it= (m[nums[i]-1].begin());
+                int x=*it;
+                m[nums[i]-1].erase(it);
+                
+                m[nums[i]].insert(x+1);
+            }
+            
+        }
+        int ans=0;
+	    
+        for(int i=1; i<= *(max_element(all(nums)));i++){
+            for(auto j: m[i]) {
+                if(j<3) return false;
+            } 
+        }
+       
+        
+        return true;
+        
+    }
+};

@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+#include <vector>
+using namespace std;
+#define rep(i,n) for(int i=0;i<n;i++)
+
+class Comp{
+    public:
+bool operator()(const pair<int, int>& a, const pair<int, int>& b){
+     if (a.first != b.first)  
+     return a.first < b.first; 
+      return a.second > b.second;
+      }
+};
+int main() {
+    
+    int t;cin>>t;
+    while(t--){
+	int n;
+	cin>>n;
+    priority_queue<pair<int,int>, vector<pair<int,int>>, Comp>p;
+    p.push({1,2});
+    p.push({2,1});
+    p.push({3,1});
+    p.push({3,2});
+    
+    while(!p.empty()){
+        pair<int,int> q;
+        q=p.top();
+        p.pop();
+        cout<<q.first<<" "<<q.second<<endl;
+    }
+	
+    }	
+	return 0;
+}

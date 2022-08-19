@@ -1,0 +1,35 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    
+    int t;cin>>t;
+    while(t--){
+	int n;
+	cin>>n;
+	if(n==1){
+	    cout<<1<<endl;
+	    continue;
+	}
+	
+	int count=0,sum=0;
+	string ans="";
+	while(sum<n){
+	    if(count%2==0) ans+='2', sum+=2;
+	    else ans+='1', sum+=1;
+	    count++;
+	}
+	
+	if(sum>n){
+	  ans="";
+	  sum=0; count=0;
+	  	while(sum<n){
+	    if(count%2==1) ans+='2', sum+=2;
+	    else ans+='1', sum+=1;
+	    count++;
+	}
+	} 
+	cout<<ans<<endl;
+    }	
+	return 0;
+}

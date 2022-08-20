@@ -1,0 +1,56 @@
+#define ll long long
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int minRefuelStops(int target, int startFuel, vector<vector<int>>& stations) {
+        
+        if(startFuel>= target){
+            return 0;
+        }
+       
+        int move=0;
+            
+        ll dis=startFuel;
+        ll look=startFuel;
+        ll covered=0;
+        ll mx=0;
+        
+        int j=0;
+        int x=stations.size();
+        vector<bool> vis(x+1 ,false);
+        
+        while(dis<target){
+            
+             mx=INT_MIN; int nowd=-1;
+            for(int i=0; i<x;i++){
+               if( stations[i][0] <= look){
+                   if(!vis[i] && stations[i][1]>=mx){
+                       mx=stations[i][1];
+                       nowd=stations[i][0];
+                       j=i;
+                   }
+                   
+               } else
+                       break;
+            }
+            
+            vis[j]=true;
+            
+            dis+= mx;
+            look+=mx;
+            
+            move++;
+            if(move>501) return -1;
+        }
+        return move;
+    }
+};

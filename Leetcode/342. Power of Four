@@ -1,0 +1,33 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    bool isPowerOfFour(int n) {
+        if(n<0) return false;
+        vector<ll> ans;
+        ll x=0;
+        
+        for(ll i=0;  pow(4,i)<= pow(2,31) ;i++){
+            ans.pb(pow(4,i));
+        }
+        
+        n=abs(n);
+        
+        auto it= lower_bound(ans.begin(), ans.end(), n);
+        if(it==ans.end()) return false;
+        if(*it!= n) return false;
+        
+        return true;
+    }
+};

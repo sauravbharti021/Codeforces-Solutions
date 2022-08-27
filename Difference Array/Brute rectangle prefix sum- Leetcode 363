@@ -1,0 +1,52 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+   int dp[105][105];
+        
+    int maxSumSubmatrix(vector<vector<int>>& matrix, int k) {
+        
+        int n=matrix.size(),m =matrix[0].size();
+
+        
+        rep(i,n){
+            rep(j,m){
+                dp[i][j]+=matrix[i][j];
+                
+                dp[i][j] += (i>0 ? dp[i-1][j] : 0) + (j>0 ? dp[i][j-1] : 0) - (i>0 && j>0 ? dp[i-1][j-1] : 0); 
+            }
+        }
+        
+        int mx=INT_MIN;
+        
+        rep(i,n){
+            rep(j,m){
+                
+                for(int p=i;p<n;p++){
+                    for(int l=j;l<m;l++){
+                        
+                        int sum= dp[p][l] -(i>0 ? dp[i-1][l] : 0) - (j>0 ? dp[p][j-1] : 0) + (i>0 && j>0 ? dp[i-1][j-1] : 0); 
+                        
+                        if(sum<=k){
+                            mx=max(mx, sum);
+                        }
+                    }
+                }
+            }
+        }
+        
+        return mx;
+        
+    }
+};

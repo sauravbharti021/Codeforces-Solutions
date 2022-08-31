@@ -1,0 +1,96 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+    vector<vector<bool>> vis1, vis2;
+    vector<vector<int>> ans;
+public:
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        
+        int n=heights.size(), m=heights[0].size();
+        
+        
+        vis1.assign(n+1, vector<bool>(m+1, false));
+        vis2.assign(n+1, vector<bool>(m+1, false));
+        
+        rep(i,m){
+            dfs1(0, i, heights, n, m);
+        }
+        rep(i,n){
+            dfs1(i, 0 ,heights,n ,m );
+        }
+        
+        rep(i,m){
+            dfs2(n-1, i, heights, n, m);
+        }
+         rep(i,n){
+            dfs2(i, m-1 ,heights,n ,m );
+        }
+        
+        rep(i,n){
+            rep(j,m){
+                if(vis1[i][j] && vis2[i][j]) ans.pb({i,j});
+            }
+        }
+        
+      
+        return ans;
+        
+    }
+    
+    void dfs1(int i, int j, vector<vector<int>> &g, int n, int m){
+        
+        vis1[i][j]=true;
+        
+        if(i+1<n && !vis1[i+1][j] && g[i+1][j]>= g[i][j] ){
+           
+            dfs1(i+1, j, g, n,m);
+        }
+        if(i-1>=0 && !vis1[i-1][j] && g[i-1][j]>=g[i][j] ){
+            
+            dfs1(i-1, j, g, n,m);
+        }
+        if(j+1<m && !vis1[i][j+1] && g[i][j+1]>= g[i][j] ){
+           
+            dfs1(i, j+1, g, n, m);
+        }
+        if(j-1>=0 && !vis1[i][j-1] && g[i][j-1]>=g[i][j]){
+            
+            dfs1(i, j-1, g, n, m);
+        }
+        
+    }
+    
+    void dfs2(int i, int j, vector<vector<int>> &g, int n, int m){
+        
+        vis2[i][j]=true;
+        
+        if(i+1<n && !vis2[i+1][j] && g[i+1][j]>= g[i][j] ){
+           
+            dfs2(i+1, j, g, n,m);
+        }
+        if(i-1>=0 && !vis2[i-1][j] && g[i-1][j]>=g[i][j] ){
+            
+            dfs2(i-1, j, g, n,m);
+        }
+        if(j+1<m && !vis2[i][j+1] && g[i][j+1]>= g[i][j] ){
+           
+            dfs2(i, j+1, g, n, m);
+        }
+        if(j-1>=0 && !vis2[i][j-1] && g[i][j-1]>=g[i][j]){
+            
+            dfs2(i, j-1, g, n, m);
+        }
+        
+    }
+};

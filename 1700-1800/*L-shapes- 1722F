@@ -1,0 +1,181 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define Jhunjhar_Hova ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int npow(int a, int b) { 
+if(b==0) return 1;   int res= npow(a, b/2);
+if(b%2!=0) return res*res*a;       else return res*res; }
+
+
+int modp(int a,int b,int m){ 
+ a %= m;     int res = 1;  while (b > 0) { if (b & 1)    res = res * a % m;      a = a * a % m;  b >>= 1; }
+return res;}
+
+
+bool myComp(const pair<int, int>& a, const pair<int, int>& b){ if (a.first != b.first)  return a.first > b.first;  return a.second < b.second;}
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+int now=0;
+
+void dfs(int i,int j , vector<vector<char>> &g, vector<vector<bool>> &vis, int n, int m){
+
+    now++;
+    vis[i][j]=true;
+
+    if(i+1<n && g[i+1][j]=='*' && !vis[i+1][j]) dfs(i+1, j, g, vis, n, m);
+    if(i>0 && g[i-1][j]=='*' && !vis[i-1][j] ) dfs(i-1, j, g, vis, n, m);
+
+    if(j+1<m && g[i][j+1]=='*' && !vis[i][j+1]) dfs(i,j+1, g, vis, n, m);
+    if(j>0 && g[i][j-1]=='*' && !vis[i][j-1]) dfs(i,j-1, g, vis,  n, m);
+
+    if(i+1<n && j+1<m && g[i+1][j+1]=='*' && !vis[i+1][j+1]) dfs(i+1,j+1, g,vis,n,m);
+    if(i-1>=0 && j-1>=0 && g[i-1][j-1]=='*' && !vis[i-1][j-1]) dfs(i-1,j-1, g,vis,n,m);
+
+    if(i+1<n && j-1>=0 && g[i+1][j-1]=='*' && !vis[i+1][j-1]) dfs(i+1,j-1, g,vis,n,m);
+    if(i-1>=0 && j+1<m && g[i-1][j+1]=='*' && !vis[i-1][j+1]) dfs(i-1,j+1, g,vis,n,m);
+
+
+}
+
+bool check(int i,int j, vector<vector<char>> &g, int n,int m){
+    int f1=0;
+
+     if(i-1>=0 && j-1>=0 && g[i-1][j]=='*' && g[i][j-1]=='*' ) f1=1;
+     if(i-1>=0 && j+1<m && g[i-1][j]=='*' && g[i][j+1]=='*' ) f1=1;
+
+     if(j+1<m && i+1<n && g[i+1][j]=='*' && g[i][j+1]=='*') f1=1;
+     if(j-1>=0 && i+1<n && g[i+1][j]=='*' && g[i][j-1]=='*') f1=1;
+
+     if(f1) return true;
+
+     return false;   
+}
+
+int32_t main(){
+Jhunjhar_Hova
+
+
+int t=1;
+cin>>t;
+while(t--){
+
+    int n,m;
+    cin>>n>>m;
+
+    vector<vector<char>> g(n, vector<char>(m+1));
+
+    rep(i,n){
+        rep(j,m){
+            cin>>g[i][j];
+        }
+    }
+
+    vector<vector<bool>> vis(n, vector<bool>(m, false));
+    int flag=0;
+    rep(i,n){
+        rep(j,m){
+            if(g[i][j]=='*' && !vis[i][j] ){
+                now=0;
+
+                dfs(i,j, g, vis, n, m);
+                if(now!=3){
+                    flag=1;
+                    break;
+                }
+            }
+        }
+        if(flag) break;
+    }
+
+    if(flag) {
+        cout<<"NO"<<endl;
+        continue;
+    }
+
+
+    rep(i,n){
+        rep(j,m){
+            if(g[i][j]=='*'){
+               
+               if(check(i,j, g, n,m)) continue;
+               else {
+                    if(i+1<n && g[i+1][j]=='*' ){
+                        if(check(i+1, j, g, n,m)) continue;
+                        else {
+                            flag=1;
+                            break;
+                        }
+                    }
+                    else if(j+1<m && g[i][j+1]=='*' ){
+                        if(check(i, j+1, g, n,m)) continue;
+                        else {
+                            flag=1;
+                            break;
+                        }
+                    }
+                    else if(i-1>=0 && g[i-1][j]=='*'){
+                         if(check(i-1, j, g, n,m)) continue;
+                        else {
+                            flag=1;
+                            break;
+                        }
+                    }
+                    else if(j-1>=0 && g[i][j-1]=='*'){
+                        if(check(i, j-1, g, n,m)) continue;
+                        else {
+                            flag=1;
+                            break;
+                        }
+                    }
+                    else{
+                        flag=1;
+                        break;
+                    }
+               }
+                
+                
+            }
+        }
+        if(flag)  break;
+    }
+     if(flag) {
+        cout<<"NO"<<endl;
+        continue;
+    }
+    cout<<"YES"<<endl;
+   
+    
+}
+return 0;
+}

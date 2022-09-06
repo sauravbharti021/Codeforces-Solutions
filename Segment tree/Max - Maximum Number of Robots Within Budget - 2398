@@ -1,0 +1,102 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+ 
+    struct seg{
+
+    vector<int> seg;
+    vector<int> a;
+    void makeset(int n, vector<int> &b){
+        seg.assign(4*n + 2,0 );
+        a.assign(n, 0);
+        a.assign(b.begin(), b.end());
+    } 
+    void build(int ind, int l, int h){
+        if(l==h){
+            seg[ind]=a[l];
+            return; 
+        }
+        int mid= (l+h)/2;
+        build(2*ind +1, l, mid );
+        build(2*ind +2, mid+1, h );
+
+        seg[ind]=max(seg[ind],  max(seg[ind*2 +1] , seg[ind*2 + 2]));
+
+    }
+
+    int query(int ind, int low, int high, int l, int h){
+        if(low>=l && high<=h) {
+            return seg[ind];
+        }
+
+        if(l>high || h<low ) return 0;  
+
+        int mid=(low+ high)/2;
+
+        int left= query( 2*ind +1, low, mid, l ,h);
+        int right= query( 2*ind +2, mid+1, high, l, h);
+
+        return max(left,right);  
+    }
+
+
+
+};
+    
+    int maximumRobots(vector<int>& chargeTimes, vector<int>& runningCosts, long long budget) {
+        
+        int n=chargeTimes.size();
+        seg sg;
+        sg.makeset(n-1, chargeTimes);
+        sg.build(0,0 , n-1 );
+        
+        int l=0, r=n;
+        
+        vector<ll> pre(n, 0);
+        rep(i,n){
+            pre[i]= (i>0 ? pre[i-1] : 0)+ runningCosts[i];
+        }
+        
+        if(pre[n-1]*n + *max_element(all(chargeTimes)) <= budget  ){
+            return n;
+        }
+        
+        ll mx=0;
+        
+        while(r-l>1){
+            ll m=(l+r)/2;
+            
+            int flag=0;
+            for(int i=0; i+m<=n;i++ ){
+                ll lol = sg.query(0,0, n-1, i, i+m-1);
+                lol+= (pre[i+m-1]- (i>0 ? pre[i-1] : 0)) * m;
+                
+                if(lol<=budget){
+                    flag=1;
+                    break;
+                }
+            }
+            
+            if(flag){
+                mx=max(mx, m);
+                l=m;
+            }else{
+                r=m;
+            }
+        }
+        
+        return mx;
+    }
+};

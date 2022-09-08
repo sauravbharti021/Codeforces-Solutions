@@ -79,7 +79,7 @@ cin>>n>>e;
         pair<int,int> p= *(s.begin());
         s.erase(p);
 
-        if(dis[p.ss] > p.ff) continue;
+        if(dis[p.ss] != p.ff) continue;
         for(int i=0 ;i<adj[p.ss].size() ; i++ ){
             if(p.ff + adj[p.ss][i].ss <  dis[adj[p.ss][i].ff]){
 
@@ -95,8 +95,8 @@ cin>>n>>e;
     while(!s.empty()){
         pair<int,int> p= *(s.begin());
         s.erase(p);
-        
-        if(dis[p.ss] > p.ff) continue;
+
+        if(dis[p.ss] != p.ff) continue;
         for(int i=0 ;i<adj[p.ss].size() ; i++ ){
             if(p.ff + adj[p.ss][i].ss <  dis[adj[p.ss][i].ff]){
 

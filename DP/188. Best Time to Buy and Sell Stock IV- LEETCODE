@@ -1,0 +1,57 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int ans=0;
+    vector<vector<vector<int>>> dp;
+    int maxProfit(int k, vector<int>& prices) {
+            
+        ll n=prices.size();
+        dp.assign(k+1, vector<vector<int>>(n+1, vector<int>(2, -1)) );
+        
+        int now= recur(n, prices, 0, true, k, 0);
+        
+        return now;
+        
+    }
+    
+    int recur(int n, vector<int>& price, int day, int can_buy, int k, int trans){
+        
+        if(day>=n || trans>=k){
+           
+           return 0;
+        }
+        
+        if(dp[trans][day][can_buy]!=-1)
+                return dp[trans][day][can_buy];
+        
+        // skip
+        ll sum = recur(n, price, day+1, can_buy, k, trans);
+        
+        //if can_buy
+        if(can_buy ){
+            sum=max(sum, recur(n, price, day+1, false, k, trans )- (ll)price[day] );
+        }
+        else {
+            sum=max(sum, recur(n, price, day+1, true, k, trans+1) + (ll)price[day] );
+        }
+        
+         // cout<<day<<" "<<k<< " "<<can_buy<<" "<<trans<< " "<<sum<<endl;
+        
+        return dp[trans][day][can_buy]=sum;
+        
+        
+        
+    }
+};

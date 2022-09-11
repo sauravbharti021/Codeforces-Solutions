@@ -1,0 +1,60 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+
+static bool myComp(const pair<ll, ll>& a, const pair<ll, ll>& b){ if (a.first != b.first)  return a.first < b.first;  return a.second < b.second;}
+     
+    
+public:
+    int maxPerformance(int n, vector<int>& speed, vector<int>& efficiency, int k) {
+        
+        vector<pair<ll,ll>> a(n);
+        rep(i,n){
+            a[i].ff= efficiency[i];
+            a[i].ss = speed[i];
+        }
+        sort(all(a), myComp);
+        
+        priority_queue<ll, vector<ll>, greater<ll> > q;
+        
+        ll mx=0, sum=0;
+        rrep(i,n){
+            
+            if(q.size()<k) {
+                sum= (sum + a[i].ss);
+                q.push(a[i].ss);
+            }
+            else{
+                int now= q.top();
+                if(now<= a[i].ss) {
+                   
+                    q.pop();
+                    sum= (sum - now);
+                    q.push(a[i].ss);
+                    
+                    sum= (sum + a[i].ss);
+                }
+                else continue;
+            }
+            
+            
+            ll here = (a[i].ff * sum);
+            
+            
+            mx= max(mx, here);
+        }
+        
+        return mx%mod;
+    }
+};

@@ -1,0 +1,112 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+
+struct seg{
+
+    vector<int> seg;
+    vector<int> a;
+    void makeset(int n, vector<int> &b){
+        seg.assign(4*n + 2,0 );
+        a.assign(n, 0);
+        a.assign(b.begin(), b.end());
+    } 
+    void build(int ind, int l, int h){
+        if(l==h){
+            seg[ind]=a[l];
+            return; 
+        }
+        int mid= (l+h)/2;
+        build(2*ind +1, l, mid );
+        build(2*ind +2, mid+1, h );
+
+        seg[ind]=max( seg[ind], max( seg[ind*2 +1] , seg[ind*2 + 2]));
+
+    }
+
+    int query(int ind, int low, int high, int l, int h){
+        
+        if(low>=l && high<=h) {
+            return seg[ind];
+        }
+
+        if(l>high || h<low ) return 0;  
+
+        int mid=(low+ high)/2;
+
+        int left= query( 2*ind +1, low, mid, l ,h);
+        int right= query( 2*ind +2, mid+1, high, l, h);
+
+        return max(left,right);  
+    }
+    
+    void update(ll ind, ll low, ll high, ll index, ll val) {
+        
+       
+        
+     if(low> index  || high<index) return;   
+     
+     seg[ind]=val;  
+    
+        if(low!= high){
+    ll mid = (low + high) / 2;
+     update(ind * 2 + 1, low, mid, index, val);
+     update(ind * 2 + 2, mid + 1, high, index, val);
+            
+            seg[ind] = max( seg[ind * 2 + 1] , seg[ind * 2 + 2] );
+            
+        }
+   
+}
+
+
+
+};
+
+class Solution {
+ 
+    
+    
+public:
+    int lengthOfLIS(vector<int>& nums, int k) {
+       
+        seg s;
+        ll n= nums.size();
+        vector<int> dp(1e5+1 , 0 );
+        s.makeset(1e5 +1 , dp);
+        
+        s.build(0, 0, 1e5);
+        
+        ll mx=INT_MIN;
+        
+        rep(i,nums.size()){
+            
+            
+            ll now= s.query(0, 0, 1e5, max(1,nums[i]-k ), nums[i]-1);
+                if(nums[i]==1) now=0; 
+            
+             mx= max(mx, now+1);
+            
+            
+            dp[nums[i]] =max(dp[nums[i]], (int)now+1);
+           
+            
+            s.update(0, 0, 1e5, nums[i], dp[nums[i]]);
+            
+        }
+        
+       
+        
+        return mx;
+    }
+};

@@ -1,0 +1,53 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<int> findOriginalArray(vector<int>& changed) {
+        
+        sort(all(changed));
+        int n=changed.size();
+        
+        vector<int> ans, empty;
+        if(n%2!=0) return ans;
+        
+        map<int,int> m;
+        rep(i,n){
+            m[changed[i]]++;
+        }
+        
+        
+        rep(i, n){
+            int lol= changed[i]*2;
+            
+            if(m.find(lol)==m.end() || m.find(changed[i])==m.end() ) continue;
+             if(changed[i]==0){
+                if(m[changed[i]]<2) continue; 
+            }
+            
+                ans.pb(changed[i]);
+                if(m[changed[i]]-1 ==0) {
+                    m.erase(changed[i]);
+                }else m[changed[i]]--;
+                
+                if(m[lol]-1 ==0) {m.erase(lol);}
+                else {
+                    m[lol]--; 
+                      
+                }
+            
+        }
+        if(ans.size() !=n/2) return empty;
+        return ans;
+    }
+};

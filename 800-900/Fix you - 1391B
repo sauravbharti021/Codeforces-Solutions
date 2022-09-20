@@ -1,0 +1,26 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+int32_t main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    int t;
+    cin>>t;
+    while (t--){
+        int n,m;
+        cin>>n>>m;
+        vector<vector<char>>A(n,vector<char>(m));
+        for (int i = 0;i<n;i++)for (int j = 0;j<m;j++)cin>>A[i][j];
+        int ans = 0;
+        for (int i = 0;i<n;i++){
+            if (A[i][m-1]=='R')ans++;
+        }
+        for (int j = 0;j<m;j++){
+            if (A[n-1][j]=='D')ans++;
+        }
+        cout<<ans<<endl;
+    }
+    return 0;
+}

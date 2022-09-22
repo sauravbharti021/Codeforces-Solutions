@@ -1,0 +1,92 @@
+#include<bits/stdc++.h>
+#include<string>
+#include <vector>
+#include <cmath>
+#include <algorithm>
+#include <set>
+#include <utility>
+#include <queue>
+#include <map>
+#include <assert.h>
+#include <stack>
+using namespace std;
+#define ll long long
+#define forn(i,n) for(int i=0;i<n;++i)
+#define MX 10000000001
+#define pow2(a) ((a)*(a))
+void BubbleSort(int arr[], int n)
+ {
+    for(int i=0; i<n-1; i++)
+    {
+        for(int j=0; j<n-1; j++)
+        {
+           if(arr[j]>arr[j+1])     swap(arr[j],arr[j+1]);
+        }
+     }
+ }
+ int gcd(int a, int b) 
+{ 
+    if (a == 0) 
+       return b; 
+    if (b == 0) 
+       return a; 
+   
+    if (a == b) 
+        return a; 
+   
+    if (a > b) 
+        return gcd(a-b, b); 
+    return gcd(a, b-a); 
+} 
+void scanArray(int arr[], int n)
+{
+    for(int i=0;i<n;i++)
+    {
+        cin >> arr[i];
+    }
+}
+int highestFromThree(int n1,int n2, int n3)
+{
+    if (n1 >= n2 && n1 >= n3)
+        return n1;
+
+    if (n2 >= n1 && n2 >= n3)
+        return n2;
+
+    if (n3 >= n1 && n3 >= n2)
+        return n3;
+}
+int main()
+{
+    int n,chest=0,biceps=0,back=0;
+    cin >> n;
+    int a[n+1];
+    scanArray(a,n); // chest,biceps,back
+    for(int i = 0;i<n;i+=3)
+    {
+        if(i < n)
+        {
+        chest+=a[i];
+        }
+        if(i+1 < n)
+        {
+        biceps+=a[i+1];
+        }
+        if(i+2 < n)
+        {
+        back+=a[i+2];
+        }
+    }
+    int ans = highestFromThree(chest,biceps,back);
+    if(chest == ans)
+    {
+        cout << "chest" << endl;
+    }else if(biceps==ans)
+    {
+        cout << "biceps" << endl;
+    }else if(back == ans)
+    {
+        cout << "back" << endl;
+    }
+    return 0;
+}

@@ -1,0 +1,34 @@
+//@arpana
+#include <bits/stdc++.h>
+#include<math.h>
+#include<algorithm>
+using namespace std;
+
+#define ll long long
+#define ull unsigned long long
+#define ppi pair<int,int>
+const ll M=1e9+7;
+
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int r,c;
+    cin>>r>>c;
+    char a[r][c];
+    set<int>s1,s2;
+    for(int i=0;i<r;i++)
+    {
+              for(int j=0;j<c;j++)
+              {
+                        cin>>a[i][j];
+                        if(a[i][j]=='S')
+                        {
+                                  s1.insert(i);
+                                  s2.insert(j);
+                        }
+              }
+    }
+    cout<<r*c-s1.size()*s2.size();
+    return 0;
+}

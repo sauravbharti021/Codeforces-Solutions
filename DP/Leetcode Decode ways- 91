@@ -1,0 +1,57 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<ll> dp;
+    set<string> st;
+    int numDecodings(string s) {
+        dp.assign(s.size()+1, -1);
+        recur(s, 0, "");
+        
+        return dp[0]==-1? 0: dp[0];
+       
+    }
+    
+    int recur(string &s, int i, string now){
+        if(i>=s.size()){
+            
+            return 1;
+        }
+        
+        if(dp[i]!=-1) return dp[i];
+        if(s[i]=='0') return 0;
+         string p="";
+        
+        ll ans=0;
+        
+        if(i+1<s.size()){
+            p+= (s[i]);
+            p+=(s[i+1]);
+            
+            if(stoi(p)<=26) {
+                string lol=now;
+               lol+= ('a'+ (stoi(p)-1) );
+                
+              ans+=  recur(s, i+2, lol);
+            }
+        }
+           
+            now+= ('a' + ((s[i]-'0')-1));
+          ans+=  recur(s, i+1, now);
+        
+          return dp[i] = ans;
+        
+    }
+    
+};

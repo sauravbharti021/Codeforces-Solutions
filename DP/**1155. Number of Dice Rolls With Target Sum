@@ -1,0 +1,53 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<ll>> dp;
+    
+    int numRollsToTarget(int n, int k, int target) {
+        
+        if(target< n) return 0;
+        if(target == n) return 1;
+        dp.assign(n+3, vector<ll>(target+1, -1));
+            
+        
+            ll x= recur(0, n, k, target, 0);
+        
+        return x%mod;
+    }
+    
+    int recur(int i, int n, int k, int target, int sum){
+        
+        if(target<0) return 0;
+        if(i>=n){
+            // cout<<target<<endl;
+            if(target==0) return 1;
+            
+            return 0;
+        }
+        
+    
+    if(dp[i][target]!=-1) return dp[i][target];
+    ll ans=0;
+        
+    for(int j=1;j<=k; j++){
+        
+       
+        (ans = (ans + recur(i+1, n, k, target-j, sum+j)%mod))%=mod;
+    }
+        
+        return dp[i][target]=ans;
+    } 
+    
+};

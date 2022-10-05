@@ -1,0 +1,51 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 5915587277
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<ll>> pre;
+    ll ans=0;
+    int deleteString(string s) {
+        
+        int n=s.size();
+        pre.assign(n+2, vector<ll>(n+2, -1) );
+        
+        rep(i,n){
+            ll cur=0;
+            for(int j=i; j<n;j++){
+                cur*=27;
+                cur +=(s[j] - 'a')+1;
+                cur%=mod ;
+                pre[i][j-i+1] =cur;
+            }
+        }
+        
+        vector<ll> dp(n+2, -1e6);
+        dp[0]=1;
+        rep(i,n){
+            if(dp[i]==-1e6) continue;
+            for(int j=1;i+j<=n; j++){
+                if(pre[i][j] == pre[i+j][j]){
+                    dp[i+j] =max(dp[i+j], dp[i]+1);
+                }
+            }
+            ans=max(ans, dp[i]);
+        }
+        
+        return ans;
+        
+        
+    }
+    
+   
+};

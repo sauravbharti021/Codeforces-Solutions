@@ -1,0 +1,73 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 998244353 
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int findLength(vector<int>& nums1, vector<int>& nums2) {
+        
+        int n1=nums1.size(), n2=nums2.size();
+        
+        vector<vector<ll>> suf1(n1+1, vector<ll>(n1+1, -1) );
+        
+        rep(i,n1){
+            ll cur=0;
+            for(int j=i;j<n1;j++){
+                cur*=101;
+                cur+= (nums1[j]);
+                cur%=mod;
+                
+                suf1[i][j-i+1]=cur;
+            }
+        }
+        vector<vector<ll>> suf2(n2+1, vector<ll>(n2+1, -1) );
+        
+        rep(i,n2){
+            ll cur=0;
+            for(int j=i;j<n2;j++){
+                cur*=101;
+                cur+= (nums2[j]);
+                cur%=mod;
+                
+                suf2[i][j-i+1]=cur;
+            }
+        }
+        
+        int l=0, r= min(n1,n2)+1;
+        
+        while(r-l>1){
+            ll m=(l+r)/2;
+            
+            map<ll,ll> m1;
+            rep(i, n1-m+1){
+                m1[suf1[i][m]]++;
+            }
+            
+            int flag=0;
+            rep(i, n2-m+1){
+                int y= suf2[i][m];
+                if(m1.find(y)!=m1.end()) flag=1;
+            }
+           
+            if(flag){
+                l=m;
+            }else r=m;
+        }
+        
+       
+        
+        return l;
+        
+        
+        
+    }
+};

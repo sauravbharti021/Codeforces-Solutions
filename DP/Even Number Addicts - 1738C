@@ -51,19 +51,20 @@ bool recur(int a, int count, int even, int odd, int bit, int n){
     if(count==n){
         return ((a%2)==0);
     }
-    if(dp[a][count][even][bit]!=-1) return dp[a][count][even][bit];
+    if(dp[odd][even][a][bit]!=-1) return dp[odd][even][a][bit];
     
     bool flag=true;
     if(bit){
         if(even>0 && odd>0){
             flag =recur(a, count+1, even-1, odd, bit^1, n) | recur(a+1, count+1, even, odd-1, bit^1, n)  ;
         }
-        else if(even>0){
-            flag = recur(a, count+1, even-1, odd, bit^1, n);
-        }
         else if(odd>0){
             flag=recur(a+1, count+1, even, odd-1, bit^1, n);
         }
+        else if(even>0){
+            flag = recur(a, count+1, even-1, odd, bit^1, n);
+        }
+        
     }
     else{
         if(even>0 && odd>0){
@@ -77,7 +78,7 @@ bool recur(int a, int count, int even, int odd, int bit, int n){
         }
     }
 
-    return dp[a][count][even][bit]= flag;
+    return dp[odd][even][a][bit]= flag;
 }
 
 int32_t main(){

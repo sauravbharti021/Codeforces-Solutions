@@ -1,0 +1,107 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define Jhunjhar_Hova ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+ 
+ 
+int npow(int a, int b) { 
+if(b==0) return 1;   int res= npow(a, b/2);
+if(b%2!=0) return res*res*a;       else return res*res; }
+ 
+ 
+int modp(int a,int b,int m){ 
+ a %= m;     int res = 1;  while (b > 0) { if (b & 1)    res = res * a % m;      a = a * a % m;  b >>= 1; }
+return res;}
+ 
+ 
+bool myComp(const pair<int, int>& a, const pair<int, int>& b){ if (a.first != b.first)  return a.first > b.first;  return a.second < b.second;}
+ 
+ 
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+ 
+ 
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+ 
+ 
+int32_t main(){
+Jhunjhar_Hova
+ 
+ 
+int t=1;
+cin>>t;
+while(t--){
+    
+    int n;
+    cin>>n;
+ 
+    int x1,y1,x2,y2,x3,y3;
+    cin>>x1>>y1>>x2>>y2>>x3>>y3;
+ 
+    int cx=-1,cy=-1;
+    if(x1==x2 && y2==y3) {cx=x2, cy=y2;}
+    else if(x1==x2 && y1==y3) {cx=x1; cy=y1;}
+    else if(x1==x3 && y3==y2) {cx=x3; cy=y3;}
+    else if(x1==x3 && y1==y2) {cx=x1; cy=y1;}
+    else if(x2==x3 && y2==y1) {cx=x2; cy=y2;}
+    else if(x2==x3 && y1==y3) {cx=x3; cy=y3;}
+ 
+    int x,y;
+    cin>>x>>y;
+    
+    int flag=0;
+ 
+    if(x==cx || y==cy){
+        cout<<"YES"<<endl;
+        continue;
+    }
+ 
+    if(cx+1<=n ) flag++;
+    if(cx-1>=1) flag++;
+    if(cy+1<=n) flag++;
+    if(cy-1>=1) flag++;
+ 
+    
+    if(flag<3){
+        if( (x==x1 && y==y1) || (x==x2 && y==y2) || (x==x3 && y==y3) || (x==cx+2 && y==cy) || (x==cx-2 && y==cy) ||
+        (x==cx && y==cy+2) || (x==cx && y==cy-2)  )
+        cout<<"YES"<<endl;
+        else cout<<"NO"<<endl;
+        continue;
+    }
+ 
+    if( abs(cx-x)%2==0) cout<<"YES"<<endl;
+    else if(abs(cy-y)%2==0) cout<<"YES"<<endl;
+    else cout<<"NO"<<endl;
+ 
+ 
+    
+ 
+ 
+}
+return 0;
+}

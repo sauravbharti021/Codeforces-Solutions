@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int dp[301][11];
+    int minDifficulty(vector<int>& jobDifficulty, int d) {
+        memset(dp,-1, sizeof dp);
+        
+        if(jobDifficulty.size() <d) return -1;
+        
+        return recur(0,d, jobDifficulty);
+        
+    }
+    int recur(int i,int d, vector<int> &a){
+        if(i==a.size() && d==0){
+            return 0;
+        }
+        if(i==a.size() || d==0 ) return 1e8;
+        
+        if(dp[i][d]!=-1) return dp[i][d];
+        
+        long long mx=-1;
+        long long ans=1e8;
+        for(int j=i; j<a.size();j++){
+            mx=max(mx, (long long)a[j]);
+            
+            ans= min(ans, mx+ recur(j+1, d-1, a) );
+        }
+        
+        return dp[i][d]=ans;
+    }
+};

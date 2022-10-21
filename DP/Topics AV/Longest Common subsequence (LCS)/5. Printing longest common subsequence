@@ -5,9 +5,59 @@ It's the same as LCS length. But we have to do Bottom up implementation, once we
     
     Ex- sbohpariti
           bharti
- outcome- bharti         
+ outcome- bharti   
+ 
+ 
+ 
+ Better recursive approach - 
+ 
+ 
+ vector<int> ans;
+vector<vector<int>> dp;
+int mx;
+
+int recur(int i, int j, vector<int> &a, vector<int> &b){
+    if(i==a.size() || j==b.size() ){
+        
+        return 0;
+    }
+    if(dp[i][j]!=-101) return dp[i][j];
     
+    if(a[i]==b[j]){
+    dp[i][j]= 1+ recur(i+1, j+1, a,b);
+    }else 
+    dp[i][j]= max(recur(i, j+1, a, b), recur(i+1, j, a,b));
+        
+        return dp[i][j];
+}
+
+
+vector<int> longestCommonSubsequence(vector<int> a, vector<int> b) {
+    mx=0;
+    dp.assign(a.size()+1, vector<int>(b.size()+1, -101));
+    vector<int> c;
+    int x= recur(0, 0, a, b );
+ 
     
+    rep(i,a.size()){
+        rep(j,b.size()){
+            if(dp[i][j]==x && a[i]==b[j]){
+                x--;
+                c.pb(a[i]);
+            }
+        }
+    }
+    
+    return c;
+}
+    
+  ------------------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------
+  ---------------------------------------------------------------------------------------------
+  
+  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  
+  
     #include <bits/stdc++.h>
 using namespace std;
 #define int long long

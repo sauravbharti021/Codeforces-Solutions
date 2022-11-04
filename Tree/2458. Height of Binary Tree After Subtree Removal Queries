@@ -1,0 +1,72 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    
+    vector<int> d1, depth;
+    vector<int> d2, d2_e;
+    
+    
+    map<int,int> m;
+    vector<int> treeQueries(TreeNode* root, vector<int>& queries) {
+        d1.assign(1e5+1, -1);
+        d2.assign(1e5+1, -1);
+        
+        depth.assign(1e5+1, -1);
+        d2_e.assign(1e5+1, -1);
+        
+        TreeNode* head = root;
+        dfs(head, 0);
+    
+        vector<int> ans(queries.size());
+        rep(i,queries.size()){
+            
+            int level = m[queries[i]];
+            if(d1[level] == depth[queries[i]]){
+                if(d2[level]==-1) ans[i]=level;
+                else ans[i]=level + d2[level];
+            }else
+                ans[i]=level+ d1[level];
+        }
+        
+        rep(i,queries.size()) ans[i]-=1;
+        return ans;
+    }
+    
+    int dfs(TreeNode* head, int level){
+        
+        if(head == NULL){
+            return 0;
+        }
+        
+        
+        int x= 1+ max(dfs(head->left, level+ 1), dfs(head->right, level+1));
+        m[head->val] = level;
+        
+        if(d1[level]< x){
+            
+            d2[level] = d1[level];
+            
+            d1[level] = x; 
+            
+        }else if(d2[level] < x){
+            d2[level] = x;
+        }
+        
+        
+        return depth[head->val] =  x;
+        
+    }
+    
+};

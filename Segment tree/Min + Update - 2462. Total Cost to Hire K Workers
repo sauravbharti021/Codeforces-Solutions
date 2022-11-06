@@ -1,0 +1,147 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+
+struct seg{
+
+    vector<int> seg;
+    vector<int> a;
+    void makeset(int n, vector<int> &b){
+        seg.assign(4*n + 2,-1e5+1 );
+        a.assign(n, 0);
+        a.assign(b.begin(), b.end());
+    } 
+    void build(int ind, int l, int h){
+        if(l==h){
+            seg[ind]=a[l];
+            return; 
+        }
+        int mid= (l+h)/2;
+        build(2*ind +1, l, mid );
+        build(2*ind +2, mid+1, h );
+
+        seg[ind]=max( seg[ind], max( seg[ind*2 +1] , seg[ind*2 + 2]));
+
+    }
+
+    int query(int ind, int low, int high, int l, int h){
+        
+        if(low>=l && high<=h) {
+            return seg[ind];
+        }
+
+        if(l>high || h<low ) return -1e6;  
+
+        int mid=(low+ high)/2;
+
+        int left= query( 2*ind +1, low, mid, l ,h);
+        int right= query( 2*ind +2, mid+1, high, l, h);
+
+        return max(left,right);  
+    }
+    
+    void update(ll ind, ll low, ll high, ll index, ll val) {
+        
+       
+        
+     if(low> index  || high<index) return;   
+     
+     seg[ind]=val;  
+    
+        if(low!= high){
+    ll mid = (low + high) / 2;
+     update(ind * 2 + 1, low, mid, index, val);
+     update(ind * 2 + 2, mid + 1, high, index, val);
+            
+            seg[ind] = max( seg[ind * 2 + 1] , seg[ind * 2 + 2] );
+            
+        }
+   
+}
+
+
+
+};
+
+class Solution {
+public:
+    long long totalCost(vector<int>& costs, int k, int candidates) {
+        
+            
+        seg sg;
+        ll n= costs.size();
+        
+        rep(i,n) costs[i]*=-1;
+        
+        
+        sg.makeset(n,  costs);
+        sg.build(0, 0, n-1);
+        
+        ll llt=0, lr= candidates-1;
+        
+        ll rr= n-1, rl= n-candidates;
+        
+        map<ll, set<ll>> m;
+        rep(i,n){
+            m[costs[i]].insert(i);
+        }
+        
+        ll ans=0;
+        
+        rep(i,k){
+            
+            ll x= sg.query(0, 0, n-1, llt, lr);
+            
+            ll y= sg.query(0, 0, n-1, rl, rr );
+            
+            
+            
+            if(x>=y){
+                auto it= m[x].lower_bound(llt);
+                int index=*it;   
+                
+                m[x].erase(index);
+                ans+= (-1 * costs[index]);
+                sg.update(0, 0, n-1, index, -1e6+1);
+                if(lr<rl)
+                lr+=1;
+            }else{
+                
+                auto it= m[y].lower_bound(rl);
+                int index=*it;      
+                
+                m[y].erase(index);
+                ans+= (-1  * costs[index]);
+                sg.update(0, 0, n-1, index, -1e6+1);
+                if(rl>lr)
+                rl-=1;
+            }
+        }
+        
+        return ans;
+    }
+};

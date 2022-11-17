@@ -1,0 +1,80 @@
+// Instead of forming a continuous prefix and and suffix, we should find unique hash between two particular indices using a 2-D vector.
+
+
+
+
+
+
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<int> dp;
+    vector<vector<ll>> pre, suf;
+    int maxPalindromes(string s, int k) {
+        int n=s.size();
+        dp.assign(n+1, -1);
+        pre.assign(n+1, vector<ll>(n+1, -1) );
+        suf.assign(n+1, vector<ll>(n+1, -1) );
+        
+        ll cur=0;
+        
+        rep(i,n){
+            cur=0;
+            for(int j=i ; j <n; j++){
+            cur*=31;
+            cur+=(s[j]-'a');
+            cur%=mod;
+            pre[i][j] = cur;
+            }
+        }
+        cur=0;
+        rrep(i,n){
+            cur=0;
+            for(int j=i; j>=0;j--){
+            cur*=31;
+            cur+=(s[j]-'a');
+            cur%=mod;
+            suf[i][j]= cur;
+            }
+        }
+        
+        
+        return recur(0, s, n, k);
+        
+    }
+    int recur(int i, string &s, int n, int k){
+        if(i>=n) return 0;
+        
+        if(dp[i]!=-1) return dp[i];
+        
+        int flag=0;
+        int index=-1;
+        for(int j=i+k-1; j<n; j++){
+            
+            ll x= pre[i][j];
+            ll y=suf[j][i];
+            
+            
+            if(x==y){ 
+                index=j+1;
+                flag=1;
+                break;
+            }
+        }
+        if(!flag) return dp[i] = recur(i+1, s,n, k );
+        
+        return dp[i] = max(recur(i+1, s, n, k) , 1+recur(index, s, n, k));
+    }
+};

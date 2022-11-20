@@ -1,0 +1,84 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define Jhunjhar_Hova ios_base::sync_w
+class Solution {
+public:
+    vector<int> a;
+    vector<bool> vis;
+    vector<vector<ll>> adj;
+    
+    vector<int> d;
+    
+    ll ans=0;
+    
+    long long minimumFuelCost(vector<vector<int>>& roads, int seats) {
+        int n=roads.size();
+        
+        adj.assign(n+1, vector<ll>{});
+        
+        rep(i,n){
+            adj[roads[i][0]].pb(roads[i][1]);
+            adj[roads[i][1]].pb(roads[i][0]);
+        }
+        vis.assign(n+1, false);
+        d.assign(n+1, 0);
+         
+        hei(0, -1, 0);
+        
+        ll now = recur(0,-1, seats);
+        
+        return ans;
+        
+        
+    }
+    
+    ll recur(int n, int par, int seats){
+        
+        
+        
+        ll people=1;
+        
+        for(auto i: adj[n]){
+            if(i!=par){
+               people+= recur(i, n, seats);
+            }
+        }
+        if( n==0){
+            return ans;
+        }
+        
+        ans+= (people/seats )* d[n] + ((people%seats ==0) ? 0:1);
+        
+        return people%seats;
+        
+        
+        
+    }
+    
+    void hei(int n, int par, int level){
+        
+        d[n]=level;
+        if(adj.size()==1){
+            return;
+        }
+        
+        for(auto i: adj[n]){
+            if(i!=par){
+               hei(i, n, level+1); 
+            }
+        }
+    }
+    
+    
+};

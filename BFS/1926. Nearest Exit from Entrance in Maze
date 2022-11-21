@@ -1,0 +1,79 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<int> d {1,-1,0,0};
+    vector<int> e {0, 0, 1,-1};
+    
+    int start=0, end=0;
+    vector<vector<bool>> vis;
+    int nearestExit(vector<vector<char>>& maze, vector<int>& entrance) {
+        
+        int n=maze.size(), m=maze[0].size();
+        start=entrance[0], end=entrance[1];
+        
+        vis.assign(n+1, vector<bool>(m+1, false));
+        int ans= bfs(entrance[0], entrance[1], maze, n,m);
+        
+        if(ans>1e4) return -1;
+        return ans;
+    }
+    
+    int bfs(int i, int j, vector<vector<char>> &mz, int n, int m ){
+        
+        
+        queue<pair<int,int>>q;
+        q.push({i,j});
+        
+        vector<vector<int>> dis(n+1, vector<int>(m+1, 1e6));
+        dis[i][j]=0;
+        
+        while(!q.empty()){
+            pair<int,int> x= q.front();
+            q.pop();
+            
+            
+            rep(k,4){
+                int l=x.ff+d[k];
+                int r= x.ss+e[k];
+                
+                if(l<n && l>=0 && r>=0 && r<m && mz[l][r]=='.' && dis[l][r]> 1+dis[x.ff][x.ss] ){
+                    dis[l][r]=1+dis[x.ff][x.ss];
+                    q.push({l,r});
+                }
+                
+            }
+        }
+            
+        
+     
+            int mi=1e6;
+           rep(g,n){
+               rep(h,m){
+                   if(mz[g][h]=='+') continue;
+                   if(g==i && h==j) continue;
+                   if(g==0 || h==0 || h==m-1 || g==n-1){
+                       mi=min(mi, dis[g][h]);
+                   }
+               }
+           }
+            
+            return mi;
+            
+            
+        
+        
+       
+    }
+};

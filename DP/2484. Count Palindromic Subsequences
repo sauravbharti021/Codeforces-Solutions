@@ -1,0 +1,102 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int countPalindromes(string s) {
+        
+        ll n=s.size();
+        
+        
+        vector<vector<ll>> preI(n+1, vector<ll>(10, 0));
+        vector<vector<ll>> sufI(n+1, vector<ll>(10, 0));
+        
+        rep(i,n){
+            
+            rep(j,10){
+                preI[i][j] = (i>0 ? preI[i-1][j] : 0 ) + (s[i]-'0'==j ? 1 : 0);
+            }
+        }
+        
+         rrep(i,n){
+            
+            rep(j,10){
+                sufI[i][j] = (i+1<n ? sufI[i+1][j] : 0 ) + (s[i]-'0'==j ? 1 : 0);
+            }
+        }
+        
+        
+        
+        vector<vector<ll>> pre(n+1, vector<ll>(100, 0) );
+         vector<vector<ll>> suf(n+1, vector<ll>(100, 0) );
+        
+        rep(i,n){
+            
+            for(int j=0; j<=99; j++){
+                
+               
+                int left= j/10;
+                int right= j%10;
+                
+                
+                pre[i][j] = ((i>0 ? pre[i-1][j] : 0) + ( right==s[i]-'0' ? (i>0 ? preI[i-1][left] :0  ) : 0 ))%mod;
+            }
+            
+        }
+        
+        rrep(i,n){
+            for(int j=0; j<=99; j++){
+                
+                
+                int left= j/10;
+                int right= j%10;
+                
+                
+                suf[i][j] = ((i+1<n ? suf[i+1][j] : 0) + ( left==s[i]-'0' ? (i+1<n ? sufI[i+1][right] :0  ) : 0 ))%mod;
+            }
+            
+        }
+        
+        
+        
+        ll ans=0;
+        
+        
+        for(int i=2; i<n-2;i++){
+            
+            rep(j, 100){
+                
+                ll l= j;
+                
+                  if(j<10) {
+                    l*=10;
+                 }else{
+                    l= j%10;
+                    l*=10;
+                    l+= (j/10);
+                }
+                
+                
+                ans= (ans +    (pre[i-1][j] * (suf[i+1][l] )  )%mod                          )%mod;
+                
+              
+            }
+            
+            
+        }
+        
+        return ans%mod;
+        
+        
+    }
+};

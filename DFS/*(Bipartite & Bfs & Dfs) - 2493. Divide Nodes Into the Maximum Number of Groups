@@ -1,0 +1,134 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+  
+ vector<int> bi;   
+    int f1=0;
+  vector<bool> vis;
+    
+ void dfs_bi(int n, int par, int sign, vector<vector<ll>> &adj ){
+     if(bi[n]!=0){
+         if(bi[n]==sign ) return;
+         else{
+             f1=1;
+             return;
+         }
+     }
+     bi[n]=sign;
+     
+     
+     for(auto i: adj[n] ){
+         if(i!=par)
+         dfs_bi(i, n, (sign==-1 ? 1 : -1 ), adj );
+     }
+     
+     
+     
+ } 
+    
+  vector<ll> a; 
+    
+  void dfs1(int n, vector<vector<ll>> &adj ){
+      
+      vis[n]=true;
+      a.pb(n);
+      
+      for(auto i: adj[n]){
+          if(!vis[i]){
+              dfs1(i, adj );
+          }
+      }
+      
+      
+  } 
+  
+  vector<bool> vis2;  
+  vector<ll> dis;
+    
+  ll dfs(int n, vector<vector<ll>> &adj ){
+      
+      ll mx=1;
+      dis[n]=1;
+      queue<ll> q;
+      q.push(n);
+      
+      
+      while(!q.empty()){
+          ll x=q.front();
+          q.pop();
+          for(auto i: adj[x]){
+              if(dis[i] > dis[x]+1){
+                  dis[i]= dis[x]+1;
+                  mx= max(dis[i], mx);
+                  q.push(i);
+              }
+          }
+      }
+      return mx;
+      
+  }  
+    
+    
+public:
+    int magnificentSets(int n, vector<vector<int>>& edges) {
+        
+        vector<vector<ll>> adj(n+1, vector<ll>{});
+        
+        rep(i,edges.size()){
+            int x= edges[i][0], y= edges[i][1];
+            
+            adj[x].pb(y);
+            adj[y].pb(x);
+        }
+        
+      
+        
+        bi.assign(n+1, 0);
+        
+        f1=0;
+        dfs_bi(1,-1, 1, adj );
+        
+        if(f1) return -1;
+        
+        vis.assign(n+1, false);
+        
+        
+        
+        ll ans=0;
+        
+        for(int i=1; i<=n; i++){
+            if(!vis[i]){
+                a.clear();
+                dfs1(i, adj);
+                
+                
+                
+                ll mx=0;
+                rep(j, a.size()){
+                    dis.assign(n+1, 1e10);
+                  mx=max(mx, dfs(a[j], adj) );  
+                }
+                
+                
+               ans+=mx; 
+                
+            }
+        }
+        
+
+        
+        return ans;
+        
+    }
+};

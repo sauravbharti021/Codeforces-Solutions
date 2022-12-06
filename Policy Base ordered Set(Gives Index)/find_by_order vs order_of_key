@@ -1,0 +1,5 @@
+int u= (ms.order_of_key(y));
+int v= *(ms.find_by_order(u-1));
+
+
+find_by_order needs pointer while order_of_key doesn't 

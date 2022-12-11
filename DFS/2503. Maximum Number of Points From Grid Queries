@@ -1,0 +1,81 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<bool>> vis;
+    vector<vector<int>> d {{-1,0}, {1,0}, {0,-1}, {0,1}};
+    set<pair<int,int>> s;
+    
+    int dfs(int i, int j, vector<vector<int>>& grid, int query){
+        int n=grid.size(), m=grid[0].size();
+        
+        vis[i][j]=true;
+        
+        ll cnt=1;
+        
+        rep(k,4){
+            int x= i+d[k][0];
+            int y= j+d[k][1];
+            
+            if(x>=0 && x<n && y>=0 && y<m){
+                if(!vis[x][y] && grid[x][y] < query){
+                   cnt+=  dfs(x,y, grid, query);
+                }else if(!vis[x][y]){
+                    s.insert({x,y});
+                }
+            }
+        }
+        
+        return cnt;
+        
+    }
+    
+    vector<int> maxPoints(vector<vector<int>>& grid, vector<int>& queries) {
+        
+        ll mx= *(max_element(all(queries)));
+        vector<ll> dp(mx+1, 0);
+        int n=grid.size(), m=grid[0].size();
+        vis.assign(n+1, vector<bool>(m+1, false));
+        
+        ll prev=0;
+        s.insert({0,0});
+        
+        vector<int> p =queries;
+        sort(all(p));
+        
+        for(int i=0; i<p.size(); i++){
+            dp[p[i]]=prev;
+            for(auto it = s.begin(); it!=s.end(); it++){
+                pair<int,int> now= *it;
+                if(!vis[now.ff][now.ss] && grid[now.ff][now.ss]<p[i])
+               dp[p[i]]+= dfs(now.ff, now.ss, grid, p[i]);
+            }
+            
+            for(auto it = s.begin(); it!=s.end(); it++){
+                pair<int,int> now= *it;
+                if(vis[now.ff][now.ss] )
+                   s.erase(now);
+            }
+            prev=dp[p[i]];
+        }
+        
+        vector<int> ans;
+        rep(i, queries.size()){
+           ans.pb(dp[queries[i]]); 
+        }
+        
+        
+        return ans;
+    }
+};

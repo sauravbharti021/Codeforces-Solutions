@@ -1,0 +1,154 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define Jhunjhar_Hova ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int npow(int a, int b) { 
+if(b==0) return 1;   int res= npow(a, b/2);
+if(b%2!=0) return res*res*a;       else return res*res; }
+
+
+int modp(int a,int b,int m){ 
+ a %= m;     int res = 1;  while (b > 0) { if (b & 1)    res = res * a % m;      a = a * a % m;  b >>= 1; }
+return res;}
+
+
+bool myComp(const pair<int, int>& a, const pair<int, int>& b){ if (a.first != b.first)  return a.first > b.first;  return a.second < b.second;}
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+
+
+set<ll> wheel(long long n) {
+    vector<long long> factorization;
+    set<ll> s; 
+    for (int d : {2, 3, 5}) {
+        if(n % d == 0)
+            s.insert(d);
+        while (n % d == 0) {
+            n /= d;
+        }
+    }
+    
+    static array<int, 8> increments = {4, 2, 4, 2, 4, 6, 2, 6};
+    int i = 0;
+    for (long long d = 7; d * d <= n; d += increments[i++]) {
+        if(n % d == 0)
+            s.insert(d);
+        while (n % d == 0) {
+            n /= d;
+        }
+        if (i == 8)
+            i = 0;
+    }
+    if (n > 1)
+        s.insert(n);
+    return s;
+}
+
+
+int32_t main(){
+Jhunjhar_Hova
+
+ vector<int> prime;
+
+ for(int i=2; i*i<=1e9+1; i++){
+    if(isPrime(i)) prime.pb(i);
+ }
+    prime.pb(1);
+//  rep(i ,prime.size()) cout<<prime[i]<<" "; cout<<endl;
+
+int t=1;
+cin>>t;
+while(t--){
+    
+    int n;
+    cin>>n;
+
+    vector<int> a(n);
+
+    rep(i,n) cin>>a[i];
+    sort(all(a));
+    int flag=0;
+    rep(i,n-1){
+        if(a[i]==a[i+1] && a[i]!=1){
+            flag=1;
+            break;    
+        }
+    }
+
+    if(flag){
+        cout<<"YES"<<endl;
+        continue;
+    }
+
+
+    map<int,int> m;
+    
+   
+    rep(i, prime.size()){
+          ll cnt=0;  
+        rep(j, n){
+
+            int y=a[j];
+            if(a[j]%prime[i] == 0) {
+                cnt++;
+
+                 while(prime[i]!=1 && y%prime[i]==0) {
+                    y/=prime[i];
+
+                 }
+
+                m[y]++;
+            }
+        }
+        if(cnt>1 && prime[i]>1) {flag=1; break;}
+    }
+
+    if(flag){
+        cout<<"YES"<<endl;
+        continue;
+    }
+
+    for(auto i: m){
+        if(i.ss>1 && i.ff>1){
+            flag=1;
+            break;
+        }
+    }
+
+   
+    if(flag) cout<<"YES"<<endl;
+    else cout<<"NO"<<endl;
+}
+return 0;
+}

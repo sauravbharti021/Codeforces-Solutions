@@ -1,0 +1,82 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<ll>> adj;
+    bool isPossible(int n, vector<vector<int>>& edges) {
+        vector<ll> nei(n+1, 0);
+        set<pair<ll,ll>> s;
+        sort(all(edges));
+        rep(i, edges.size()){
+            nei[edges[i][0]]++;
+            nei[edges[i][1]]++;
+            s.insert({edges[i][0], edges[i][1]});
+            s.insert({edges[i][1], edges[i][0]});
+        }
+        
+        ll oc=0;
+        vector<int> a;
+        for(int i=1; i<=n; i++){
+            if(nei[i]%2==1) {
+                oc++;
+                a.pb(i);
+            }
+        }
+        if(oc==0) return true;
+        
+        
+        if(!(oc==2 || oc==4)) return false;
+        
+    
+
+    
+        
+        
+        if(oc==2){
+            if(s.find({a[0],a[1]})== s.end() ) return true;
+            
+        
+            
+            for(int i=1; i<=n; i++){
+                if(nei[i]%2==0){
+
+
+
+                        rep(j, a.size()){
+                            for(int k=j+1; k<a.size(); k++){
+                                if(s.find({i, a[j]})==s.end() && s.find({i, a[k]})==s.end()  ){
+                                   return true;
+                                }
+                            }
+                        }
+
+
+                }
+             }
+           
+         return false;
+            
+        }
+        //case of 4, they can only pair with each other because we can add maximum 2 edges only 
+        
+        if( s.find({a[0], a[1]})==s.end() && s.find({a[2], a[3]})==s.end() ) return true;
+        if( s.find({a[0], a[2]})==s.end() && s.find({a[1], a[3]})==s.end() ) return true;
+        if( s.find({a[0], a[3]})==s.end() && s.find({a[2], a[1]})==s.end() ) return true;
+        
+        
+        
+    
+         return false;
+    }
+};

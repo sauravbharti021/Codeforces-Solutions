@@ -1,0 +1,89 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<int> child;
+    vector<bool> vis;
+    vector<int> sumOfDistancesInTree(int n, vector<vector<int>>& edges) {
+        vector<vector<ll>> adj(n+1, vector<ll>{});
+        child.assign(n+1, 0);
+        vis.assign(n+1, false);
+        
+        rep(i, edges.size()){
+            adj[edges[i][0]].pb(edges[i][1]);
+            adj[edges[i][1]].pb(edges[i][0]);
+        }
+        
+        queue<int> q;
+        vector<ll> dis(n+1, 1e11);
+        q.push(0);
+        dis[0]=0;
+        
+        while(!q.empty()){
+            ll x=q.front();
+            q.pop();
+            for(auto i: adj[x]){
+                if(dis[x]+1 < dis[i] ){
+                    dis[i]=dis[x]+1;
+                    q.push(i);
+                }
+            }
+        }
+        recur1(adj, 0, dis);
+        ll sum=0;
+        
+        for(int i=1;i<n; i++){
+            sum+=dis[i];
+        }
+        
+        
+        vector<int> ans(n, 0);
+        ans[0]=sum;
+        
+        vis.assign(n+1, false);
+        q.push(0);
+        
+        while(!q.empty()){
+            ll x= q.front();
+            q.pop();
+            vis[x]=true;
+            
+            for(auto i: adj[x]){
+                if(!vis[i]){
+                    ans[i] = ans[x] - child[i] + (n- child[i]);
+                    q.push(i);
+                }
+            }
+        }
+        
+        return ans;
+        
+        
+        
+        
+    } 
+    int recur1(vector<vector<ll>> &adj, int n, vector<ll> &dis ){
+        
+        int cnt=1;
+        vis[n]=true;
+        
+        for(auto i: adj[n]){
+            if( !vis[i] && dis[i]>dis[n] ){
+                cnt+= recur1(adj, i, dis);
+            }
+        }
+        return  child[n]=cnt;
+        
+    }
+};

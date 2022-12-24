@@ -71,7 +71,7 @@ b[2]=0;
     for(int i=4; i<=60; i+=2){
         int total = ((fac[i]* rf[i/2])%mod * rf[i/2])%mod;
         
-            ////     n            r                n - r
+            ////     n            r->inverse                (n - r)->inverse
             a[i]= ((fac[i-1]* rf[i/2])%mod * rf[ (i-1)-(i/2) ])%mod;
         
             a[i] = (a[i]+ b[i-2])%mod;

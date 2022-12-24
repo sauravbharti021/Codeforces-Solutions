@@ -1,0 +1,59 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int countAnagrams(string s) {
+        
+         vector<ll> invf(1e5+2, 1);
+    for (ll i = 2; i <= 1e5+1; ++i)
+    invf[i] = invf[mod%i] * (mod- mod/i)%mod;
+
+ vector<ll> rinv(1e5+2, 1);
+    for(ll i=2; i<=1e5+1; i++)
+        rinv[i]= (invf[i]* rinv[i-1])%mod ;  
+
+  vector<ll> fac(1e5+2, 1);  
+   for(int i=2; i<=1e5+1; i++)
+    fac[i]=(i*fac[i-1])%mod; 
+    
+    
+         int n=s.size();
+        
+        ll ans=1;
+        
+        rep(i,n){
+            if(s[i]!=' '){
+                ll cnt=0;
+                int j=i;
+                map<char,int> m;
+                while(j<n && s[j]!=' ') { m[s[j]]++; cnt++; j++;}
+                
+                
+                ll lol = fac[cnt]%mod;
+                
+                for(auto k : m){
+                    lol = (lol * rinv[k.ss] )%mod;
+                }
+                
+                
+                i=j-1;
+                
+                ans= (ans * lol)%mod;
+            }
+        }
+    
+            return ans%mod;
+        
+    }
+};

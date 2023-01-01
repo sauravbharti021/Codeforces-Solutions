@@ -74,6 +74,7 @@ Jhunjhar_Hova
     rep(i,n){
         rep(j, 2){
             rep(k, 2){
+                // l for i-1
                 rep(l,2){
 
                         int flag=0;

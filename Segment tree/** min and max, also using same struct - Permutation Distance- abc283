@@ -1,0 +1,259 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define Jhunjhar_Hova ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int npow(int a, int b) { 
+if(b==0) return 1;   int res= npow(a, b/2);
+if(b%2!=0) return res*res*a;       else return res*res; }
+
+
+int modp(int a,int b,int m){ 
+ a %= m;     int res = 1;  while (b > 0) { if (b & 1)    res = res * a % m;      a = a * a % m;  b >>= 1; }
+return res;}
+
+
+bool myComp(const pair<int, int>& a, const pair<int, int>& b){ if (a.first != b.first)  return a.first > b.first;  return a.second < b.second;}
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+
+struct seg{
+
+    vector<int> seg;
+    vector<int> a;
+    void makeset(int n, vector<int> &b){
+        seg.assign(4*n + 2,-1e6+1 );
+        a.assign(n, 0);
+        a.assign(b.begin(), b.end());
+    } 
+    void build(int ind, int l, int h){
+        if(l==h){
+            seg[ind]=a[l];
+            return; 
+        }
+        int mid= (l+h)/2;
+        build(2*ind +1, l, mid );
+        build(2*ind +2, mid+1, h );
+
+        seg[ind]=max( seg[ind], max( seg[ind*2 +1] , seg[ind*2 + 2]));
+
+    }
+
+    int query(int ind, int low, int high, int l, int h){
+        
+        if(low>=l && high<=h) {
+            return seg[ind];
+        }
+
+        if(l>high || h<low ) return -1e6;  
+
+        int mid=(low+ high)/2;
+
+        int left= query( 2*ind +1, low, mid, l ,h);
+        int right= query( 2*ind +2, mid+1, high, l, h);
+
+        return max(left,right);  
+    }
+    
+    void update(ll ind, ll low, ll high, ll index, ll val) {
+        
+       
+        
+     if(low> index  || high<index) return;   
+     
+     seg[ind]=val;  
+    
+        if(low!= high){
+    ll mid = (low + high) / 2;
+     update(ind * 2 + 1, low, mid, index, val);
+     update(ind * 2 + 2, mid + 1, high, index, val);
+            
+            seg[ind] = max( seg[ind * 2 + 1] , seg[ind * 2 + 2] );
+            
+        }
+   
+}
+
+
+
+};
+
+struct seg2{
+
+    vector<int> seg;
+    vector<int> a;
+    void makeset(int n, vector<int> &b){
+        seg.assign(4*n + 2,-1e6+1 );
+        a.assign(n, 0);
+        a.assign(b.begin(), b.end());
+    } 
+    void build(int ind, int l, int h){
+        if(l==h){
+            seg[ind]=a[l];
+            return; 
+        }
+        int mid= (l+h)/2;
+        build(2*ind +1, l, mid );
+        build(2*ind +2, mid+1, h );
+
+        seg[ind]=max( seg[ind], max( seg[ind*2 +1] , seg[ind*2 + 2]));
+
+    }
+
+    int query(int ind, int low, int high, int l, int h){
+        
+        if(low>=l && high<=h) {
+            return seg[ind];
+        }
+
+        if(l>high || h<low ) return -1e6;  
+
+        int mid=(low+ high)/2;
+
+        int left= query( 2*ind +1, low, mid, l ,h);
+        int right= query( 2*ind +2, mid+1, high, l, h);
+
+        return max(left,right);  
+    }
+    
+    void update(ll ind, ll low, ll high, ll index, ll val) {
+        
+       
+        
+     if(low> index  || high<index) return;   
+     
+     seg[ind]=val;  
+    
+        if(low!= high){
+    ll mid = (low + high) / 2;
+     update(ind * 2 + 1, low, mid, index, val);
+     update(ind * 2 + 2, mid + 1, high, index, val);
+            
+            seg[ind] = max( seg[ind * 2 + 1] , seg[ind * 2 + 2] );
+            
+        }
+   
+}
+
+
+
+};
+
+
+
+int32_t main(){
+Jhunjhar_Hova
+
+int n;
+cin>>n;
+
+   
+
+
+    vector<int> a(n+1);
+    map<int, int> m;
+    rep(i,n){
+        cin>>a[i+1];
+        m[a[i+1]]=i+1;
+    }
+
+    vector<int> ans(n+1, 1e11);
+    vector<int> Default= ans; 
+
+    seg pjpj;
+    pjpj.makeset(n+1, Default);
+
+    seg2 pjmj;
+    pjmj.makeset(n+1, Default);
+
+
+     // add- pi+i 
+    // sub- pi- i 
+    ////  (i>j && pi > pj) => (pi+i) - max(pj +j)
+
+    /// (i<j && pi> pj ) => (pi - i) - max(pj - j)
+
+    /// (i>j && pi < pj) => min(pj- j ) - (pi - i)
+
+    
+
+    /// (i<j && pi< pj ) => min(pj + j ) - (pi + i )
+
+
+    for( int i=n; i>=1; i-- ){
+        if(i+1<=n){
+
+            pjpj.update(0, 0, n+1, m[i+1], -1 * (i+1 + m[i+1] ));
+
+            pjmj.update(0, 0, n+1, m[i+1], -1 * (i+1 - m[i+1]) );
+
+            if(m[i]-1>=1)
+            ans[m[i]] = min( ans[m[i]], (-1 * pjmj.query(0, 0, n+1, 1, m[i]-1  )) - (i - m[i] )   );
+
+            if(m[i]+1<=n)
+            ans[m[i]] = min(ans[m[i]],  (-1 * pjpj.query(0,0, n+1, m[i]+1, n )) - ( i + m[i])  );
+
+            // cout<<i<<" : "<<(-1 * pjpj.query(0,0, n+1, m[i]+1, n )) - (m[i]+ i)<< " : "<< (-1 * pjmj.query(0, 0, n+1, 1, m[i]-1  )) - (m[i]-i) <<endl;
+
+        }
+
+
+    }
+
+
+    seg apjpj, apjmj;
+
+    apjpj.makeset(n+1, Default);
+    apjmj.makeset(n+1, Default);
+
+    for(int i=1; i<=n; i++){
+        if(i-1>=1){
+
+             apjpj.update(0, 0, n+1, m[i-1], (i-1 + m[i-1] ));
+             apjmj.update(0,0, n+1, m[i-1], (i-1 - m[i-1] ) );
+
+             if(m[i]-1>=1)
+             ans[m[i]] = min(ans[m[i]],  i+ m[i] - apjpj.query(0, 0, n+1, 1, m[i]-1 ) );
+
+             if(m[i]+1<=n){
+                ans[m[i]] = min(ans[m[i]], i- m[i] - apjmj.query(0,0,n+1, m[i]+1, n) );
+             }
+
+        }
+    }
+
+    for(int i=1; i<=n; i++) cout<<ans[i]<<" ";
+
+
+return 0;
+}

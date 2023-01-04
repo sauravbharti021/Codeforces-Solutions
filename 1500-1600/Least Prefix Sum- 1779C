@@ -1,0 +1,114 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define Jhunjhar_Hova ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+int npow(int a, int b) { 
+if(b==0) return 1;   int res= npow(a, b/2);
+if(b%2!=0) return res*res*a;       else return res*res; }
+
+
+int modp(int a,int b,int m){ 
+ a %= m;     int res = 1;  while (b > 0) { if (b & 1)    res = res * a % m;      a = a * a % m;  b >>= 1; }
+return res;}
+
+
+bool myComp(const pair<int, int>& a, const pair<int, int>& b){ if (a.first != b.first)  return a.first > b.first;  return a.second < b.second;}
+
+
+int gcd(int a , int b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(int n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+
+int32_t main(){
+Jhunjhar_Hova
+
+
+int t=1;
+cin>>t;
+while(t--){
+    
+    int n,m;
+    cin>>n>>m;
+
+    vector<int> a(n);
+    rep(i,n) cin>>a[i];
+
+    int op=0;
+
+    vector<int> pre(n, 0);
+    
+    rep(i, n){
+        pre[i] = (i>0 ? pre[i-1] : 0 )+ a[i];
+    }
+
+    int mi= pre[m-1], now=mi;
+
+     
+    priority_queue<int> p;
+
+
+    for(int i=m-1; i>=0; i--){
+        // p.push(a[i]);  Why we push after losing one index, 
+        // ex- case 5 1, now 5 6 is prefix sum,if we are at i=1 and we push 1 
+        // when we go to i=0 pq has element 5 and 1 in it, and then pre[i]<mi condition follows,
+        // we take 5 out of pq and change our answer according to that.
+        // imagine -5 1, it is incorrect...... although we in this case get as same answer i.e 1 as correct one
+        // but the whole analysis is wrong  
+        if(pre[i]<mi){
+            int x= p.top();
+            p.pop();
+            mi-=(2*x);
+            op++;
+        }
+         p.push(a[i]);
+    }  
+
+    priority_queue<int, vector<int>, greater<int>>p1;
+
+    for(int i=m ;i<n; i++){
+        p1.push(a[i]);
+        if(pre[i]<now){
+            int x= p1.top();
+            p1.pop();
+            now+=(2*x);
+            op++;
+        }
+        
+    }  
+
+        cout<<op<<"\n";
+    
+
+
+    
+}
+return 0;
+}

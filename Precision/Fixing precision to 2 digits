@@ -11,4 +11,4 @@ long double round(long double var)
  
  
  
- Or divide krte time, just use .00 in divisor. Ex- 50/ 100.00
+ Or while dividing, just use .00 in divisor. Ex- 50/ 100.00

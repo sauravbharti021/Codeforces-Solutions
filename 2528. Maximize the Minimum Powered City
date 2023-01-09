@@ -1,0 +1,74 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    
+    
+    bool check(ll low, vector<ll> &pre, ll n ,ll k, int r){
+        queue<pair<ll, ll>> q;
+            
+        ll add=0;
+        ll cur=0;
+        rep(i,n){
+            if(!q.empty() && q.front().ff<i){
+                cur -= q.front().ss;
+                q.pop();
+                
+            }
+             ll left= max(0, i-r);
+            ll right= min(n-1, (ll)i+r);
+            
+           
+            
+            ll now= pre[right] - (left>0 ? pre[left-1]: 0 )+cur;
+            
+            if(now<low){
+                ll need= low- now;
+                add+=need;
+                cur+=need;
+                q.push({i+r+r, need});
+            }
+            if(add>k) return false;
+        }
+        
+        return true;
+    }
+    
+    long long maxPower(vector<int>& stations, int r, int k) {
+        
+        ll n=stations.size();
+        
+        vector<ll> pre(n+1, 0);
+     
+        ll mi= 1e18;
+        rep(i, n){
+            
+            pre[i] = (i>0 ? pre[i-1] : 0) + stations[i];
+           
+            
+        }
+        
+       ll l= 0, ri=1e15;
+        
+        while(ri-l>1){
+            ll m=(l+ri)/2;
+            
+            if(check(m, pre, n, k, r)){
+                l=m;
+            }else ri=m;
+        }
+        
+        return l;
+    }
+};

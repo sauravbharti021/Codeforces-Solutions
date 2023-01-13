@@ -1,0 +1,96 @@
+1. First find the longest path from any node and from that longest path's endpoint apply BFS again to find the longest path
+
+
+2246. Longest Path With Different Adjacent Characters
+``
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<bool> vis;
+    vector<vector<ll>> adj;
+
+    int longestPath(vector<int>& parent, string s) {
+        int n= parent.size();
+        vis.assign(n+1, false);
+        adj.assign(n+1, vector<ll>{});
+        ll mx=0;
+        for(int i=1; i<n; i++) {
+            if(parent[i]!=-1 && s[parent[i]]!=s[i] ){
+                adj[parent[i]].pb(i);
+                adj[i].pb(parent[i]);
+            }
+        }
+
+        vector<ll> dis(n+1, 1e9), d1(n+1, 1e9);
+
+        rep(i, n){
+            if(!vis[i]){
+
+                queue<ll> q;
+                dis[i]=0;
+                ll mx1=-1, mx2=-1, end=-1;
+                q.push(i);
+
+                while(!q.empty()){
+
+                    ll x= q.front();
+                    q.pop();
+                    vis[x]=true;
+                    if(mx1<dis[x]){
+                        mx1=dis[x];
+                        end=x;
+                    }
+
+                    for(auto j:adj[x]){
+                        if(dis[j] > dis[x]+1){
+                            q.push(j);
+                            dis[j] = dis[x]+1;
+                        }
+                    }
+
+
+                }
+
+                queue<ll> q1;
+                d1[end]=0;
+                q1.push(end);
+
+                while(!q1.empty()){
+
+                    ll x= q1.front();
+                    q1.pop();
+                    vis[x]=true;
+                    if(mx2<d1[x]){
+                        mx2=d1[x];
+                        end=x;
+                    }
+
+                    for(auto j:adj[x]){
+                        if(d1[j] > d1[x]+1){
+                            q1.push(j);
+                            d1[j] = d1[x]+1;
+                        }
+                    }
+
+                }
+
+                mx= max(mx, mx2);
+            }
+        }        
+
+        return mx+1;
+
+    }
+};

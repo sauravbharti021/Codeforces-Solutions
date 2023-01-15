@@ -1,0 +1,95 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+
+class Solution {
+    
+    struct dsu{
+    vector<int> parent, rank;
+ 
+    void makeset(int n){
+        parent.assign(n+1,0);
+        rank.assign(n+1,1);
+        for(int i=1;i<=n;i++) parent[i]=i;
+    }
+ 
+    int find(int x){
+        while(parent[x]!=x)
+            x=parent[x];
+ 
+            return x;
+    }
+ 
+     void unite(int u, int v){
+        u=find(u);
+        v=find(v);
+ 
+        if(u!=v){
+ 
+            if(rank[u]<rank[v]){
+                parent[u]=v;
+                rank[v]+=rank[u];
+            }else{
+                 parent[v]=u;
+                rank[u]+=rank[v];
+            }
+            
+        }
+       
+    }
+ 
+};
+    
+public:
+    int numberOfGoodPaths(vector<int>& vals, vector<vector<int>>& edges) {
+        dsu d;
+        int n=vals.size();
+        d.makeset(n+1);
+        
+        vector<vector<ll>> adj(n+1, vector<ll>{});
+        map<ll, vector<ll>> m; 
+        rep(i, n-1){
+            adj[edges[i][0]].pb(edges[i][1]);
+            adj[edges[i][1]].pb(edges[i][0]);
+            
+        }
+        rep(i,n){
+            m[vals[i]].pb(i);
+        }
+        
+        ll ans=n;
+        for(auto i: m ){
+            vector<ll> lol = i.ss;
+            
+            rep(j, lol.size()){
+                
+                rep(k, adj[lol[j]].size()){
+                    if( vals[adj[lol[j]][k]] <= i.ff ) d.unite(lol[j], adj[lol[j]][k]);
+                }
+                
+                
+                
+            }
+            map<int,int> m1;
+            rep(j, lol.size()) m1[d.find(lol[j])]++;
+            
+            for(auto j : m1) ans+= ((j.ss -1)*j.ss)/2;
+        }
+        
+        return ans;
+        
+        
+        
+        
+    }
+};

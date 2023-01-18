@@ -1,0 +1,64 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int maxSubarraySumCircular(vector<int>& nums) {
+        int n= nums.size();
+        
+        ll mx= *max_element(all(nums));
+        
+        ll start=0;
+        ll sum=0;
+        vector<int> pre(n, 0), suf(n, 0);
+        
+        ll mx1=-1e18, mx2=-1e18;
+        rep(i,n){
+            
+            sum+= nums[i];
+            mx=max(mx, sum);
+            
+            if(sum<0){
+                start=i+1;
+                sum=0;
+            }
+        }
+        
+        sum=0;
+        rep(i,n){
+            sum+= nums[i];
+            mx1=max(mx1, sum);
+            
+            pre[i] = mx1;
+        }
+        
+        sum=0;
+        
+        rrep(i,n){
+            sum+= nums[i];
+            
+            mx2=max(mx2, sum);
+            
+            suf[i]= mx2;
+        }
+        
+        rep(i,n-1){
+            ll now = pre[i] + suf[i+1];
+            mx=max(mx, now);
+        }
+        
+       
+        
+        return mx;
+    }
+};

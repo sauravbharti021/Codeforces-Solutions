@@ -1,0 +1,85 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<ll> in, out;
+    vector<vector<ll>> adj;
+    
+    ll in_dfs(int n, int par, vector<int> &pri){
+        
+        ll mx=0;
+        for(auto i: adj[n]){
+            if(i!=par){
+                mx= max(mx, in_dfs(i, n, pri));
+            }
+        }
+        
+        return in[n]=mx+pri[n];
+    }
+    
+    void out_dfs(int n, int par, vector<int> &pri){
+        
+        multiset<ll> ms;
+        for(auto i: adj[n]){
+            if(i==par) continue;
+            ms.insert(in[i]);
+        }
+        
+        for(auto i: adj[n]){
+            if(i==par) continue;
+            ms.erase(ms.equal_range(in[i]).ff);
+            
+            ll now=0;
+            if(!ms.empty()) now+= *(--ms.end());
+            
+            out[i] = max(out[n], now) + pri[n];
+            
+            ms.insert(in[i]);
+            out_dfs(i, n, pri);
+            
+            
+        }
+        
+    }
+    
+    long long maxOutput(int n, vector<vector<int>>& edges, vector<int>& price) {
+        
+        adj.assign(n+1, vector<ll>{} );
+        in.assign(n+1, 0);
+        out.assign(n+1, 0);
+        
+        rep(i,n-1){
+            adj[edges[i][0]].pb(edges[i][1]);
+            adj[edges[i][1]].pb(edges[i][0]);
+        }
+        
+        
+        
+        
+        in_dfs(0,-1,price);
+        out_dfs(0,-1, price);
+        
+        ll mx=0;
+        rep(i,n){
+            mx= max(mx, max(in[i], out[i]+price[i]) - price[i]);
+        }
+        
+        return mx;
+        
+    }
+    
+    
+    
+    
+};

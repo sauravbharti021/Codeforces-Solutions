@@ -1,0 +1,32 @@
+In Floyd Warshall Algo, we calculate the minimum weighted path between two vertices -- --- > Using DP.
+
+First we Initialize our DP by the edges given with their weight,
+
+Then we change and bring one INTERMEDIATORY vertex in every path and check the weight from them, if we get smaller weight then we update our DP, 
+otherwise it remains same,
+
+Video Link - "https://www.youtube.com/watch?v=oNI0rf2P9gE"
+
+
+
+
+code => 
+
+dp[N][N];
+
+rep(i,n){
+  rep(j,n){
+      if(path exists)
+        dp[i][j]= value;
+      else
+        dp[i][j] =Infinity;  
+  }
+}
+
+  rep(k,n){
+    rep(i,n){
+      rep(j,n){
+          dp[i][j] = min(dp[i][j], dp[i][k] + dp[k][j] );
+      }
+    }
+  }

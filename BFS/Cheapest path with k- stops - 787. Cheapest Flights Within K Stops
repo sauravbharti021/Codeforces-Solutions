@@ -1,0 +1,56 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+     int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        
+        vector<vector<pair<ll, ll>>> adj(n+1, vector<pair<ll,ll>>{});
+        
+        rep(i, flights.size()){
+            adj[flights[i][0]].pb({flights[i][1] , flights[i][2]});
+        }
+         
+        queue<pair<ll,ll>> q;
+         vector<ll> dis(n+1, 1e18);
+         
+        q.push({src, 0});
+        ll ans= 1e18, stops=0;            
+         
+        while(!q.empty() && stops<=k){
+              ll size= q.size();  
+              while(size--){
+                  pair<ll, ll > x= q.front();
+                  q.pop();
+                  
+                  if(x.ss> dis[x.ff]) continue;
+                  
+                  dis[x.ff] = x.ss;
+                  
+                  for(auto i: adj[x.ff]){
+                      if(x.ss + i.ss > ans) continue;
+                      
+                      if(i.ff== dst) ans= min( ans, x.ss+ i.ss);
+                      
+                      q.push({i.ff , x.ss + i.ss});
+                      
+                  }
+              }      
+            stops++;
+        } 
+         
+         if(ans==1e18) return -1;
+         return ans;
+        
+    }
+};

@@ -1,0 +1,47 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<string> findAllConcatenatedWordsInADict(vector<string>& words) {
+        
+        map<string, ll> m;
+        rep(i,words.size()) m[words[i]]++;
+        
+        vector<string> ans;
+        
+        rep(i, words.size()){
+            string now= words[i];
+            ll lol = now.size();
+            vector<ll> dp(lol+1, 0);
+            dp[0]=1;
+            m.erase(words[i]);
+            
+            for(int j=0; j<lol; j++){
+                if(!dp[j]) continue;
+               
+                for(int k=j+1; k<=lol; k++){
+                    if( m.find(now.substr(j,k-j))!=m.end()  ){
+                        dp[k]=1;
+                    }
+                }
+            }
+            if(dp[lol]){
+               ans.pb(now); 
+            }
+            m[words[i]]++;
+            
+        }
+        return ans;
+    }
+};

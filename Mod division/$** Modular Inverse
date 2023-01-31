@@ -20,3 +20,37 @@ as we know
     int modp(int a,int b,int m){ 
      a %= m;     int res = 1;  while (b > 0) { if (b & 1)    res = res * a % m;      a = a * a % m;  b >>= 1; }
       return res;}
+
+-------------------------------------------------------------------------------------------------------
+2 ways to calculate 
+
+====>>>>>>>>
+1. Using little Fermat's algo
+
+vector<int> invf(2e5+2, 1);
+    for(int i =2; i <= 2e5+1; i++)
+        invf[i] = (invf[i-1] * modp(i, mod-2, mod))%mod;
+
+ 
+
+vector<int> fac(2e5+2, 1);  
+    for(int i=1; i<=2e5+1; i++)
+        fac[i]=(i*fac[i-1])%mod; 
+        
+        
+2. 
+
+
+
+
+vector<int> invf(2e5+2, 1);
+    for (int i = 2; i <= 2e5+1; ++i)
+    invf[i] = invf[mod%i] * (mod- mod/i)%mod;
+
+ vector<int> rinv(2e5+2, 1);
+    for(int i=2; i<=2e5+1; i++)
+        rinv[i]= (invf[i]* rinv[i-1])%mod ;  /* (THIS IS inverse) */
+
+  vector<int> fac(2e5+2, 1);  
+   for(int i=2; i<=2e5+1; i++)
+    fac[i]=(i*fac[i-1])%mod; 

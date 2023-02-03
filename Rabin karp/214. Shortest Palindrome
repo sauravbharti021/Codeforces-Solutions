@@ -1,0 +1,123 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod1 1000000007
+#define mod2 1000000009
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+
+ll modp(ll a,ll b,ll m){ 
+ a %= m;     ll res = 1;  while (b > 0) { if (b & 1)    res = res * a % m;      a = a * a % m;  b >>= 1; }
+return res;}
+
+public:
+   string shortestPalindrome(string s) {
+
+        string f=s;
+        reverse(all(f));
+        if(f==s) return s;
+
+        ll p=31, n=s.size();
+        ll i1= modp(p, mod1-2, mod1 );
+        ll i2= modp(p, mod2-2, mod2 );
+        
+        vector<ll> pw1(n+2, 1);
+        for(int i=1; i<=n; i++){
+            pw1[i]= (pw1[i-1] * p)%mod1;
+            if(pw1[i]<0) pw1[i]+=mod1;
+        }
+        vector<ll> pw2(n+2, 1);
+        for(int i=1; i<=n; i++){
+            pw2[i]= (pw2[i-1] * p)%mod2;
+            if(pw2[i]<0) pw2[i]+=mod2;
+        }
+        
+        vector<ll> inv1(n+2, 1);
+        for(int i=1; i<=n ;i++){
+            inv1[i] = (inv1[i-1] * i1)%mod1;
+            if(inv1[i]<0) inv1[i]+=mod1;
+        }
+
+        vector<ll> inv2(n+2, 1);
+        for(int i=1; i<=n ;i++){
+            inv2[i] = (inv2[i-1] * i2)%mod2;
+            if(inv2[i]<0) inv2[i]+=mod2;
+        }
+        
+        vector<vector<ll>> hashp(n+1, vector<ll>(2, 0));
+
+        rep(i,n){
+            hashp[i][0] = ((i>0 ? hashp[i-1][0] : 0) + (((s[i]-'a')+1)*pw1[i])%mod1)%mod1;
+            if(hashp[i][0]<0) hashp[i][0]+=mod1;
+
+            hashp[i][1] = ((i>0 ? hashp[i-1][1] : 0) + (((s[i]-'a')+1)*pw2[i])%mod2)%mod2;
+            if(hashp[i][1]<0) hashp[i][1]+=mod2;
+        }
+
+        vector<vector<ll>> hashs(n+1, vector<ll>(2, 0));
+
+        rrep(i,n){
+            hashs[i][0] = ((i+1>=n ? 0 : hashs[i+1][0] ) +   (((s[i]-'a')+1)*pw1[n-i-1])%mod1)%mod1;
+            if(hashs[i][0]<0) hashs[i][0]+=mod1;
+
+            hashs[i][1] = ((i+1>=n ? 0 : hashs[i+1][1] ) +   (((s[i]-'a')+1)*pw2[n-i-1])%mod2)%mod2;
+            if(hashs[i][1]<0) hashs[i][1]+=mod2;
+
+        }
+
+        ll mi=1e18; string ans="";
+        for(int i=1; i<=n; i++){
+                
+            ll pre1= ((hashp[n-1][0] - (n-i-1>=0 ? hashp[n-i-1][0] : 0))%mod1 * inv1[n-i])%mod1;
+            if(pre1<0) pre1+=mod1;
+
+            ll pre2= ((hashp[n-1][1] - (n-i-1>=0 ? hashp[n-i-1][1] : 0))%mod2 * inv2[n-i])%mod2;
+            if(pre2<0) pre2+=mod2;
+
+             
+
+            ll suf1 = hashs[n-i][0];
+            if(suf1<0) suf1+=mod1;
+
+            ll suf2= hashs[n-i][1];
+            if(suf2<0) suf2+=mod2;
+
+            ll p1 = (hashp[n-1][0]*pw1[i])%mod1;
+            p1= (p1+ suf1)%mod1;
+            if(p1<0) p1+=mod1;
+
+            ll p2 = (hashp[n-1][1]*pw2[i])%mod2;
+            p2= (p2+ suf2)%mod2;
+            if(p2<0) p2+=mod2;
+
+            ll s1= ((pre1 * pw1[n])%mod1);
+            s1= (s1+hashs[0][0])%mod1;
+            if(s1<0) s1+=mod1;
+
+            ll s2= (pre2 * pw2[n])%mod2;
+            s2= (s2+hashs[0][1])%mod2;
+            if(s2<0)s2+=mod2;
+            
+
+            if(s1==p1 && s2==p2){
+                for(int j=n-1; j>=n-i; j--){
+                    ans+=s[j];
+                }
+                break;
+            }
+
+        }
+
+        return ans+s;
+
+        
+    }
+};

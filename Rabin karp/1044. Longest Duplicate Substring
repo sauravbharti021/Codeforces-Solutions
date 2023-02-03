@@ -1,0 +1,100 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod1 1000000007
+#define mod2 1000000009
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+
+ll modp(ll a,ll b,ll m){ 
+ a %= m;     ll res = 1;  while (b > 0) { if (b & 1)    res = res * a % m;      a = a * a % m;  b >>= 1; }
+return res;}
+
+public:
+    string longestDupSubstring(string s) {
+        
+        ll p=31, n=s.size();
+        ll i1= modp(p, mod1-2, mod1 );
+        ll i2= modp(p, mod2-2, mod2 );
+        
+        vector<ll> pw1(n+1, 1);
+        for(int i=1; i<=n; i++){
+            pw1[i]= (pw1[i-1] * p)%mod1;
+            if(pw1[i]<0) pw1[i]+=mod1;
+        }
+        vector<ll> pw2(n+1, 1);
+        for(int i=1; i<=n; i++){
+            pw2[i]= (pw2[i-1] * p)%mod2;
+            if(pw2[i]<0) pw2[i]+=mod2;
+        }
+        
+        vector<ll> inv1(n+1, 1);
+        for(int i=1; i<=n ;i++){
+            inv1[i] = (inv1[i-1] * i1)%mod1;
+            if(inv1[i]<0) inv1[i]+=mod1;
+        }
+
+        vector<ll> inv2(n+1, 1);
+        for(int i=1; i<=n ;i++){
+            inv2[i] = (inv2[i-1] * i2)%mod2;
+            if(inv2[i]<0) inv2[i]+=mod2;
+        }
+        
+        ll l= 0, r= n;
+
+        vector<vector<ll>> hash(n+1, vector<ll>(2, 0));
+
+        rep(i,n){
+            hash[i][0] = ((i>0 ? hash[i-1][0] : 0) + (((s[i]-'a')+1)*pw1[i])%mod1)%mod1;
+            if(hash[i][0]<0) hash[i][0]+=mod1;
+
+            hash[i][1] = ((i>0 ? hash[i-1][1] : 0) + (((s[i]-'a')+1)*pw2[i])%mod2)%mod2;
+            if(hash[i][1]<0) hash[i][1]+=mod2;
+        }
+        ll mx=-1; string ans="";
+        
+        while(r-l>1){
+            ll m= (l+r)/2;
+            int flag=0;
+            set<pair<ll,ll>>st;
+            int index=-1;
+
+            for(int i=0; i+m<=n; i++){
+                ll fir = (( hash[i+m-1][0] -  (i>0 ? hash[i-1][0] : 0 ))%mod1 *inv1[i])%mod1;
+                if(fir<0) fir+=mod1;
+
+                ll sec= (( hash[i+m-1][1] -  (i>0 ? hash[i-1][1] : 0 ))%mod2 *inv2[i])%mod2 ;
+                if(sec<0) sec+=mod2;
+
+                if(st.find({fir, sec})!= st.end()){
+                    flag=1;
+                    index=i;
+                    break;
+                }else{
+                    st.insert({fir,sec});
+                }
+
+            }
+            if(flag) {
+                l=m;
+                if(m>mx){
+                    mx= m;
+                    ans= s.substr(index, m);
+                }
+            }else r=m;
+        }
+
+        return ans;
+
+        
+        
+    }
+};

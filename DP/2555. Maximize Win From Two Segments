@@ -1,0 +1,61 @@
+
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define ordered_multiset tree<ll, null_type,less_equal<ll>, rb_tree_tag,tree_order_statistics_node_update>
+class Solution {
+public:
+   int maximizeWin(vector<int>& prizePositions, int k) {
+      
+    
+        
+      ll n=prizePositions.size();  
+        
+   
+
+      ll mx=0;
+      
+       vector<ll> now(n, 0);
+    
+      for(auto i= 0; i<n; i++){
+
+             
+           ll left =i;
+           ll rig= prizePositions[i] + k+1;
+
+           auto it= lower_bound(all(prizePositions), rig);
+
+           ll right=  it- prizePositions.begin() ;
+
+           ll d= right-left;
+
+           now[i]= d;
+
+
+      }
+       vector<ll> dp(n+1, 0);
+       rrep(i,n){
+           dp[i]= max(dp[i+1], now[i]);
+       }
+       
+       
+       rep(i,n){
+            ll lol= (dp[i+ now[i] ]);
+           mx= max(mx, lol+ now[i]);
+       }
+       
+       return mx;
+        
+    }
+   
+};

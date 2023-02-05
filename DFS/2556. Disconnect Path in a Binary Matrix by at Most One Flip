@@ -1,0 +1,65 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+vector<vector<bool>> vis;
+
+set<pair<int,int>> ans;
+ll flag=0;
+void dfs(int i, int j, vector<vector<int>> &g, ll &n, ll &m, set<pair<int,int>> s){
+    vis[i][j]=true;
+    if(i==n-1 && j==m-1){
+        ans=s;
+        flag=1;
+        return;
+    }
+    if(flag) return;
+
+    if(!(i==0 && j==0))
+    s.insert({i,j});
+
+    
+    if(i+1<n && !vis[i+1][j] && g[i+1][j]==1) {dfs(i+1, j, g, n,m,s); }
+    if(j+1<m && !vis[i][j+1] && g[i][j+1]==1) {dfs(i, j+1, g, n,m,s); }
+
+}
+void dfs2(int i, int j, vector<vector<int>> &g, ll &n, ll &m){
+    vis[i][j]=true;
+    if(i==n-1 && j==m-1){
+        return;
+    }
+    if(i+1<n && !vis[i+1][j] && g[i+1][j]==1) {dfs2(i+1, j, g, n,m); }
+    if(j+1<m && !vis[i][j+1] && g[i][j+1]==1) {dfs2(i, j+1, g, n,m); }
+}     
+
+bool isPossibleToCutPath(vector<vector<int>>& grid) {
+        ll n=grid.size(), m=grid[0].size();
+        vis.assign(n+1, vector<bool>(m+1, false) );
+        flag=0;
+        set<pair<int,int>> s;
+        dfs(0, 0, grid, n ,m, s);
+        
+        if(!vis[n-1][m-1]) return true;
+              
+    
+        for(auto i: ans){
+            grid[i.ff][i.ss]=0;
+        }
+        vis.assign(n+1, vector<bool>(m+1, false) );
+        dfs2(0, 0, grid, n ,m);
+        if(!vis[n-1][m-1]) return true;
+    
+        return false;
+    }
+};

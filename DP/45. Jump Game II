@@ -1,0 +1,37 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+vector<ll> dp;
+ll recur(int i, vector<int> &a, int &n) {
+    if(i>=n-1) return 0;
+
+    if(dp[i]!=1e7) return dp[i];
+
+    for(int j=1; j<=a[i]; j++){
+        dp[i]= min(dp[i], 1+recur(i+j, a, n)  );
+    }
+
+    return dp[i]; 
+}
+
+int jump(vector<int>& nums) {
+    int n=nums.size();
+    dp.assign(n+1, 1e7);
+        
+    ll ans= recur(0, nums, n);
+    
+    return ans;
+    }
+};

@@ -1,0 +1,75 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int maxDistance(vector<vector<int>>& grid) {
+        
+        ll n=grid.size(), m= grid[0].size();
+        
+        vector<vector<int>> dis(n+1, vector<int>(m+1, 1e7));
+        
+        queue<pair<int,int>> q,q2;
+        ll oc=0,zc=0;
+        
+        rep(i,n){
+            rep(j,m){
+                if(grid[i][j]==1){
+                    
+                    if(i-1>=0 && grid[i-1][j]==0) q.push({i-1, j});
+                    if(i+1<n && grid[i+1][j]==0)  q.push({i+1, j});
+                    if(j-1>=0 && grid[i][j-1]==0) q.push({i, j-1});
+                    if(j+1<m && grid[i][j+1]==0)  q.push({i, j+1});  
+                    oc++;   
+                }
+            }
+        }
+        if(oc==0 || oc==n*n) return -1;
+        
+        ll step=0;
+        
+        while(!q.empty()){
+            step++;
+            ll size= q.size();
+            while(size>0){
+                pair<int,int> x= q.front();
+                q.pop();
+                
+                if(dis[x.ff][x.ss]==1e7){
+                    dis[x.ff][x.ss]=step;
+                    int i= x.ff, j=x.ss;
+
+                    if(i-1>=0 && grid[i-1][j]==0 && dis[i-1][j]==1e7 )  q.push({i-1, j});
+                    if(i+1<n && grid[i+1][j]==0 && dis[i+1][j]==1e7 )  q.push({i+1, j});
+                    if(j-1>=0 && grid[i][j-1]==0 && dis[i][j-1]==1e7 ) q.push({i, j-1});
+                    if(j+1<m && grid[i][j+1]==0 && dis[i][j+1]==1e7 )  q.push({i, j+1});  
+                }
+                
+                size--;
+            }
+           
+        }
+        
+        int mx=-1;
+        rep(i,n){
+            rep(j,m){
+               if(grid[i][j]==0){
+                   mx= max(mx, dis[i][j]);
+               }
+            }
+        }
+        
+        return mx;
+        
+    }
+};

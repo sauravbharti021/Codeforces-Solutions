@@ -1,0 +1,121 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<int> shortestAlternatingPaths(int n, vector<vector<int>>& redEdges, vector<vector<int>>& blueEdges) {
+        
+        map<pair<ll,ll>,ll> red,blue;
+        vector<vector<ll>> adj(n+1, vector<ll>{});
+        rep(i, redEdges.size()){
+            int u= redEdges[i][0], v=redEdges[i][1];
+            red[{u, v}]++;
+            adj[u].pb(v);
+        }
+        rep(i, blueEdges.size()){
+            int u= blueEdges[i][0], v=blueEdges[i][1];
+            blue[{u, v}]++;
+            adj[u].pb(v);
+        }
+        
+   
+        vector<int> ans(n);
+        
+        for(int i=1;i<n; i++){
+            queue<ll> q;
+            vector<vector<ll>> dis(2, vector<ll>(n+2, 1e8));  
+            q.push(0);
+            dis[0][0]=0;
+            dis[1][0]=0;
+            ll flag=1; //*(red)
+            ll step=0;
+            
+            while(!q.empty()){
+                ll size= q.size();
+                
+                while(size>0){
+                    
+                    ll x= q.front();
+                    q.pop();
+                    size--;
+                    
+                    for(auto j: adj[x]){
+                        if(flag){
+                            if(red.find({x,j})!=red.end() ){
+                                if(dis[flag^1][x]+1 < dis[flag][j]){ 
+                                    dis[flag][j]= dis[flag^1][x]+1;
+                                    q.push(j);
+                                }   
+                            }
+                        }else{
+                            if(blue.find({x,j})!=blue.end() ){
+                                 if(dis[flag^1][x]+1 < dis[flag][j]) {
+                                    dis[flag][j]= dis[flag^1][x]+1;
+                                    q.push(j);
+                                 }
+                            } 
+                        }
+                    }
+                }
+                
+                flag^=1;
+            }
+            //////////////////////////////
+            
+            
+            q.push(0);
+            
+            flag=0; // (blue)
+             while(!q.empty()){
+                ll size= q.size();
+                while(size>0){
+                    
+                    ll x= q.front();
+                    q.pop();
+                    size--;
+                    
+                    for(auto j: adj[x]){
+                         if(flag){
+                            if(red.find({x,j})!=red.end() ){
+                                if(dis[flag^1][x]+1 < dis[flag][j]) { 
+                                    dis[flag][j]= dis[flag^1][x]+1;
+                                    q.push(j);
+                                }
+                            }
+                        }else{
+                            if(blue.find({x,j})!=blue.end() ){
+                                 if(dis[flag^1][x]+1 < dis[flag][j]) { 
+                                    dis[flag][j]= dis[flag^1][x]+1;
+                                    q.push(j);
+                                }
+                            } 
+                        }
+                    }
+                }
+                
+                flag^=1;
+            }
+            
+            
+            if(dis[0][i]==1e8 && dis[1][i]==1e8) ans[i]=-1;
+            else ans[i]= min(dis[0][i], dis[1][i]);
+            
+            
+        }
+        
+        return ans;
+        
+        
+        
+    }
+};

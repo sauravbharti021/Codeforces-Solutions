@@ -1,0 +1,83 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    
+    vector<vector<ll>> dp;
+    ll recur( int i, vector<ll> &f, ll mask){
+        if(i>=f.size()) return 0;
+        
+        ll cnt=0;
+        
+        ll flag=0;
+        
+        if(dp[i][mask]!=-1) return dp[i][mask];
+        
+        if((mask& f[i])!=0) {flag=1; }
+       
+        
+        if(flag) return dp[i][mask]= recur(i+1, f, mask);
+        
+        
+        cnt= ( 1+recur(i+1, f, (mask | f[i]) )%mod + recur(i+1, f, mask))%mod;
+          
+        if(cnt<0) cnt+=mod;
+        return dp[i][mask]= cnt;
+        
+    }
+    
+    int squareFreeSubsets(vector<int>& nums) {
+        
+        vector<int> now;
+        
+        rep(i,nums.size()){
+            if(nums[i]%4==0 || nums[i]%9==0 || nums[i]%16==0 || nums[i]%25==0 ) continue;
+            else now.pb(nums[i]);
+        }
+        nums=now;
+        
+        ll n=nums.size();
+        vector<ll> f;
+        
+        vector<int> primes{2,3,5,7,11, 13, 17, 19, 23, 29};
+        rep(i,n){
+            ll x=nums[i];
+            ll mask=0;
+            for(int j=0;j<primes.size();j++){
+                while(x>0 && x%primes[j]==0){
+                    x/=primes[j];
+                    mask|=(1ULL<<j);
+                }
+            }
+            
+            if(x>1){
+                mask|=(1<<x);
+                
+                
+            }
+            f.pb(mask);
+        }
+        
+        dp.assign(n+1, vector<ll>((1<<11), -1));
+        ll ans=0;
+        
+        
+        rep(i,n){
+            ans= (ans+ recur(i+1, f, f[i]))%mod;
+        }
+        ans= (ans+n)%mod;
+        
+        return ans;
+    }
+};

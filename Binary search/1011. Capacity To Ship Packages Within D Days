@@ -1,0 +1,46 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int shipWithinDays(vector<int>& weights, int days) {
+        ll n=weights.size();
+        ll s=0;
+        rep(i,n) s+=weights[i];
+        
+        ll l=-1, r=s;
+        while(r-l>1){
+            ll m= (l+r)/2;
+            ll cnt=0;
+            ll flag=0;
+            
+            rep(i,n){
+                ll sum=0;
+                if(weights[i]>m) {flag=1; break;}
+                while(i<n && sum+weights[i]<=m){
+                    sum+=weights[i];
+                    i++;
+                }
+                
+                cnt++;
+                if(i<n && sum>0) i--;
+            }
+            if(cnt<=days && !flag)
+                r=m;
+            else l=m;
+            
+        }
+        
+        return r;
+    }
+};

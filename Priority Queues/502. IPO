@@ -1,0 +1,66 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capital) {
+        
+        ll n= profits.size();
+        vector<pair<ll,ll>> a;
+        
+        rep(i,n){
+                a.pb({capital[i], profits[i]});
+        }
+        
+        n =a.size();
+        sort(all(a));
+        
+        priority_queue<ll> p;
+        
+        rep(i,n){
+            
+            ll f=0;
+            while(i<n && w>= a[i].ff){
+                f=1;
+                p.push(a[i].ss);
+                i++;
+            }
+            i--;
+            
+            
+                
+            if(k==0) break;
+            else if(!p.empty()){
+                ll x= p.top();
+                p.pop();
+                w+=x;
+                k--;
+            }
+            else break;
+            
+        }
+        
+        if(k>0){
+            while(k>0 && !p.empty()){
+                ll x= p.top();
+                p.pop();
+                w+=x;
+                k--;
+            }
+        }
+       
+        return w;
+    }
+};
+
+// n*O(log(n))

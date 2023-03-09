@@ -1,0 +1,117 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define Jhunjhar_Hova ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+ll npow(ll a, ll b) { 
+if(b==0) return 1;   ll res= npow(a, b/2);
+if(b%2!=0) return res*res*a;       else return res*res; }
+
+
+ll modp(ll a,ll b,ll m){ 
+ a %= m;     ll res = 1;  while (b > 0) { if (b & 1)    res = res * a % m;      a = a * a % m;  b >>= 1; }
+return res;}
+
+
+bool myComp(const pair<ll, ll>& a, const pair<ll, ll>& b){ if (a.first != b.first)  return a.first > b.first;  return a.second < b.second;}
+
+
+ll gcd(ll a , ll b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(ll n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+vector<ll> pre;
+vector<vector<ll>> adj;
+
+
+void dfs(ll n, ll par, map<pair<ll,ll>,ll> &m1 ){
+
+    if(par!=-1)
+    pre[n] = (pre[par] ^ m1[{par, n}]);
+
+    for(auto i: adj[n]){
+        if(i!=par){
+            dfs(i,n, m1);
+        }
+    }
+}
+
+int32_t main(){
+Jhunjhar_Hova
+
+
+ll t=1;
+cin>>t;
+while(t--){
+    ll n;
+    cin>>n;
+
+    pre.assign(n+1,0);
+    adj.assign(n+1, vector<ll>{});
+    map<pair<ll,ll>, ll> m1;
+
+    rep(i,n-1){
+        ll u, v, w;
+        cin>>u>>v>>w;
+
+        adj[u].pb(v);
+        adj[v].pb(u);
+
+        m1[{u,v}]=w;
+        m1[{v,u}]=w;
+    }
+   
+
+    dfs(1, -1,m1);
+    
+    map< ll, pair<ll,ll>> vis;
+    ll flag=0;
+
+
+    for(int i=1; i<=n; i++){
+        for(int j=i+1; j<=n; j++){
+
+            ll now= pre[i]^pre[j]; 
+
+            if(vis.find(now)!=vis.end()){
+                flag=1;
+                break;
+            }
+            else{
+                vis[now]= {i,j};
+            }
+        }
+        if(flag) break;
+    }
+
+    if(!flag) cout<<-1<<"\n";
+
+}
+return 0;
+}

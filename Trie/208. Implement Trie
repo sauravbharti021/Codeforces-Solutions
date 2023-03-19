@@ -1,0 +1,69 @@
+class TrieNode{
+    public:
+    
+    bool full_word;
+    vector<TrieNode*> children;
+    
+    TrieNode(){
+        full_word = false;
+        children.resize(26,NULL);
+        
+        for(int i=0; i<26; i++){
+            children[i]= NULL;
+        }
+    }
+};
+
+class Trie {
+public:
+    TrieNode* root;
+    Trie() {
+        root= new TrieNode();
+    }
+    
+    void insert(string word) {
+        int n= word.size();
+        
+        TrieNode* cur= root;
+        
+        for(int i=0; i<n; i++){
+            int k = word[i]-'a';
+            
+            if(cur->children[k] == NULL){
+                cur->children[k] = new TrieNode();
+            }
+            cur= cur->children[k]; 
+        }
+        
+        cur->full_word=true;
+        
+    }
+    
+    bool search(string word) {
+        int n=word.size();
+        TrieNode* cur =root;
+        
+        for(int i=0;i<n; i++){
+            int k=word[i]-'a';
+            if(cur->children[k]==NULL) return false;
+            
+            cur= cur->children[k];
+        }
+        return cur->full_word;
+        
+    }
+    
+    bool startsWith(string prefix) {
+        int n=prefix.size();
+        TrieNode* cur =root;
+        
+        for(int i=0;i<n; i++){
+            int k=prefix[i]-'a';
+            if(cur->children[k]==NULL) return false;
+            
+            cur= cur->children[k];
+        }
+        
+        return true;
+    }
+};

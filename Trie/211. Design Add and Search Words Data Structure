@@ -1,0 +1,88 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+
+class TrieNode{
+    public:
+        bool full_word;
+        vector<TrieNode*> children;
+    TrieNode(){
+        full_word=false;
+        children.assign(26, NULL);
+        
+    }
+};
+
+
+
+class WordDictionary {
+public:
+     TrieNode* root = new TrieNode();
+    
+    void insert(string &word) {
+        int n= word.size();
+        
+        TrieNode* cur= root;
+        
+        for(int i=0; i<n; i++){
+            int k = word[i]-'a';
+            
+            if(cur->children[k] == NULL){
+                cur->children[k] = new TrieNode();
+            }
+            cur= cur->children[k]; 
+        }
+        
+        cur->full_word=true;
+        
+    }
+    bool search_recur(string &s){
+        
+        TrieNode* cur= root;
+        
+        return search(s, 0, cur );
+    }
+    
+    bool search(string &word, int index, TrieNode* cur) {
+        
+        if(index==word.size())
+            return cur->full_word;
+    
+        ll flag=0;
+        if(word[index]=='.'){
+                rep(i,26){
+                    if(cur->children[i]!=NULL && word[index]=='.'  )
+                    flag |= search(word, index+1, cur->children[i]);
+                }
+        }
+        else{
+            if(cur->children[word[index]-'a'] ==NULL  )  return false;
+             
+            return search(word, index+1, cur->children[word[index]-'a']);
+        }
+        return flag;
+        
+    }
+    
+    WordDictionary() {
+        
+    }
+    
+    void addWord(string word) {
+        insert(word);
+    }
+    
+    bool search(string word) {
+        return search_recur(word);
+    }
+};

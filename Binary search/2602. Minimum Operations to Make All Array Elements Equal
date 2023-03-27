@@ -1,0 +1,57 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<long long> minOperations(vector<int>& nums, vector<int>& queries) {
+        
+        set<ll> s;
+        ll n= nums.size();
+        
+        
+        vector<ll> now;
+        sort(all(nums));
+        rep(i,n){
+            now.pb(nums[i]);
+        }
+        vector<ll> pre(n,0), suf(n,0);
+        
+        rep(i,n){
+            pre[i] = (i>0 ? pre[i-1] : 0) + (now[i]-now[0]);
+        }
+        
+        rrep(i,n){
+            suf[i] = (i+1<n ? suf[i+1]: 0) + (now[n-1] - now[i]);
+        }
+        
+        
+        vector<ll> ans;
+        rep(i,queries.size()){
+            ll left = 0, right= 0;
+            
+            auto it1 = upper_bound(all(now), queries[i]) - now.begin();
+            
+            if(it1>0){
+                left += (it1*(queries[i]- now[0])) - (pre[it1-1]);
+            }
+            if(it1<n){
+                right += ((n - it1)*(now[n-1]-queries[i]) - suf[it1]); 
+            }
+            
+            ll lol=0;
+            lol= (left+right);
+            ans.pb(lol);
+        }
+        return ans;
+        
+   

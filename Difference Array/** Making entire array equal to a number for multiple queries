@@ -1,0 +1,67 @@
+2607. Make K-Subarray Sums Equal
+
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    ll minimum(vector<int> &arr){
+        
+         ll  n=arr.size();
+        
+        vector<ll> pre(n, 0);
+        vector<ll> suf(n, 0);
+        vector<int> a=arr;
+        sort(all(a));
+        rep(i ,n){
+            pre[i]= (i>0 ? pre[i-1]: 0) + (a[i]- a[0]);
+        }
+        
+        rrep(i,n){
+            suf[i] = (i+1<n ? suf[i+1] : 0) + (a[n-1]-a[i]);
+        }
+        
+        ll mi=1e18;
+        rep(i,n){
+            ll f = ( 1LL*(a[i]-a[0])*i)- (i>0 ? pre[i-1] : 0) - (i+1<n ? suf[i+1] : 0 ) + (1LL*(a[n-1]-a[i])*(n-i-1));
+            mi =min(mi, f);
+        }
+        
+        return mi;
+    }
+    
+    long long makeSubKSumEqual(vector<int>& arr, int k) {
+        
+        ll  n=arr.size();
+        ll mi =minimum(arr);
+        
+        vector<vector<int>> lol;
+        ll ans=0;
+        ll x= gcd(k,n);
+        rep(i, x ){
+            
+            ll str =  i;
+            ll cnt=0;
+            vector<int> now;
+            while(str<n){
+                now.pb(arr[str%n]);
+                str+=x;
+                cnt++;
+            }
+            lol.pb(now);
+            ans+= minimum(now);
+        }
+        return min(ans, mi);
+        
+    }
+};

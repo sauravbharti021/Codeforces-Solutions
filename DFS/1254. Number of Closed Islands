@@ -1,0 +1,54 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<bool>> vis;
+    vector<vector<int>> d{{1,0}, {-1,0}, {0,1}, {0,-1}};
+    
+    bool check(int i, int j, vector<vector<int>> &grid){
+        
+        ll n=grid.size(), m=grid[0].size();
+        
+        vis[i][j]=true;
+        
+        
+        bool flag=false;
+        if(i==n-1 || i==0 || j==0 || j==m-1) flag= true;
+        
+        rep(k,4){
+            ll x = i+d[k][0];
+            ll y = j+d[k][1];
+            
+            if(x<n && x>=0 && y<m && y>=0 && grid[x][y]==0 && !vis[x][y] )
+                flag |= check(x,y, grid);
+        }
+        return flag;
+    }
+    
+    int closedIsland(vector<vector<int>>& grid) {
+        ll n=grid.size(), m=grid[0].size();
+        
+        ll cnt=0;
+        vis.assign(n, vector<bool>(m,false));
+        rep(i,n){
+            rep(j,m){
+                if(!vis[i][j] && grid[i][j]==0 ){
+                    cnt+= (!check(i,j, grid));
+                }
+            }
+        }
+        
+        return cnt;
+    }
+};

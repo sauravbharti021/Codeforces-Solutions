@@ -1,0 +1,96 @@
+Detecting cycle in directed graph
+
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<bool> vis;
+    vector<bool> dfs_vis;
+    vector<vector<ll>> adj;
+    vector<ll> fre;
+    bool check(int n, string &color){
+        
+        vis[n]=true;
+        dfs_vis[n]=true;
+        
+        bool flag=false;
+        
+        for(auto i : adj[n]){
+            if(!vis[i]){
+                flag |= check(i, color);
+            }else if(vis[i] && dfs_vis[i]) return true;
+        }
+        
+        dfs_vis[n]=false;
+        
+        return flag;
+        
+    }
+    
+    vector<vector<ll>> dp;
+    
+    void dfs(int n, string &color ){
+        vis[n]=true;
+        
+        
+        
+        for(auto i : adj[n]){
+            if(!vis[i]){
+                dfs(i, color);
+            }
+            rep(j, 26){
+                    dp[n][j] =max(dp[n][j], dp[i][j] );
+            }
+                 
+        }
+        dp[n][color[n]-'a']++;
+        
+        
+    }
+    
+    int largestPathValue(string colors, vector<vector<int>>& edges) {
+        ll n=colors.size();
+        
+        vis.assign(n+1, false);
+        adj.assign(n+1, vector<ll>{});
+        dfs_vis.assign(n+1, false);
+        
+        rep(i, edges.size()){
+            adj[edges[i][0]].pb(edges[i][1]);
+        }
+        ll mx=0;
+        rep(i,n){
+            if(!vis[i]){
+                if(check(i,colors)) return -1;
+            }
+        }
+        
+        dp.assign(n+1, vector<ll>(26, 0));
+        vis.assign(n+1, false);
+        
+        rep(i, n){
+            if(!vis[i]){
+                fre.assign(26, 0);
+                dfs(i, colors);
+                
+                rep(j,26){
+                
+                    mx=max(mx, dp[i][j]);
+                }
+            }
+        }
+        
+        return mx;
+    }
+};

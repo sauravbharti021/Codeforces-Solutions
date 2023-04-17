@@ -1,0 +1,100 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    ll N;
+    vector<ll> cnt;
+    vector<vector<ll>> adj;
+    
+    void solve(ll s, ll e){
+        queue<ll> q;
+        q.push(s);
+        vector<ll> dis(N+1, 1e8),par(N+1, -1);
+        dis[s]=0;
+        
+        while(!q.empty()){
+            ll x=q.front();
+            q.pop();
+            if(x==e) break;
+            
+            for(auto i: adj[x]){
+                if(i!= par[x]){
+                    if(dis[x]+1< dis[i] ){
+                        dis[i]= dis[x]+1;
+                        par[i]=x;
+                        q.push(i);
+                    }
+                }
+            }
+            
+        }
+        while(par[e]!=-1){
+            cnt[e]++;
+            e=par[e];
+        }
+        cnt[s]++;
+        
+    }
+    ll dp[51][2];
+    
+    ll recur(int n, int par, int can_half, vector<int> &price){
+        
+        if(dp[n][can_half]!=-1)  return dp[n][can_half];
+        
+        ll ans=1e18, lol=1e18;
+        
+        if(can_half){
+            ll mine= cnt[n]* (price[n]/2);
+            for(auto i: adj[n]){
+                if(i!=par){
+                    mine+= recur(i,n, 0, price);
+                }
+            }
+            ans=mine;
+        }
+        ll now=  cnt[n]* (price[n]);
+        for(auto i: adj[n]){
+                if(i!=par){
+                    now+= recur(i,n, 1, price);
+                }
+            }
+        ans=min(ans, now);
+        return dp[n][can_half] =ans;
+        
+    }
+    
+    int minimumTotalPrice(int n, vector<vector<int>>& edges, vector<int>& price, vector<vector<int>>& trips) {
+        
+        adj.assign(n+1, vector<ll>{});
+        N=n;
+        rep(i,edges.size()){
+            ll u=edges[i][0], v=edges[i][1];
+            
+            adj[v].pb(u);
+            adj[u].pb(v);
+        }
+        cnt.assign(n+1, 0);
+        memset(dp, -1, sizeof dp);        
+        
+        rep(i,trips.size()){
+            solve(trips[i][0], trips[i][1]);
+        }
+        
+        
+        
+        return recur(0,-1, 1, price );
+        
+        
+    }
+};

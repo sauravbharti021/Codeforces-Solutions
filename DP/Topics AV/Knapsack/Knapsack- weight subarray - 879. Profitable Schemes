@@ -1,0 +1,41 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int dp[101][101][101];
+    int profitableSchemes(int n, int minProfit, vector<int>& group, vector<int>& profit) {
+        memset(dp, -1, sizeof dp);
+        
+        ll ans= recur(group.size()-1, minProfit, group, profit, n );
+        if(ans<0 ) ans+=mod;
+        
+        return ans;
+    }
+    int recur(int i, int  minProfit, vector<int> &group, vector<int> &profit, int w){
+        if(i<0){
+            if(minProfit<=0)
+                return 1;
+            return 0;
+        }
+        minProfit= max(0, minProfit);
+        if(dp[i][w][minProfit]!=-1) return dp[i][w][minProfit];
+        
+        if(w- group[i]>=0 ){
+            return dp[i][w][minProfit] = ( recur(i-1, minProfit- profit[i], group, profit, w-group[i]  )%mod + recur(i-1, minProfit, group, profit, w) )%mod;
+        }
+        
+        return dp[i][w][minProfit] =  recur(i-1, minProfit, group, profit, w)%mod;
+        
+    }
+};

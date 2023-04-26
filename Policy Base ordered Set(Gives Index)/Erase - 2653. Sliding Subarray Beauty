@@ -1,0 +1,54 @@
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+
+
+  
+#define ordered_multiset tree<int, null_type,less_equal<int>, rb_tree_tag,tree_order_statistics_node_update>
+class Solution {
+public:
+    vector<int> getSubarrayBeauty(vector<int>& nums, int k, int x) {
+        ll n= nums.size();
+        
+        vector<int> ans;
+        ordered_multiset ms;
+        
+        rep(i,k){
+            ms.insert(nums[i]);
+        }
+        
+        ll now= *(ms.find_by_order(x-1));
+        
+        if(now<0) ans.pb(now);
+        else ans.pb(0);
+        
+        for(int i=k;i<n; i++){
+            int del= nums[i-k];
+            
+            ms.erase(ms.find_by_order( ms.order_of_key(del) ));
+            ms.insert(nums[i]);
+            
+            ll now= *(ms.find_by_order(x-1));
+            if(now<0) ans.pb(now);
+            else ans.pb(0);
+            
+        }
+        
+        return ans;
+        
+    }
+};

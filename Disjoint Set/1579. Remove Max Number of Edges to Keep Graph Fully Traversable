@@ -1,0 +1,140 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+
+struct dsu{
+    vector<ll> rank, par;
+    void makeset(int n){
+        rank.assign(n+2, 1);
+        par.assign(n+2, 0);
+        rep(i,n+2) par[i]=i;
+    }
+    
+    int find(int x){
+        while(x!=par[x])
+            x=par[x];
+        
+        return x;
+    }
+    
+    void unite(int u, int v){
+        u =find(u);
+        v= find(v);
+        if(u!=v){
+            if(rank[u]>rank[v]){
+                par[v]= u;
+                rank[u]+=rank[v];
+            }else{
+                par[u]= v;
+                rank[v]+= rank[u];
+            }
+        }
+    }
+};
+
+
+
+vector<vector<ll>> adj1, adj2;
+vector<bool> vis1, vis2;
+
+void dfs1(int n){
+    
+    vis1[n]=true;
+    
+    for(auto i: adj1[n]){
+        if(!vis1[i])
+            dfs1(i);
+    }
+    
+}
+void dfs2(int n){
+    vis2[n]=true;
+    
+    for(auto i: adj2[n]){
+        if(!vis2[i])
+            dfs2(i);
+    }
+}
+
+class Solution {
+public:
+    int maxNumEdgesToRemove(int n, vector<vector<int>>& edges) {
+        
+        adj1.assign(n+1, vector<ll>{});
+        adj2.assign(n+1, vector<ll>{});
+        vis1.assign(n+1, false);
+        vis2.assign(n+1, false);
+        dsu d;
+        d.makeset(n+1);
+        rep(i,edges.size()){
+            ll u = edges[i][1], v= edges[i][2];
+            if(edges[i][0]==3){
+                adj1[u].pb(v);
+                adj1[v].pb(u);  
+                adj2[u].pb(v);
+                adj2[v].pb(u);
+            }
+            else if(edges[i][0]==1){
+                adj1[u].pb(v);
+                adj1[v].pb(u);    
+            }else{
+                adj2[u].pb(v);
+                adj2[v].pb(u);
+            }
+            
+        }
+        
+        dfs1(1);
+        dfs2(1);
+        
+        for(int i=1;i<=n; i++){
+            if(!vis1[i] || !vis2[i])
+                return -1;
+        }
+        ll cnt=0;
+        dsu d1, d2;
+        d1.makeset(n+1);
+        d2.makeset(n+1);
+        
+        rep(i, edges.size()){
+            ll u = edges[i][1], v= edges[i][2];
+            if(edges[i][0]==3){
+                if(d.find(u)==d.find(v)) cnt++;
+                else{
+                    d.unite(u,v);
+                    d1.unite(u,v);
+                    d2.unite(u,v);
+                }
+            }
+                
+        }
+        
+        
+        rep(i,edges.size()){
+            ll u = edges[i][1], v= edges[i][2];
+            if(edges[i][0]==1){
+                if(d.find(u)==d.find(v) || d1.find(u)==d1.find(v)) cnt++;
+                else d1.unite(u,v);
+            }
+            else if(edges[i][0]==2){
+                if(d.find(u)==d.find(v) || d2.find(u)==d2.find(v)) cnt++;
+                else d2.unite(u,v);
+            } 
+            
+            if( d2.find(u)==d2.find(v) && d1.find(u)==d1.find(v)) d.unite(u,v);
+        }
+        
+        return cnt;
+        
+    }
+};

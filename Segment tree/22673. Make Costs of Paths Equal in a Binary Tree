@@ -1,0 +1,132 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+    vector<ll> dis;
+    void dfs(int n, ll sum, int par, vector<int> &cost){
+        
+        if(n>cost.size()) return;
+        dis[n]= sum+ cost[n-1]; 
+        
+        for(auto  i: adj[n]){
+            if(i!=par) {
+                dfs(i, dis[n], n, cost);
+            }
+        }
+        
+    }
+
+  struct seg1{
+ 
+    vector<int> seg;
+    vector<int> a;
+    void makeset(int n, vector<int> &b){
+        seg.assign(4*n + 2,0 );
+        a.assign(n, 0);
+        a.assign(b.begin(), b.end());
+    } 
+    void build(int ind, int l, int h){
+        if(l==h){
+            seg[ind]=a[l];
+            return; 
+        }
+        int mid= (l+h)/2;
+        build(2*ind +1, l, mid );
+        build(2*ind +2, mid+1, h );
+ 
+        seg[ind]=max(seg[ind],  max(seg[ind*2 +1] , seg[ind*2 + 2]));
+ 
+    }
+ 
+    int query(int ind, int low, int high, int l, int h){
+        if(low>=l && high<=h) {
+            return seg[ind];
+        }
+ 
+        if(l>high || h<low ) return 0;  
+ 
+        int mid=(low+ high)/2;
+ 
+        int left= query( 2*ind +1, low, mid, l ,h);
+        int right= query( 2*ind +2, mid+1, high, l, h);
+ 
+        return max(left,right);  
+    }
+ 
+ 
+ 
+};
+    
+ll ans=0;
+public:
+    vector<vector<int>> adj;
+    seg1 s;
+    int minIncrements(int n, vector<int>& cost) {
+        
+        adj.assign(n*4 +1, vector<int>{});
+        dis.assign(n*4+1, 0);
+        ll x = 31 - __builtin_clz(n);
+        
+        
+        for(int i=1; i<(1<<x); i++){
+            ll u = 2*i , v= 2*i +1;
+            
+            adj[i].pb(u);
+            adj[u].pb(i);
+            
+            adj[i].pb(v);
+            adj[v].pb(i);
+        }
+        
+        dfs(1,0,0, cost);
+        vector<int> lol;
+        int mx=0;
+        lol.pb(0); 
+        
+        for(int i= (1<<(x) ); i<(1<<(x+1));i++){
+            mx= max(mx, (int)dis[i]);
+            
+            lol.pb(dis[i]);
+        }
+        
+        s.makeset(lol.size()+2, lol);
+        s.build(0,0, lol.size());
+        check(1, lol.size()/2, 0, mx, lol);
+        check(lol.size()/2+1 , lol.size()- 1, 0, mx, lol);
+        
+        
+        
+        return ans;
+        
+        
+        
+    }
+    void check(int l, int r, int pass, ll mx, vector<int> &lol ){
+        
+        if(l>r) return;
+        ll f= s.query(0, 0, lol.size(), l, r);
+        
+        ll heh= mx - (f+ pass);
+        
+        ans+= heh;
+        
+        ll m= (l+r)/2;
+        
+        if(m!=l || m!=r){
+            check(l, m, pass+heh, mx , lol);
+            check(m+1, r, pass+heh, mx, lol);
+        }
+        
+    }
+    
+};

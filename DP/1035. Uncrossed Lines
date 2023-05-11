@@ -1,0 +1,31 @@
+#define ll long long
+
+class Solution {
+public:
+    ll dp[501][501];
+    ll recur(int i, int j, int n, int m, vector<int> &nums1, vector<int> &nums2 ){
+        if(i>=n || j>=m) return 0;
+        
+        if(dp[i][j]!=-1) return dp[i][j];
+        
+        ll index= -1;
+        for(int k=j;k<m;k++){
+            if(nums1[i]== nums2[k]){
+                index=k;
+                break;
+            }
+        }
+        if(index!=-1)
+        return dp[i][j] = max(1+ recur(i+1, index+1, n,m ,nums1, nums2), recur(i+1, j, n,m, nums1, nums2) );
+        
+        
+        return dp[i][j] = recur(i+1, j, n,m ,nums1, nums2);
+        
+    }
+    int maxUncrossedLines(vector<int>& nums1, vector<int>& nums2) {
+        memset(dp, -1,sizeof dp );
+        
+        return recur(0,0, nums1.size(), nums2.size(), nums1, nums2);
+        
+    }
+};

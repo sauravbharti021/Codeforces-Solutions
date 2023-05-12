@@ -1,0 +1,20 @@
+#define ll long long
+#define rep(i, n) for(int i=0; i<n; i++)
+class Solution {
+public:
+    ll dp[100001];
+    ll recur(int i, vector<vector<int>> &questions){
+        if(i>= questions.size()) return 0;
+        
+        if(dp[i]!=-1) return dp[i];
+        
+        return dp[i] = max(questions[i][0]+ recur(i+questions[i][1]+1, questions),  recur(i+1, questions) );
+        
+    }
+    
+    long long mostPoints(vector<vector<int>>& questions) {
+        
+        memset(dp, -1, sizeof dp );
+        return recur(0, questions);
+    }
+};

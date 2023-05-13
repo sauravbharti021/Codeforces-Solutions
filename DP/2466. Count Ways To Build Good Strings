@@ -1,0 +1,27 @@
+#define ll long long 
+#define mod 1000000007
+
+class Solution {
+public:
+ll dp[200001];
+    ll recur(int i, int low, int high, int zero , int one){
+        if(i>high) return 0;
+        if(dp[i]!=-1) return dp[i];
+        
+        ll ans=0;
+        if(i>=low && i<=high) ans=1;
+        
+        ans = (ans+ ( recur(i+one, low, high, zero, one))%mod + recur(i+zero, low, high, zero, one)%mod)%mod;
+        
+        if(ans<0) ans+= mod;
+        
+        return dp[i] = ans;
+        
+    }
+    int countGoodStrings(int low, int high, int zero, int one) {
+        memset(dp, -1, sizeof dp);
+        
+        
+        return recur(0, low, high, zero, one);
+    }
+};

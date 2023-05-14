@@ -1,0 +1,47 @@
+#define ll long long
+#define rep(i,n) for(int i=0; i<n; i++)
+#define ss second
+#define ff first
+class Solution {
+ll gcd(ll a, ll b){
+    if(a==0) return b;
+    
+    return gcd(b%a, a);
+}
+    
+    ll cnt=0;
+    ll dp[15][17000];
+ll check(int i, int mask, int n, vector<int> &num, vector<vector<int>> &cac){
+    if(mask==0) return 0;
+    if(dp[i][mask]!=-1) return dp[i][mask];
+    ll mx=0;
+    rep(k, n){
+        if((mask & (1<<k))>0) {
+            for(int j=k+1;j<n;j++){
+                if((mask & (1<<j))>0){
+                    mx = max(mx, ((i+1)*cac[k][j]) + check(i+1, mask^(1<<k)^(1<<j), n, num, cac) );
+                }
+            }
+            
+        }
+    }
+    
+    return dp[i][mask]=mx;
+}
+        
+public:
+    int maxScore(vector<int>& nums) {
+        
+        ll n = nums.size();
+        memset(dp, -1, sizeof dp);
+        vector<vector<int>> cac(n, vector<int>(n,0));
+        rep(i,n){
+            for(int j=i+1; j<n; j++){
+                cac[i][j] = gcd(nums[i], nums[j]);
+            }
+        }
+        
+        return check(0, (1<<n)-1, n, nums, cac);
+        
+    }
+};

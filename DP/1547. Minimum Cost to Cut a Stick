@@ -1,0 +1,47 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    
+    int dp[105][105];
+    int recur(int left, int right, vector<int> &cut){
+        
+        if(dp[left][right]!=-1)
+            return dp[left][right];
+        
+        if(right-left<=1) return 0;
+        
+        int mi = 1e7;
+        
+        for(int i = 0 ; i< cut.size(); i++){
+            if(i> left && i< right){
+                mi = min(mi, cut[right] - cut[left] + recur(left, i, cut) + recur(i, right , cut));
+            }
+        }
+        
+        return dp[left][right] = mi;
+    }
+    
+    
+    int minCost(int n, vector<int>& cuts) {
+        sort(all(cuts));
+        cuts.insert(cuts.begin(), 0);
+        cuts.pb(n);
+        
+        ll m = cuts.size();
+        memset(dp, -1, sizeof dp);
+        return recur(0, m-1, cuts);
+        
+    }
+};

@@ -1,0 +1,141 @@
+#define ll long long
+#define pi (3.141592653589)
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+ const int mod = 1e9 + 7;
+class Solution {
+public:
+    int dp[25][1000][2];
+    
+    
+    
+    int recur1(int i, string &s, int sum, int min_sum, int max_sum, int flag){
+        if(sum>max_sum) return 0;
+        if(i>=s.size()){
+            if(sum>=min_sum && sum<=max_sum) return 1;
+            return 0;
+        }
+        if(dp[i][sum][flag]!=-1) return dp[i][sum][flag];
+        
+        char limit = s[i]; 
+        int ans = 0; 
+        
+        
+        if(!flag){
+            for(int j=0; j<=(s[i]-'0');j++){
+                if(j == (s[i]- '0')){
+                    ans = (ans + recur1(i+1, s, sum+j, min_sum, max_sum, flag))%mod;
+                }
+                else{
+                    ans = (ans + recur1(i+1,s, sum+j, min_sum, max_sum, 1))%mod;
+                }
+            }
+        
+        }else{
+             rep(j, 10){
+                ans= (ans + recur1(i+1,s, sum+j, min_sum, max_sum, flag))%mod;
+             }
+        }
+        
+        if(ans<0) ans+= mod;
+        return dp[i][sum][flag] = ans%mod;
+        
+    }
+    
+    int count(string num1, string num2, int min_sum, int max_sum) {
+        memset(dp, -1, sizeof dp);
+        
+        ll x = recur1(0, num2, 0, min_sum, max_sum, 0);
+        memset(dp, -1, sizeof dp);
+        ll now =  x - recur1(0, num1, 0, min_sum, max_sum, 0);
+        
+        ll flag=0, sum=0;
+        
+        rep(i, num1.size()) sum+= (num1[i]-'0');
+        if(sum>=min_sum && sum<=max_sum)
+            now = (now + 1)%mod;  
+        
+        now %=mod;
+        if(now<0) now += mod;
+        
+        return now%mod;
+    }
+};#define ll long long
+#define pi (3.141592653589)
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+ const int mod = 1e9 + 7;
+class Solution {
+public:
+    int dp[25][1000][2];
+    
+    
+    
+    int recur1(int i, string &s, int sum, int min_sum, int max_sum, int flag){
+        if(sum>max_sum) return 0;
+        if(i>=s.size()){
+            if(sum>=min_sum && sum<=max_sum) return 1;
+            return 0;
+        }
+        if(dp[i][sum][flag]!=-1) return dp[i][sum][flag];
+        
+        char limit = s[i]; 
+        int ans = 0; 
+        
+        
+        if(!flag){
+            for(int j=0; j<=(s[i]-'0');j++){
+                if(j == (s[i]- '0')){
+                    ans = (ans + recur1(i+1, s, sum+j, min_sum, max_sum, flag))%mod;
+                }
+                else{
+                    ans = (ans + recur1(i+1,s, sum+j, min_sum, max_sum, 1))%mod;
+                }
+            }
+        
+        }else{
+             rep(j, 10){
+                ans= (ans + recur1(i+1,s, sum+j, min_sum, max_sum, flag))%mod;
+             }
+        }
+        
+        if(ans<0) ans+= mod;
+        return dp[i][sum][flag] = ans%mod;
+        
+    }
+    
+    int count(string num1, string num2, int min_sum, int max_sum) {
+        memset(dp, -1, sizeof dp);
+        
+        ll x = recur1(0, num2, 0, min_sum, max_sum, 0);
+        memset(dp, -1, sizeof dp);
+        ll now =  x - recur1(0, num1, 0, min_sum, max_sum, 0);
+        
+        ll flag=0, sum=0;
+        
+        rep(i, num1.size()) sum+= (num1[i]-'0');
+        if(sum>=min_sum && sum<=max_sum)
+            now = (now + 1)%mod;  
+        
+        now %=mod;
+        if(now<0) now += mod;
+        
+        return now%mod;
+    }
+};

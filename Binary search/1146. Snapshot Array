@@ -1,0 +1,27 @@
+#define pb push_back
+#define all(c) c.begin(), c.end() 
+class SnapshotArray {
+public:
+    map<int, vector<pair<int,int>>>m;
+    int l, s=0;
+    SnapshotArray(int length){
+        
+    }
+    
+    void set(int index, int val) {
+        m[index].pb({s, val});
+    }
+    
+    int snap() {
+        return s++;
+    }
+    
+    int get(int index, int snap_id) {
+        auto it = upper_bound(all(m[index]), make_pair(snap_id, INT_MAX));
+        
+        if(it==m[index].begin()) return 0;
+        it--;
+        pair<int,int> x =*it;
+        return x.second;
+    }
+};

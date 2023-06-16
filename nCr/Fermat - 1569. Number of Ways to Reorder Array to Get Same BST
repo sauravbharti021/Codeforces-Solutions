@@ -1,0 +1,54 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+    
+ll modp(ll a,ll b,ll m){ 
+ a %= m;     ll res = 1;  while (b > 0) { if (b & 1)    res = res * a % m;      a = a * a % m;  b >>= 1; }
+return res;}
+    
+public:
+    vector<ll> f, inv;
+    int numOfWays(vector<int>& nums) {
+        f.assign(1001, 1);
+        inv.assign(1001, 1);
+        
+        for(int i=1;i<=1000; i++){
+            f[i]= (f[i-1]*i)%mod;
+            if(f[i]<0) f[i]+=mod;
+        }
+        for(int i=1;i<=1000;i++){
+            inv[i]= modp(f[i], mod-2, mod);
+            if(inv[i]<0 ) inv[i]+= mod;
+        }
+        
+        ll ans= 0;
+        ans= recur(nums);
+        if(ans<0) ans+= mod;
+        return ans-1;
+        
+    }
+    ll recur(vector<int> nums){
+        if(nums.size()<=1) return 1;
+        
+        vector<int> l,r;
+        for(int i=1;i<nums.size();i++) 
+            if(nums[i]>nums[0]) r.pb(nums[i]);
+            else l.pb(nums[i]);
+        ll n=nums.size();
+        ll ans= ((f[n-1]*inv[l.size()])%mod * inv[n-1-l.size()])%mod;
+        
+        return ((ans*recur(l))%mod *recur(r))%mod;
+    }
+    
+};

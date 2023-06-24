@@ -1,0 +1,44 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int dp[21][10001];
+    int lol= 5000;
+    int recur(int i, int s1, int s2, vector<int> &rods){
+        if(i>=rods.size()){
+            if(s1==s2) return 0;
+            return -1e7;
+        }
+        if(dp[i][s1-s2+lol]!=-1e9) {
+            return dp[i][s1-s2+lol];
+        }
+        int ans=-1e7;
+        ans=max(ans, recur(i+1, s1, s2, rods));
+        ans= max(ans, rods[i]+recur(i+1, s1+rods[i], s2, rods));
+        ans= max(ans, recur(i+1, s1, s2+rods[i], rods));
+        
+        return dp[i][s1-s2+lol]=ans;
+    }
+    
+    int tallestBillboard(vector<int>& rods) {
+        rep(i,21){
+            rep(j,10001){
+                dp[i][j]=-1e9;
+            }
+        }
+        ll mx= recur(0,0,0,rods);
+        if(mx<0) mx=0;
+        return mx;
+    }
+};

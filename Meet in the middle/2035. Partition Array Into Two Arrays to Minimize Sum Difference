@@ -1,0 +1,65 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<int>> find(int l, int r, vector<int> &nums){
+        ll n=nums.size()/2;
+        vector<vector<int>> lol(n+1, vector<int>{});
+        rep(i, (1<<n)){
+            ll sum=0, cnt=0;
+            rep(j,n){
+                if((i&(1<<j))){
+                    cnt++;
+                    sum+= nums[j+l];
+                }
+            }
+            
+            lol[cnt].pb(sum);
+        }
+        
+        return lol;
+    }
+    int minimumDifference(vector<int>& nums) {
+        ll n=nums.size();
+        ll sum=0;
+        rep(i,n) sum+= nums[i];
+        vector<vector<int>> left = find(0,n/2, nums);
+        vector<vector<int>> right = find(n/2, n, nums);
+        
+        rep(i,n/2+1){
+            sort(all(right[i]));
+        }
+        
+        ll mi= 1e10;
+        rep(i, n/2+1) sort(all(right[i]));
+     
+        rep(i, n/2+1){
+            
+            rep(j, left[i].size()){
+                
+                ll look_for= sum/2 - left[i][j];
+                ll rem = n/2 -i ;
+                auto it = lower_bound(all(right[rem]), look_for);
+                
+                if(it!=right[rem].end()){
+                    mi = min(mi, abs( (sum- (left[i][j]+*it) )- (left[i][j]+*it) ));
+                }
+            }
+        }
+        
+        return mi;
+    }
+                             
+                             
+};

@@ -1,0 +1,40 @@
+#define ss second 
+#define ff first
+#define pb push_back
+class Solution {
+public:
+    vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
+        
+        priority_queue<pair<int, pair<int,int>>, vector<pair<int,pair<int,int>>>, greater<pair<int,pair<int,int>>>> p;
+        
+        vector<vector<int>> ans;
+        set<pair<int,int>> s;
+        
+        p.push({nums1[0]+ nums2[0], {0,0}});
+        s.insert({0,0});
+        
+        while(!p.empty() && k--){
+            pair<int,pair<int,int>> now= p.top();
+            p.pop();
+            
+            int i= now.ss.ff, j= now.ss.ss;
+            
+            ans.pb({nums1[i], nums2[j]});
+            s.insert({i, j});
+            
+            if(i+1<nums1.size() && s.find({i+1,j})==s.end()){
+                p.push({nums1[i+1]+nums2[j] , {i+1, j}});
+                s.insert({i+1,j});
+            }
+            
+            if(j+1<nums2.size() && s.find({i, j+1})==s.end() ){
+                p.push({nums1[i]+nums2[j+1] , {i, j+1}});
+                s.insert({i,j+1});
+            }
+            
+        }
+        
+        return ans;
+        
+    }
+};

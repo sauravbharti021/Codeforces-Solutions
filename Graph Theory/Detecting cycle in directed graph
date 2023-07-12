@@ -1,0 +1,57 @@
+802. Find Eventual Safe States
+-------------------------------------------------------------------------------------------------
+
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<bool> seen;
+    vector<int> vis;
+    vector<vector<int>> adj;
+    bool recur(int n){
+        if(adj[n].size()==0){
+            return true;
+        }
+        if(vis[n]!=-1) return vis[n];
+        seen[n]= true;
+        ll ans=true;
+        for(auto i: adj[n]){
+            if(!seen[i])
+                ans&= recur(i);
+            else return vis[n]=false;
+        }
+        seen[n]=false;
+        return vis[n]= ans;
+    }
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        ll n= graph.size();
+        adj.assign(n+1, vector<int>{});
+        vis.assign(n+1, -1);
+        seen.assign(n+1, false);
+        rep(i,n){
+            rep(j, graph[i].size()){
+                ll u= i, v= graph[i][j];
+                adj[u].pb(v);
+            }
+        }
+        
+        vector<int> ans;
+        rep(i,n){
+            if(!seen[i]) ll c= recur(i);
+        }    
+        
+        rep(i,n) if(vis[i]) ans.pb(i);
+        return ans;
+    }
+};

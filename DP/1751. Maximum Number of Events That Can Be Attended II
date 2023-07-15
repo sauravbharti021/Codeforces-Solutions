@@ -1,0 +1,36 @@
+#define ll long long
+#define rep(i,n) for(int i=0;i<n;i++)
+#define all(c) c.begin(), c.end()
+#define pb push_back
+class Solution {
+public:
+    vector<vector<ll>> dp;
+    ll recur(int i, int k, vector<vector<int>> &events, vector<int> &start ){
+        if(k==0 || i>=events.size()){
+            return 0;
+        }
+        ll val=0;
+        if(dp[i][k]!=-1) return dp[i][k];
+        
+        val = recur(i+1, k, events, start );
+        
+        auto it= upper_bound(all(start), events[i][1])-start.begin();
+        
+        val = max(val, events[i][2]+recur(it, k-1, events, start));
+        
+        return dp[i][k]=val;
+        
+    }
+    
+    int maxValue(vector<vector<int>>& events, int k) {
+        
+        ll n= events.size();
+        sort(all(events));
+        dp.assign(n+1, vector<ll>(k+1, -1));
+        vector<int> start;
+        rep(i,n) start.pb(events[i][0]);
+        
+        ll ans= recur(0, k, events, start);
+        return ans;
+    }
+};

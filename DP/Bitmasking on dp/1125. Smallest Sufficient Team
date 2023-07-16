@@ -1,0 +1,85 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod1 1000000007  
+#define mod2 1000000009
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<int>>dp; 
+    int recur(int i, int mas, map<string,int> &ind, vector<vector<string>> &people){
+        if(i>=people.size()){
+            if(mas>0 || mas<0) {
+                return 1e7;
+            }
+           return dp[i][mas]=0;
+        }
+        if(mas<0) return 1e7;
+        if(mas==0) return dp[i][mas]=0;
+        if(dp[i][mas]!=-1) return dp[i][mas];
+        
+        
+        int a=1e7;
+        int temp=mas;
+        rep(k, people[i].size()){
+            if((temp & (1ULL<<ind[people[i][k]]))==0)  continue;
+                
+            temp=temp-(1ULL<<ind[people[i][k]]);
+        }
+        
+        for(int j=i+1;j<=people.size();j++)
+        a=min(a, 1+recur(j,temp, ind, people));
+        
+ 
+        return dp[i][mas]=a;
+    
+   }
+    
+    
+    vector<int> smallestSufficientTeam(vector<string>& req_skills, vector<vector<string>>& people) {
+       
+        map<string, int> ind;
+        ll cnt=0;
+        ll mas= 0;
+        rep(i, req_skills.size()){
+            ind[req_skills[i]]=cnt;
+            mas |= (1ULL<<cnt);
+            cnt++;
+        }
+        dp.assign(people.size()+4, vector<int>(mas+1, -1));
+
+        vector<int> ans;
+        ll mi=1e8;
+        rep(i, people.size()) {
+            ll x= recur(i, mas, ind, people);  
+            mi=min(mi, x);
+        }
+        int n=people.size();
+        ll lol=0;
+        while(mas>0){
+            
+            rep(i, n+1){
+                if(dp[i][mas]==mi){
+                    ans.pb(i);
+                    rep(j, people[i].size()){
+                        if((mas&(1<<ind[people[i][j]]))==0) continue;
+                        mas-=(1<<ind[people[i][j]]);
+                    }
+                    mi--;
+                    break;
+                }
+            }
+        }
+        return ans;
+        
+    }
+        
+};

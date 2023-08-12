@@ -1,0 +1,102 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+#define Jhunjhar_Hova ios_base::sync_with_stdio(false), cin.tie(nullptr), cout.tie(nullptr);
+
+
+ll npow(ll a, ll b) { 
+if(b==0) return 1;   ll res= npow(a, b/2);
+if(b%2!=0) return res*res*a;       else return res*res; }
+
+
+ll modp(ll a,ll b,ll m){ 
+ a %= m;     ll res = 1;  while (b > 0) { if (b & 1)    res = res * a % m;      a = a * a % m;  b >>= 1; }
+return res;}
+
+
+bool myComp(const pair<ll, ll>& a, const pair<ll, ll>& b){ if (a.first != b.first)  return a.first > b.first;  return a.second < b.second;}
+
+
+ll gcd(ll a , ll b)
+{
+if(b==0) return a;
+a%=b;
+return gcd(b,a);
+}
+
+
+bool isPrime(ll n){
+    if(n==1) return false;
+    if(n==2) return true;
+    for(int i=2;i*i<=n;i++){
+        if(n%i==0)return false;
+    }
+    return true;
+}
+int find_sq(int no){
+    int l=0 , r= 1e10;
+    while(r-l>1){
+        ll m = (l+r)/2;
+        if(m*m <= no) l=m;
+        else r=m;
+    }
+    return l;
+}
+
+int32_t main(){
+Jhunjhar_Hova
+
+
+ll t=1;
+cin>>t;
+while(t--){
+    int n;
+    cin>>n;
+    vector<int> a(n);
+    map<int,int> m;
+    rep(i,n){
+        cin>>a[i];
+        m[a[i]]++;
+    }
+    int q;
+    cin>>q;
+    vector<int> res(q, 0);
+    rep(i,q){
+        int x, y;
+        cin>>x>>y;
+
+        ll D = (x*x) - (4*y);
+        if(D<0) continue;
+        ll r_D = find_sq(D);
+        int root1= (x-r_D)/2;
+        int root2= (x+r_D)/2;
+
+        if(root1+root2!=x || root1*root2!=y) continue;
+        ll ans=0;
+        if(root1==root2){
+            ll heh= m[root1];
+            ans = (heh*(heh-1))/2;
+        }else{
+            ans = (m[root1]* m[root2]);
+        }
+        res[i]= ans;
+    }
+    rep(i, q) cout<<res[i]<<" ";
+    cout<<"\n";
+
+}
+return 0;
+}

@@ -1,0 +1,107 @@
+1489. Find Critical and Pseudo-Critical Edges in Minimum Spanning Tree
+
+Always consult the video by Abdul Bari, if any confusion about MST is there. "https://www.youtube.com/watch?v=4ZlRH0eK-qQ&t=1012s"
+
+#define ll long long
+#define rep(i,n) for(int i=0;i<n; i++)
+#define pb push_back
+#define all(c) c.begin(),c.end()
+
+struct DSU{
+  vector<int> par, rank;
+    void makeset(int n){
+        par.assign(n+1, 1);
+        rank.assign(n+1,1);
+        rep(i, n+1) par[i]=i;
+    }
+    int find(int x){
+        while(par[x]!=x)
+            x=par[x];
+        return x;
+    }
+    void unite(int u, int v){
+        u = find(u);
+        v = find(v);
+        if(u!=v){
+            if(rank[u]<rank[v]){
+                rank[v]+= rank[u];
+                par[u]=v;
+            }else{
+                rank[u]+= rank[v];
+                par[v]=u;
+            }
+        }
+        
+    }
+};
+class Solution {
+public:
+    
+    static bool myComp(const vector<int> &a, const vector<int> &b){
+        if(a[2]!=b[2]) return a[2]<b[2];
+        
+        return a[0]<b[0];
+    }
+    ll find_mst(int start_index, bool include, vector<vector<int>> &edges, int n){
+        
+        DSU d;
+        d.makeset(n+1);
+        
+        int cnt=0;
+        ll sum=0;
+        if(include){
+            sum+= edges[start_index][2];
+            d.unite(edges[start_index][0], edges[start_index][1]);
+            cnt++;
+        }
+        if(cnt==n-1) return sum;
+        rep(i, edges.size()){
+            if(i==start_index) continue;
+            
+            if(d.find(edges[i][0])!=d.find(edges[i][1])){
+                cnt++;
+                sum+= edges[i][2];
+                d.unite(edges[i][0], edges[i][1]);
+            }
+            if(cnt==n-1) break;
+        }
+        return sum;
+    }
+    
+    vector<vector<int>> findCriticalAndPseudoCriticalEdges(int n, vector<vector<int>>& edges) {
+        
+        int m= edges.size();
+        vector<vector<int>> alt_edges;
+        rep(i,edges.size()){
+            vector<int> p = edges[i];
+            p.pb(i);
+            alt_edges.pb(p);
+        }
+        
+        sort(all(alt_edges), myComp);
+        
+        vector<vector<int>> ans;
+        vector<int> critical, pseudo_critical;
+        
+        
+        ll mst= find_mst(-1, false, alt_edges, n);
+        rep(i, m){
+            
+             // If using this edges, can give me MST. Then I can gurantee that it will participate in atleast one MST.
+            if(find_mst(i, true, alt_edges, n) == mst){
+                
+                // If we can't get any alternative mst without including this edge.
+                if( find_mst(i, false, alt_edges, n) != mst)
+                    critical.pb(alt_edges[i][3]);
+                else
+                    pseudo_critical.pb(alt_edges[i][3]);
+            }
+        }
+        
+        ans.pb(critical);
+        ans.pb(pseudo_critical);
+        
+        return ans;
+        
+    }
+};

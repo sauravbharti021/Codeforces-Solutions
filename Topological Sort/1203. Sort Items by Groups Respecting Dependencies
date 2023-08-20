@@ -1,0 +1,112 @@
+Topological sort is used that time, when multiple conditions are given for us to sort a sequence in particular order, like, x should come before y, 
+y should come before z.
+
+For more clarity, a look at "https://www.youtube.com/watch?v=ddTC4Zovtbc" tutorial by Tushar Mehta can help. We don't have to do too much. Just the leaf comes 
+first, then its parents and so on and so forth.
+
+
+
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    
+    vector<int> topological_sort(vector<unordered_set<int>> &graph, vector<int> &degree ){
+        vector<int> ans;
+        queue<int> q;
+        
+        rep(i, degree.size()){
+            if(degree[i]==0) q.push(i);
+        }
+        
+        while(!q.empty()){
+            ll x= q.front();
+            q.pop();
+            ans.pb(x);
+            
+            for(auto i: graph[x]){
+                degree[i]--;
+                if(degree[i]==0) q.push(i);
+            }
+        }
+        
+        rep(i, degree.size()) if(degree[i]>0) return vector<int> {};
+        
+        return ans;
+        
+    }
+    
+    vector<int> sortItems(int n, int m, vector<int>& group, vector<vector<int>>& beforeItems) {
+        
+        
+        rep(i,n){
+            if(group[i]==-1) {
+                group[i]= m;
+                m++;
+            }
+        }
+        
+        // here, we make graph in reverse order, because we want to go from degree[0]->degree[1] not degree[1]->degree[0].
+        vector<int> degree_group(m, 0), degree_element(n);
+        vector<unordered_set<int>> graph_group(m), graph_element(n);
+        rep(i,n){
+            // par
+            int from= group[i];
+            for(auto b_elements : beforeItems[i]){
+                // child
+                int b_group = group[b_elements];
+                
+                if(from != b_group && graph_group[b_group].find(from) == graph_group[b_group].end() ){
+                    graph_group[b_group].insert(from);
+                    degree_group[from]++;
+                }
+                
+                if(graph_element[b_elements].find(i) == graph_element[b_elements].end()){
+                    graph_element[b_elements].insert(i);
+                    degree_element[i]++;
+                }
+            }
+        }
+        
+        vector<int> sorted_group = topological_sort(graph_group , degree_group);
+        vector<int> sorted_element = topological_sort(graph_element, degree_element);
+        
+        vector<int> ans;
+        rep(i,sorted_element.size()) cout<<sorted_element[i]<<" "; cout<<"\n";
+        rep(i,sorted_group.size()) cout<<sorted_group[i]<<" "; cout<<"\n";
+        
+        if(sorted_group.size()==0 || sorted_element.size()==0) return ans;
+        
+        vector<vector<int>> group_by(m);
+        
+        rep(i, n){
+            group_by[group[sorted_element[i]]].pb(sorted_element[i]);
+        }
+        // rep(i, m){
+        //     cout<<sorted_group[i]<<" : ";
+        //     rep(j, group_by[sorted_group[i]].size()){
+        //         cout<<(group_by[sorted_group[i]][j])<<" ";
+        //     }
+        //     cout<<"\n";
+        // }
+        
+        rep(i,m){
+            rep(j, group_by[sorted_group[i]].size()){
+                ans.pb(group_by[sorted_group[i]][j]);
+            }
+        }
+        return ans;
+        
+    }
+};

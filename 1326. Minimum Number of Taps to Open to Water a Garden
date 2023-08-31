@@ -1,0 +1,47 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int dp[20004];
+    int recur(int i , int n, vector<int> &ranges, vector<int> &fur){
+        if(i>=n) return 0;
+        
+        if(dp[i]!=-1) return dp[i];
+        
+        int ans=1e8;
+        for(int j=1;j<=fur[i];j++){
+            ans= min(ans, 1+ recur(i+j, n, ranges, fur));
+            
+        }
+        
+        return dp[i]=ans;
+    }
+    int minTaps(int n, vector<int>& ranges) {
+        vector<int> furthest(n+200,0);
+        memset(dp, -1 , sizeof dp);
+        rep(i,n+1) furthest[i]=0;
+        
+        rep(i, ranges.size()){
+            int left= max(0,  i-ranges[i]);
+            int right= i+ranges[i];
+            
+            furthest[left]= max(furthest[left], right-left);
+        }
+        
+        
+        ll ans= recur(0, n, ranges, furthest);
+        return ans>1e4 ? -1 : ans;
+       
+    }
+};

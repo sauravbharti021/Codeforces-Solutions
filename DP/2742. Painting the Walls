@@ -1,0 +1,32 @@
+#define ll long long
+class Solution {
+public:
+    ll dp[501][1001];
+    
+    ll recur(int i, int free, vector<int> &cost, vector<int> &time, int n){
+        if(i>=cost.size()) {
+            if(free>=0) return 0;
+            
+            return 1e9;
+        }
+        
+        if(free>=n-i) return 0;
+        
+        if(dp[i][free+500]!=-1) return dp[i][free+500];
+        
+        
+        ll ans=1e9;
+        ans= min({ans, recur(i+1, free-1, cost, time, n), cost[i]+ recur(i+1, free+time[i], cost, time, n )  });
+        
+        
+        return dp[i][free+500]= ans;
+    }
+    int paintWalls(vector<int>& cost, vector<int>& time) {
+        
+        
+        int n= cost.size();
+        memset(dp, -1, sizeof dp);
+        
+        return recur(0, 0, cost, time, n);
+    }
+};

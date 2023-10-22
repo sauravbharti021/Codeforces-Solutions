@@ -1,0 +1,48 @@
+#define ll long long
+#define pi (3.141592653589)
+#define mod 1000000007
+#define float double
+#define pb push_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define all(c) c.begin(), c.end()
+#define min3(a, b, c) min(c, min(a, b))
+#define min4(a, b, c, d) min(d, min(c, min(a, b)))
+#define rrep(i, n) for(int i=n-1;i>=0;i--)
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    int maximumScore(vector<int>& nums, int k) {
+        
+        int n= nums.size();
+        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> p;
+        rep(i,n){
+            p.push({nums[i], i});
+        }
+        
+        int l=0, r=n-1;
+        ll mx=0;
+        while(!p.empty()){
+            pair<int,int> x= p.top();
+            p.pop();
+            if(x.ss<l || x.ss>r) continue;
+            if(l>k || r<k) break;
+            
+            ll ans= x.ff*(r-l+1);
+            
+            
+            mx=max(mx, ans);
+            
+            if(x.ss<=k){
+                l= max(l, x.ss+1);
+            }
+            if(x.ss>=k){
+                r= min(r, x.ss-1);
+            }
+        }
+        
+        return mx;
+        
+    }
+};

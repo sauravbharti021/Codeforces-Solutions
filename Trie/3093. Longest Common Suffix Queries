@@ -1,0 +1,96 @@
+class TrieNode{
+public:
+    
+    TrieNode* child[26];
+    int index;
+    
+    TrieNode(){
+        for(int i=0;i<26;i++)
+            child[i] = NULL;
+        index = -1;
+    }
+};
+
+class Solution {
+public:
+    
+    vector<string> here;
+    TrieNode* root;
+    Solution(){
+        root = new TrieNode();
+    }
+    void insert(string &now, int given_index){
+        TrieNode* cur = root;
+        int n= now.size(); 
+        
+        for(int i=n-1;i>=0;i--){
+            int x= (now[i] - 'a');
+            
+            if(cur->child[x] == NULL){
+                cur->child[x] = new TrieNode();
+                cur->child[x]->index = given_index;
+            }
+            else{
+                int index = cur->child[x]->index;
+                if(here[index].size()> n ){
+                    cur->child[x]->index = given_index;
+                }
+            }
+            
+            cur = cur->child[x];
+        }
+        
+        
+    }
+    
+    int search(string &word){
+        int n =word.size();
+        TrieNode* cur = root;
+        
+        int mx = -1, index = -1;
+        
+        for(int i=n-1;i>=0;i--){
+            int x= (word[i] - 'a');
+            
+            if(cur->child[x] == NULL){
+                return cur->index;
+            }
+            cur= cur-> child[x];
+        }
+        
+        return cur->index;
+    }
+    
+    
+    vector<int> stringIndices(vector<string>& wordsContainer, vector<string>& wordsQuery) {
+                
+        int n= wordsQuery.size();
+        
+        int mi=1e8;
+        int miniI =0;
+        
+        for(int i=0;i<wordsContainer.size();i++){
+            here.push_back(wordsContainer[i]);
+        }
+        
+        for(int i=0;i<wordsContainer.size(); i++){
+            insert(wordsContainer[i], i);
+            if(wordsContainer[i].size() < mi){
+                mi = wordsContainer[i].size();
+                miniI = i;
+            }
+        }
+        vector<int> ans(n, miniI);
+        
+        
+        for(int i=0;i<n;i++){
+            int index = search(wordsQuery[i]);
+            
+            if(index == -1) continue;
+            ans[i] = index;
+            
+        }
+        
+        return ans;
+    }
+};

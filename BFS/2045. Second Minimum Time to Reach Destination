@@ -1,0 +1,63 @@
+class Solution {
+public:
+    int secondMinimum(int n, vector<vector<int>>& edges, int time, int change) {
+        vector<int> dis(n+1, 1e9);
+        vector<vector<int>> adj(n+1);
+        
+        for(int i=0;i<edges.size();i++){
+            int u = edges[i][0], v= edges[i][1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+        queue<int> q;
+        q.push(1);
+        dis[1]=0;
+        while(!q.empty()){
+            int x= q.front();
+            q.pop();
+            for(auto i: adj[x]){
+                if(dis[i]> (dis[x]+1)){
+                    q.push(i);
+                    dis[i] = dis[x]+1;
+                }
+            }
+        }
+        if(checkCommon(n, dis, adj))
+            return calc2(dis[n]+1, time, change);
+        // cout<<"no common\n";
+        return calc2(dis[n]+2, time, change);
+    }
+    int calc2(int total, int time, int change){
+        int ans=0;
+        int str=0, end= time;
+        while(total--){
+            int div = (str/change) % 2; 
+            if(div){
+                int trash = (change - (str%change));
+                str+= (trash);
+            }
+            if(total>0){
+                str+= time;
+                end= (str+time); 
+            }
+        }
+        end= (str+time);
+        return end;
+    }
+    bool checkCommon(int n, vector<int> &dis, vector<vector<int>> &adj){
+        int flag =0;
+        for(auto i: adj[n]){
+            if((dis[n] -  dis[i]) == 0){
+                flag = 1;
+                break;
+            }
+        }
+        
+        for(auto i: adj[n]){
+            if((dis[n]-dis[i])==1){
+                flag |= checkCommon(i, dis, adj);
+            }
+        }
+        return flag;
+    }
+};

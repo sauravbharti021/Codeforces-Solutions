@@ -1,0 +1,39 @@
+#define ll long long
+#define ff first
+#define ss second
+class Solution {
+public:
+    vector<vector<vector<pair<ll,ll>>>> dp;
+    pair<ll,ll> recur(int index, int turn, int m, vector<int> &piles){
+        if(index>=piles.size())
+            return {0, 0};
+        pair<ll,ll> temp = {-1,-1};
+        if(dp[index][turn][m]!=temp)
+            return dp[index][turn][m];
+        
+        pair<ll,ll> ans = {!turn? 0: 1e9, turn? 0: 1e9 };
+        ll sum = 0;
+        int dis = 0;
+        for(int i=index;i<piles.size() && i<(index+2*m);i++){
+            sum+= piles[i];
+            dis+= 1;
+            pair<ll,ll> now = recur(i+1, turn^1, max(dis, m), piles);
+            if(!turn){
+                ans.ff = max(ans.ff, !turn?  (sum+ now.ff) : now.ff);
+                ans.ss = min(ans.ss, turn ? (sum+  now.ss) : now.ss);           
+            }else{
+                ans.ff = min(ans.ff, !turn?  (sum+ now.ff) : now.ff);
+                ans.ss = max(ans.ss, turn ? (sum+  now.ss) : now.ss); 
+            }
+
+        }
+        return dp[index][turn][m] = ans;
+    }
+    int stoneGameII(vector<int>& piles) {
+        ll n = piles.size();
+        dp.assign(n+1, vector<vector<pair<ll,ll>>>(2, vector<pair<ll,ll>>(n+1,{-1,-1})));
+        
+        pair<int,int> res = recur(0, 0, 1, piles);
+        return res.ff;
+    }
+};

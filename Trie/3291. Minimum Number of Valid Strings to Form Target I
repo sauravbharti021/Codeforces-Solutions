@@ -1,0 +1,67 @@
+#define mod 1000000019
+#define ll long long
+
+class Trie{
+    public: 
+        vector<Trie*> children;
+        bool full_word;
+    Trie(){
+        children.assign(26, NULL);
+        full_word= false;
+    }    
+    
+};
+class Solution {
+public:
+    vector<ll> pw;
+    vector<int> dp;
+    ll recur(int i, string &target){
+        Trie* cur = root;
+        if(i>=target.size()){
+            return 0;
+        }
+        if(cur->children[(target[i]-'a')]==NULL){
+            return 1e9;
+        }
+        if(dp[i]!=-1)
+            return dp[i];
+        ll ans = 1e9;
+        
+        
+        for(int str=i;str<target.size();str++){
+            if(cur->children[target[str]-'a']!=NULL){
+                ans = min(ans, 1+recur(str+1, target) );
+            }else{
+                break;
+            }
+            cur = cur->children[target[str]-'a'];
+        }
+        
+        return dp[i] = ans;
+    }
+    Trie* root;
+    Solution(){
+        root = new Trie();
+    }
+    void insert(string &word){
+        Trie* cur = root;
+        for(int i=0;i<word.size();i++){
+            if(cur->children[(word[i]-'a')] == NULL){
+                cur->children[(word[i]-'a')] = new Trie();
+            }
+            cur=cur->children[word[i]-'a'];
+        }
+        cur->full_word = true;
+    }
+    int minValidStrings(vector<string>& words, string target) {
+        for(int i=0;i<words.size();i++){
+            insert(words[i]);
+        }
+        dp.assign(target.size()+1, -1);
+        ll ans = recur(0, target);
+        if(ans>=1e9)
+            return -1;
+        
+        return ans;
+    }
+};

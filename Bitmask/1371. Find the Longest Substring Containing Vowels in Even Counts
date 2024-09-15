@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int findTheLongestSubstring(string s) {
+        int n= s.size();
+        vector<int> ind;
+        set<char> st {'a', 'e', 'i', 'o', 'u'};
+        unordered_map<int,int> m;
+        int x = 0;
+        m[0] = -1;
+        int mx = 0;
+        for(int i=0;i<n;i++){
+            if(st.find(s[i])!=st.end()){
+                x^= (s[i]-'a'+1);
+                if(m.find(x)!=m.end()){
+                    mx = max(mx, ((i-m[x])));
+                }else{
+                    m[x] = i;              
+                }
+            }else{
+                mx = max(mx, ((i-m[x])));
+            }
+        }
+        return mx;
+    }
+};

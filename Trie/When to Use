@@ -1,0 +1,14 @@
+The benifit is to make sure instead of comparing many prefix one by one.
+
+Just compare using trie all prefix at one time.
+
+Like - 
+abc
+abzd
+abcd
+abcde
+
+Trie - 
+a->b->c->d
+   |
+   -->z

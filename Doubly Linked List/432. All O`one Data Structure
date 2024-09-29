@@ -1,0 +1,150 @@
+class Node{
+public:
+    Node* prev;
+    Node* next;
+    int freq;
+    unordered_set<string> keys;
+
+    Node(int fre){
+        freq= fre;
+        prev = NULL;
+        next = NULL;
+    }
+};
+class AllOne {
+public:
+    Node* tail;
+    Node* head;
+    unordered_map<string, Node*> m;
+    AllOne() {
+        tail = new Node(0);
+        head = new Node(0);
+        head->next = tail;
+        tail->prev = head;
+    }
+    
+    void removeNode(Node* cur){
+        Node* prev = cur->prev;
+        Node* next = cur->next;
+        prev->next = next;
+        next->prev = prev;
+    }
+    
+    void inc(string key) {
+        if(m.find(key)==m.end()){
+            Node* firstNode = head->next;
+            if(firstNode==tail){
+                Node* newNode = new Node(1);
+                head->next = newNode;
+                newNode->prev = head;
+                tail->prev = newNode;
+                newNode->next = tail;
+                
+                newNode->keys.insert(key);
+                m[key] = newNode;
+            }else{
+                if(firstNode->freq == 1){
+                    firstNode->keys.insert(key);
+                    m[key] = firstNode;
+                }else{
+                    Node* newNode = new Node(1);
+                    head->next = newNode;
+                    newNode->prev = head;
+                    firstNode->prev = newNode;
+                    newNode->next = firstNode;
+                    
+                    newNode->keys.insert(key);
+                    m[key] = newNode;
+                }
+            }
+        }else{
+            Node* cur = m[key];
+            if(cur->next != tail){
+                Node* nextNode = cur->next;
+                if(nextNode->freq != (cur->freq + 1)){
+                    Node* newNode = new Node((cur->freq + 1));
+                    
+                    cur->next = newNode;
+                    newNode->prev = cur;
+                    nextNode->prev = newNode;
+                    newNode->next = nextNode;
+                    
+                    cur->keys.erase(key);
+                    newNode->keys.insert(key);
+                    m[key] = newNode;
+                }else{
+                    cur->keys.erase(key);
+                    nextNode->keys.insert(key);
+                    m[key] = nextNode;
+                }
+            }else{
+                Node* newNode = new Node((cur->freq + 1));
+                cur->next = newNode;
+                newNode->prev = cur;
+                newNode->next = tail;
+                tail->prev = newNode;
+                
+                newNode->keys.insert(key);
+                cur->keys.erase(key);
+                m[key] = newNode;
+            }
+            
+            if(cur->keys.empty())
+                removeNode(cur);
+        }
+    }
+    
+    void dec(string key) {
+        Node* cur = m[key];
+        Node* last = m[key]->prev;
+        if(last == head){
+            if(cur->freq == 1){
+                cur->keys.erase(key);
+                m.erase(key);
+            }else{
+                Node* newNode = new Node(cur->freq - 1);
+                cur->prev = newNode;
+                head->next = newNode;
+                newNode->next = cur;
+                newNode->prev = head;
+                
+                newNode->keys.insert(key);
+                cur->keys.erase(key);
+                
+                m[key] = newNode;
+            }
+        }else{
+            if(last->freq == (cur->freq -1)){
+                cur->keys.erase(key);
+                last->keys.insert(key);
+                m[key] = last;
+            }else{
+                Node* newNode = new Node(cur->freq - 1);
+                newNode->prev = last;
+                newNode->next = cur;
+                cur->prev = newNode;
+                last->next = cur;
+                
+                cur->keys.erase(key);
+                newNode->keys.insert(key);
+                m[key] = newNode;
+            }
+        }
+        
+        if(cur->keys.empty()){
+            removeNode(cur);
+        }
+    }
+    
+    string getMaxKey() {
+        if(tail->prev == head)
+            return "";
+        return *(tail->prev->keys.begin());
+    }
+    
+    string getMinKey() {
+        if(head->next == tail)
+            return "";
+        return *(head->next->keys.begin());
+    }
+};

@@ -1,0 +1,44 @@
+#define ll long long
+class Solution {
+public:
+    long long minEnd(int n, int x) {
+        if(n==1)
+            return x;
+        
+        ll setBits = 0;
+        ll dupX = x;
+        n--;
+        vector<int> positionFixer(64, 0);
+        while(dupX>0){
+            ll y = 31 - __builtin_clz(dupX);
+            setBits += 1;
+            positionFixer[y] = 1;
+            dupX -= (1<<y);
+        }
+        
+        vector<int> nBits(32, 0);
+        while(n>0){
+            ll y = 31 - __builtin_clz(n);
+            nBits[y] = 1;
+            n -= (1<<y);
+        }
+        int j=0;
+        for(int i= 0;i<32;i++){
+
+            while(j<64 && positionFixer[j]!=0){
+                j++;
+            }
+            positionFixer[j] = nBits[i];
+            j++;
+            
+        }
+        
+        ll ans=0;
+        for(ll i=0;i<64;i++){
+            if(positionFixer[i]){
+                ans+= (1ULL<<i);
+            }
+        }
+        return ans;
+    }
+};

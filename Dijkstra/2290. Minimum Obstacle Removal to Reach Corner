@@ -1,0 +1,37 @@
+#define rep(i,n) for(int i=0;i<n;i++)
+class Solution {
+public:
+    vector<vector<int>> dir{{-1,0}, {1,0}, {0,-1}, {0,1}};
+    vector<vector<bool>> vis;
+    vector<vector<int>> dis;
+    
+    int recur(vector<vector<int>> &g){
+        int n= g.size(), m= g[0].size();
+        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
+        dis[0][0]= g[0][0];
+        pq.push({dis[0][0], 0, 0});
+        while(!pq.empty()){
+            vector<int> a = pq.top();
+            pq.pop();
+            int curr= a[0], u= a[1], v=a[2];
+            for(int k=0;k<4;k++){
+                int x = u+ dir[k][0], y = v+ dir[k][1];
+                if(x<0 || y<0 || x>=n || y>=m) continue;
+                int newObs = curr + g[x][y];
+                if(x>=0 && x<n && y>=0 && y<m && newObs < dis[x][y]){
+                    dis[x][y] = newObs;
+                    pq.push({dis[x][y], x, y});
+                }
+            }
+        }
+        return dis[n-1][m-1];
+    }
+    int minimumObstacles(vector<vector<int>>& grid) {
+
+        int n= grid.size(), m= grid[0].size();
+        dis.assign(n+1, vector<int>(m+1, 1e9));
+        vis.assign(n, vector<bool>(m, false));
+        int ans = recur(grid);
+        return ans;
+    }
+};

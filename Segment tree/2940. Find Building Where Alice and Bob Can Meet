@@ -1,0 +1,93 @@
+ struct seg1{
+ 
+    vector<int> seg;
+    vector<int> a;
+    void makeset(int n, vector<int> &b){
+        seg.assign(4*n + 2,0 );
+        a.assign(n, 0);
+        a.assign(b.begin(), b.end());
+    } 
+    void build(int ind, int l, int h){
+        if(l==h){
+            seg[ind]=a[l];
+            return; 
+        }
+        int mid= (l+h)/2;
+        build(2*ind +1, l, mid );
+        build(2*ind +2, mid+1, h );
+ 
+        seg[ind]=max(seg[ind],  max(seg[ind*2 +1] , seg[ind*2 + 2]));
+ 
+    }
+ 
+    int query(int ind, int low, int high, int l, int h){
+        if(low>=l && high<=h) {
+            return seg[ind];
+        }
+ 
+        if(l>high || h<low ) return 0;  
+ 
+        int mid=(low+ high)/2;
+ 
+        int left= query( 2*ind +1, low, mid, l ,h);
+        int right= query( 2*ind +2, mid+1, high, l, h);
+ 
+        return max(left,right);  
+    } 
+};
+class Solution {
+public:
+    seg1 s;
+    vector<int> leftmostBuildingQueries(vector<int>& heights, vector<vector<int>>& queries) {
+        /*
+            segment tree + binary search
+            7 - 7
+            2 7 - 2
+            5 7 - 5
+            8 - 8
+            4 8 - 8
+            6 - 6
+        */
+        int n = heights.size();
+        s.makeset(n, heights);
+        s.build(0, 0, n-1);
+        vector<int> ans(queries.size(), -1 );
+        
+        for(int i=0;i<queries.size();i++){
+            int u = queries[i][0], v= queries[i][1];
+            if(u<v && heights[v]>heights[u]){
+                ans[i] = v;
+            }else if(u==v){
+                ans[i]=u;
+            }else if(u>v && heights[u]>heights[v]){
+                ans[i] = u;
+            }else{
+                int l = max(u,v);
+                int r= n-1;
+                int val = max(heights[u], heights[v]);
+                
+                ans[i] = helper(l, r+1, val, n);
+                
+            }
+            
+        }
+        return ans;
+        
+    }
+    int helper(int l, int r, int val, int n){
+
+        int flag =0;
+        int left = l;
+        while(r-l>1){
+            int mid = (l+r)/2;
+            if(s.query(0, 0, n-1, left, mid)>val){
+                r=mid;
+                flag = 1;
+            }else{
+                l=mid;
+            }
+        }
+        if(!flag) return -1;
+        return r;
+    }
+};

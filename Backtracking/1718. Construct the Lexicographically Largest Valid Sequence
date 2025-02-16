@@ -1,0 +1,47 @@
+class Solution {
+public:
+    vector<int> ans;
+    vector<int> done;
+    vector<int> cur;
+    int flag = 0;
+    void recur(int index, int n){
+        if(index>=cur.size()){
+            ans = cur;
+            flag = 1;
+            return;
+        }
+        if(cur[index]!=0){
+            recur(index+1, n);
+            return;
+        }
+
+        for(int i=n;i>=2;i--){
+            if(done[i]) continue;
+            if(i+index >=cur.size() || cur[index+i]!=0) continue;
+
+            cur[index] =i;
+            cur[index+i] = i;
+            done[i] = 1;
+            recur(index+1, n);
+            if(flag) return;
+            cur[index]=0;
+            cur[index+i] = 0;
+            done[i]=0;
+        }
+        if(!done[1] && cur[index]==0 ){
+            cur[index] = 1;
+            done[1]=1;
+            recur(index+1, n);
+            if(flag) return;
+            cur[index]=0;
+            done[1]=0;
+        }
+    }
+    vector<int> constructDistancedSequence(int n) {
+        done.assign(n+1, false);
+        cur.assign(n*2 - 1, 0);
+
+        recur(0, n);
+        return ans;
+    }
+};

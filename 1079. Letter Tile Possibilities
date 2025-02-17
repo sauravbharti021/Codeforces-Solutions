@@ -1,0 +1,30 @@
+class Solution {
+public:
+    set<string> checker;
+    void allPos(int index, int n, string s, vector<int> &f){
+        if(s!="")
+            checker.insert(s);
+        if(index>=n){
+            return;
+        }
+       
+        for(int i=0;i<26;i++){
+            if(f[i]>0){
+                s+= ('A'+i);
+                f[i]-=1;
+                allPos(index+ 1, n, s, f);
+                s.pop_back();
+                f[i]+=1;
+            }
+        }
+    }
+    int numTilePossibilities(string tiles) {
+        vector<int> f(26, 0);
+        int n= tiles.size();
+        for(int i=0;i<n;i++){
+            f[(tiles[i]-'A')]+=1;
+        }
+        allPos(0, n, "", f);
+        return checker.size();
+    }
+};

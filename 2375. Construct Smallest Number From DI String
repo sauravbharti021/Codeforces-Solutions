@@ -1,0 +1,43 @@
+class Solution {
+public:
+    set<string> st;
+    vector<bool> vis;
+    void recur(int index, string &pattern, string s, string before){
+        if(index>pattern.size()){
+            if(s!="")
+                st.insert(s);
+            return;
+        }
+        for(int i=1;i<=9;i++){
+            if(vis[i]) continue;
+            if(before==""){
+                vis[i] = true;
+                recur(index+1, pattern, s+char(i+'0'), (pattern[index] == 'I' ? "inc": "dec" ));
+                vis[i] = false;
+            }else if(before=="inc"){
+                int prev = (s.back() - '0');
+                if(i>prev){
+                    vis[i]= true;
+                    recur(index+1, pattern, s+char(i+'0'), (pattern[index] == 'I' ? "inc": "dec" ));
+                    vis[i] = false;
+                }
+            }else{
+                int prev = (s.back() - '0');
+                if(i<prev){
+                    vis[i] = true;
+                    recur(index+1, pattern, s+ char(i+'0'), (pattern[index] == 'I' ? "inc": "dec" ));
+                    vis[i] = false;
+                }
+            }
+        }
+    }
+    string smallestNumber(string pattern) {
+        vis.assign(10, false);
+
+        recur(0, pattern, "", "");
+
+        if(st.size()==0)
+            return "";
+        return *st.begin();
+    }
+};

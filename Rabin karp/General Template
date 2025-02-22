@@ -1,0 +1,37 @@
+#define ll long long
+vector<ll> pw1, pw2, inv1, inv2;
+    
+    vector<ll> helper(string &s, int mod1, int flag=0){
+        int n= s.size();
+        int p = 31;
+        
+        for(int i=1; i<n; i++) {
+            if(flag ==0){
+                pw1[i] = (pw1[i-1] * p)%mod1;
+                if(pw1[i]<0) pw1[i] +=mod1;
+            }else{
+                pw2[i] = (pw2[i-1] * p)%mod1;
+                if(pw2[i]<0) pw2[i] +=mod1;
+            }
+        }
+        
+        vector<ll> hash1(n+1, 0);
+        ll i_1 = modp(p, mod1-2, mod1);
+        
+        for(int i=1; i<n; i++){
+            if(flag == 0){
+                inv1[i]= (inv1[i-1]* i_1 )%mod1;
+                if(inv1[i]<0) inv1[i] +=mod1;
+            }else{
+                inv2[i]= (inv2[i-1]* i_1 )%mod1;
+                if(inv2[i]<0) inv2[i] +=mod1;
+            }
+        }
+        
+        for(int i=0;i<n;i++){
+            hash1[i] = ((i>0 ? hash1[i-1] : 0) + ( modp(p, i, mod1) * ((s[i] - 'a') +1) )%mod1 )%mod1;
+            if(hash1[i]<0) hash1[i]+=mod1;
+        }
+        
+        return hash1;
+    }
